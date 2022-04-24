@@ -19,15 +19,18 @@ package jakarta.json.bind.serializer;
 import jakarta.json.stream.JsonGenerator;
 
 /**
- * <p>Interface representing a custom serializer for given type. Unlike {@link jakarta.json.bind.adapter.JsonbAdapter}
- * serializer provides more fine grained control over serialization process by writing java object directly into
- * JSON stream using {@link JsonGenerator}. {@link SerializationContext} acts as JSONB runtime, able to serialize
- * any java object provided.</p>
+ * Interface representing a custom serializer for given type. Unlike {@link
+ * jakarta.json.bind.adapter.JsonbAdapter} serializer provides more fine grained control over
+ * serialization process by writing java object directly into JSON stream using {@link
+ * JsonGenerator}. {@link SerializationContext} acts as JSONB runtime, able to serialize any java
+ * object provided.
  *
- * <p>Serializers are registered using {@link jakarta.json.bind.JsonbConfig#withSerializers(JsonbSerializer[])}
- * method or using {@link jakarta.json.bind.annotation.JsonbTypeSerializer} annotation on type</p>
+ * <p>Serializers are registered using {@link
+ * jakarta.json.bind.JsonbConfig#withSerializers(JsonbSerializer[])} method or using {@link
+ * jakarta.json.bind.annotation.JsonbTypeSerializer} annotation on type
  *
- * <p>Sample of custom Serializer:</p>
+ * <p>Sample of custom Serializer:
+ *
  * <pre>
  * class Box {
  *     public BoxInner boxInnerObject;
@@ -51,15 +54,12 @@ import jakarta.json.stream.JsonGenerator;
  */
 public interface JsonbSerializer<T> {
 
-    /**
-     * Serializes object into JSON stream.
-     *
-     * @param obj
-     *      Object to serialize.
-     * @param generator
-     *      JSON generator used to write java object to JSON stream.
-     * @param ctx
-     *      JSONB mapper context. Use it to serialize sub-objects.
-     */
-    void serialize(T obj, JsonGenerator generator, SerializationContext ctx);
+  /**
+   * Serializes object into JSON stream.
+   *
+   * @param obj Object to serialize.
+   * @param generator JSON generator used to write java object to JSON stream.
+   * @param ctx JSONB mapper context. Use it to serialize sub-objects.
+   */
+  void serialize(T obj, JsonGenerator generator, SerializationContext ctx);
 }

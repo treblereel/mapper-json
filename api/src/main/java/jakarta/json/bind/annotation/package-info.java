@@ -15,10 +15,7 @@
  */
 
 /**
- * <p>
- * Defines annotations for customizing the mapping between Java program elements
- * and JSON documents.
- * </p>
+ * Defines annotations for customizing the mapping between Java program elements and JSON documents.
  *
  * @since JSON Binding 1.0
  */

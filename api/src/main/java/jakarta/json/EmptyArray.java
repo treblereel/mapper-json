@@ -27,87 +27,88 @@ import java.util.RandomAccess;
  *
  * @author Lukas Jungmann
  */
-final class EmptyArray extends AbstractList<JsonValue> implements JsonArray, Serializable, RandomAccess {
+final class EmptyArray extends AbstractList<JsonValue>
+    implements JsonArray, Serializable, RandomAccess {
 
-    private static final long serialVersionUID = 7295439472061642859L;
+  private static final long serialVersionUID = 7295439472061642859L;
 
-    @Override
-    public JsonValue get(int index) {
-        throw new IndexOutOfBoundsException("Index: " + index);
-    }
+  @Override
+  public JsonValue get(int index) {
+    throw new IndexOutOfBoundsException("Index: " + index);
+  }
 
-    @Override
-    public int size() {
-        return 0;
-    }
+  @Override
+  public int size() {
+    return 0;
+  }
 
-    @Override
-    public JsonObject getJsonObject(int index) {
-        return (JsonObject) get(index);
-    }
+  @Override
+  public JsonObject getJsonObject(int index) {
+    return (JsonObject) get(index);
+  }
 
-    @Override
-    public JsonArray getJsonArray(int index) {
-        return (JsonArray) get(index);
-    }
+  @Override
+  public JsonArray getJsonArray(int index) {
+    return (JsonArray) get(index);
+  }
 
-    @Override
-    public JsonNumber getJsonNumber(int index) {
-        return (JsonNumber) get(index);
-    }
+  @Override
+  public JsonNumber getJsonNumber(int index) {
+    return (JsonNumber) get(index);
+  }
 
-    @Override
-    public JsonString getJsonString(int index) {
-        return (JsonString) get(index);
-    }
+  @Override
+  public JsonString getJsonString(int index) {
+    return (JsonString) get(index);
+  }
 
-    @Override
-    public <T extends JsonValue> List<T> getValuesAs(Class<T> clazz) {
-        return Collections.emptyList();
-    }
+  @Override
+  public <T extends JsonValue> List<T> getValuesAs(Class<T> clazz) {
+    return Collections.emptyList();
+  }
 
-    @Override
-    public String getString(int index) {
-        return getJsonString(index).getString();
-    }
+  @Override
+  public String getString(int index) {
+    return getJsonString(index).getString();
+  }
 
-    @Override
-    public String getString(int index, String defaultValue) {
-        return defaultValue;
-    }
+  @Override
+  public String getString(int index, String defaultValue) {
+    return defaultValue;
+  }
 
-    @Override
-    public int getInt(int index) {
-        return getJsonNumber(index).intValue();
-    }
+  @Override
+  public int getInt(int index) {
+    return getJsonNumber(index).intValue();
+  }
 
-    @Override
-    public int getInt(int index, int defaultValue) {
-        return defaultValue;
-    }
+  @Override
+  public int getInt(int index, int defaultValue) {
+    return defaultValue;
+  }
 
-    @Override
-    public boolean getBoolean(int index) {
-        return get(index) == JsonValue.TRUE;
-    }
+  @Override
+  public boolean getBoolean(int index) {
+    return get(index) == JsonValue.TRUE;
+  }
 
-    @Override
-    public boolean getBoolean(int index, boolean defaultValue) {
-        return defaultValue;
-    }
+  @Override
+  public boolean getBoolean(int index, boolean defaultValue) {
+    return defaultValue;
+  }
 
-    @Override
-    public boolean isNull(int index) {
-        return get(index) == JsonValue.NULL;
-    }
+  @Override
+  public boolean isNull(int index) {
+    return get(index) == JsonValue.NULL;
+  }
 
-    @Override
-    public ValueType getValueType() {
-        return ValueType.ARRAY;
-    }
+  @Override
+  public ValueType getValueType() {
+    return ValueType.ARRAY;
+  }
 
-    // Preserves singleton property
-    private Object readResolve() {
-        return JsonValue.EMPTY_JSON_ARRAY;
-    }
+  // Preserves singleton property
+  private Object readResolve() {
+    return JsonValue.EMPTY_JSON_ARRAY;
+  }
 }

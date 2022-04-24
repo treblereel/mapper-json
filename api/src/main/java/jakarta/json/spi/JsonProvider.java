@@ -16,5 +16,4 @@
 
 package jakarta.json.spi;
 
-public class JsonProvider {
-}
+public class JsonProvider {}

@@ -16,23 +16,23 @@
 
 package jakarta.json.bind.annotation;
 
-
 import jakarta.json.bind.serializer.JsonbSerializer;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotation provides way how to set custom JsonbSerializer to field or JavaBean property.</p>
+ * Annotation provides way how to set custom JsonbSerializer to field or JavaBean property.
  *
- * <p><b>Usage</b></p>
- * <p>The {@code @JsonbSerializer} annotation can be used with the following program elements:</p>
+ * <p><b>Usage</b>
+ *
+ * <p>The {@code @JsonbSerializer} annotation can be used with the following program elements:
+ *
  * <ul>
- *   <li> type </li>
- *   <li> field </li>
- *   <li> method </li>
+ *   <li>type
+ *   <li>field
+ *   <li>method
  * </ul>
  *
  * @since JSON Binding 1.0
@@ -42,10 +42,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
 public @interface JsonbTypeSerializer {
 
-    /**
-     * Custom {@link JsonbSerializer} which provides custom mapping for given field or JavaBean property.
-     *
-     * @return Serializaer to use.
-     */
-    Class<? extends JsonbSerializer> value();
+  /**
+   * Custom {@link JsonbSerializer} which provides custom mapping for given field or JavaBean
+   * property.
+   *
+   * @return Serializaer to use.
+   */
+  Class<? extends JsonbSerializer> value();
 }

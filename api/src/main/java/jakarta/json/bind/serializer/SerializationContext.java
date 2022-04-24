@@ -26,35 +26,28 @@ import jakarta.json.stream.JsonGenerator;
  */
 public interface SerializationContext {
 
-    /**
-     * Serializes arbitrary object to JSON, using current {@link jakarta.json.stream.JsonGenerator} instance.
-     * Serialization is ran as serialization of a root type from user {@link JsonbSerializer}. {@link JsonGenerator}
-     * instance is shared with JSONB and user serializer.
-     *
-     * @param key
-     *      JSON key name.
-     * @param object
-     *      Object to serialize.
-     * @param generator
-     *      JSONP generator to serialize with.
-     * @param <T>
-     *      Type of serialized object.
-     */
-    <T> void serialize(String key, T object, JsonGenerator generator);
+  /**
+   * Serializes arbitrary object to JSON, using current {@link jakarta.json.stream.JsonGenerator}
+   * instance. Serialization is ran as serialization of a root type from user {@link
+   * JsonbSerializer}. {@link JsonGenerator} instance is shared with JSONB and user serializer.
+   *
+   * @param key JSON key name.
+   * @param object Object to serialize.
+   * @param generator JSONP generator to serialize with.
+   * @param <T> Type of serialized object.
+   */
+  <T> void serialize(String key, T object, JsonGenerator generator);
 
-    /**
-     * Serializes arbitrary object to JSON, using current {@link jakarta.json.stream.JsonGenerator} instance.
-     * Serialization is ran as serialization of a root type from user {@link JsonbSerializer}. {@link JsonGenerator}
-     * instance is shared with JSONB and user serializer.
-     *
-     * Method without key parameter is intended to serialize inside JSON_ARRAYs.
-     *
-     * @param object
-     *      Object to serialize.
-     * @param generator
-     *      JSONP generator to serialize with.
-     * @param <T>
-     *      Type of serialized object.
-     */
-    <T> void serialize(T object, JsonGenerator generator);
+  /**
+   * Serializes arbitrary object to JSON, using current {@link jakarta.json.stream.JsonGenerator}
+   * instance. Serialization is ran as serialization of a root type from user {@link
+   * JsonbSerializer}. {@link JsonGenerator} instance is shared with JSONB and user serializer.
+   *
+   * <p>Method without key parameter is intended to serialize inside JSON_ARRAYs.
+   *
+   * @param object Object to serialize.
+   * @param generator JSONP generator to serialize with.
+   * @param <T> Type of serialized object.
+   */
+  <T> void serialize(T object, JsonGenerator generator);
 }

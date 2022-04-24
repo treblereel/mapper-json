@@ -16,7 +16,6 @@
 
 package jakarta.json.bind.serializer;
 
-
 import jakarta.json.stream.JsonParser;
 import java.lang.reflect.Type;
 
@@ -28,53 +27,39 @@ import java.lang.reflect.Type;
  */
 public interface DeserializationContext {
 
-    /**
-     * <p>
-     * Deserialize JSON stream into instance of provided class using {@link jakarta.json.stream.JsonParser}.
-     * JsonParser cursor have to be at KEY_NAME before START_OBJECT / START_ARRAY, or at START_OBJECT / START_ARRAY
-     * to call this method. After deserialization is complete JsonParser will be at END_OBJECT / END_ARRAY
-     * for deserialized JSON structure.
-     * </p>
-     *
-     * <p>
-     * If method is called for the same type, which is deserializer bound to, deserializer recursion is suppressed.
-     * Otherwise deserializers are reentrant during deserialization process started by this method.
-     * </p>
-     *
-     * {@link JsonParser} instance of JSONB runtime is shared with custom deserializer.
-     *
-     * @param clazz
-     *      Type to deserialize into. No arg constructor required.
-     * @param parser
-     *      JSONP parser to drive.
-     * @param <T>
-     *      Type of class.
-     * @return Deserialized instance.
-     */
-    <T> T deserialize(Class<T> clazz, JsonParser parser);
+  /**
+   * Deserialize JSON stream into instance of provided class using {@link
+   * jakarta.json.stream.JsonParser}. JsonParser cursor have to be at KEY_NAME before START_OBJECT /
+   * START_ARRAY, or at START_OBJECT / START_ARRAY to call this method. After deserialization is
+   * complete JsonParser will be at END_OBJECT / END_ARRAY for deserialized JSON structure.
+   *
+   * <p>If method is called for the same type, which is deserializer bound to, deserializer
+   * recursion is suppressed. Otherwise deserializers are reentrant during deserialization process
+   * started by this method. {@link JsonParser} instance of JSONB runtime is shared with custom
+   * deserializer.
+   *
+   * @param clazz Type to deserialize into. No arg constructor required.
+   * @param parser JSONP parser to drive.
+   * @param <T> Type of class.
+   * @return Deserialized instance.
+   */
+  <T> T deserialize(Class<T> clazz, JsonParser parser);
 
-    /**
-     * <p>
-     * Deserialize JSON stream into instance of provided class using {@link jakarta.json.stream.JsonParser}.
-     * JsonParser cursor have to be at KEY_NAME before START_OBJECT / START_ARRAY, or at START_OBJECT / START_ARRAY
-     * to call this method. After deserialization is complete JsonParser will be at END_OBJECT / END_ARRAY
-     * for deserialized JSON structure.
-     * </p>
-     *
-     * <p>
-     * If method is called for the same type, which is deserializer bound to, deserializer recursion is suppressed.
-     * Otherwise deserializers are reentrant during deserialization process started by this method.
-     * </p>
-     *
-     * {@link JsonParser} instance of JSONB runtime is shared with custom deserializer.
-     *
-     * @param type
-     *      Type to deserialize into. No arg constructor required.
-     * @param parser
-     *      JSONP parser to drive.
-     * @param <T>
-     *      Type to deserialize into.
-     * @return Deserialized instance.
-     */
-    <T> T deserialize(Type type, JsonParser parser);
+  /**
+   * Deserialize JSON stream into instance of provided class using {@link
+   * jakarta.json.stream.JsonParser}. JsonParser cursor have to be at KEY_NAME before START_OBJECT /
+   * START_ARRAY, or at START_OBJECT / START_ARRAY to call this method. After deserialization is
+   * complete JsonParser will be at END_OBJECT / END_ARRAY for deserialized JSON structure.
+   *
+   * <p>If method is called for the same type, which is deserializer bound to, deserializer
+   * recursion is suppressed. Otherwise deserializers are reentrant during deserialization process
+   * started by this method. {@link JsonParser} instance of JSONB runtime is shared with custom
+   * deserializer.
+   *
+   * @param type Type to deserialize into. No arg constructor required.
+   * @param parser JSONP parser to drive.
+   * @param <T> Type to deserialize into.
+   * @return Deserialized instance.
+   */
+  <T> T deserialize(Type type, JsonParser parser);
 }

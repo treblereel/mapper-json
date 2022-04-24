@@ -17,35 +17,42 @@
 package jakarta.json.bind.annotation;
 
 import jakarta.json.bind.adapter.JsonbAdapter;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotation provides way how to set custom JsonbAdapter to field or JavaBean property.</p>
+ * Annotation provides way how to set custom JsonbAdapter to field or JavaBean property.
  *
- * <p><b>Usage</b></p>
- * <p>The {@code @JsonbTypeAdapter} annotation can be used with the following program elements:</p>
+ * <p><b>Usage</b>
+ *
+ * <p>The {@code @JsonbTypeAdapter} annotation can be used with the following program elements:
+ *
  * <ul>
- *   <li> type </li>
- *   <li> field </li>
- *   <li> method </li>
- *   <li> parameter </li>
+ *   <li>type
+ *   <li>field
+ *   <li>method
+ *   <li>parameter
  * </ul>
  *
  * @since JSON Binding 1.0
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+@Target({
+  ElementType.ANNOTATION_TYPE,
+  ElementType.TYPE,
+  ElementType.FIELD,
+  ElementType.METHOD,
+  ElementType.PARAMETER
+})
 public @interface JsonbTypeAdapter {
 
-    /**
-     * Custom JsonbAdapter which provides custom mapping for given field or JavaBean property.
-     *
-     * @return Adapter to use.
-     */
-    Class<? extends JsonbAdapter> value();
+  /**
+   * Custom JsonbAdapter which provides custom mapping for given field or JavaBean property.
+   *
+   * @return Adapter to use.
+   */
+  Class<? extends JsonbAdapter> value();
 }

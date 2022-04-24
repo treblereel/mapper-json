@@ -17,48 +17,42 @@
 package jakarta.json.bind.adapter;
 
 /**
- * <p>Allows to define custom mapping for given java type. The target type could be string or some
- * mappable java type.</p>
+ * Allows to define custom mapping for given java type. The target type could be string or some
+ * mappable java type.
  *
- * <p>On serialization "Original" type is converted into "Adapted" type. After that "Adapted" type is serialized to
- * JSON the standard way.</p>
+ * <p>On serialization "Original" type is converted into "Adapted" type. After that "Adapted" type
+ * is serialized to JSON the standard way.
  *
- * <p>On deserialization it works the reverse way: JSON data are deserialized into "Adapted" type which is converted
- * to "Original" type after that.</p>
+ * <p>On deserialization it works the reverse way: JSON data are deserialized into "Adapted" type
+ * which is converted to "Original" type after that.
  *
- * <p>Adapters are registered using {@link jakarta.json.bind.JsonbConfig#withAdapters(JsonbAdapter[])} method
- * or using {@link jakarta.json.bind.annotation.JsonbTypeAdapter} annotation on class field.</p>
+ * <p>Adapters are registered using {@link
+ * jakarta.json.bind.JsonbConfig#withAdapters(JsonbAdapter[])} method or using {@link
+ * jakarta.json.bind.annotation.JsonbTypeAdapter} annotation on class field.
  *
  * @param <Original> The type that JSONB doesn't know how to handle
  * @param <Adapted> The type that JSONB knows how to handle out of the box
+ *     <p>Adapter runtime "Original" and "Adapted" generic types are inferred from subclassing
+ *     information, which is mandatory for adapter to work.
+ *     <p>Sample 1:
+ *     <pre>{@code
+ * // Generic information is provided by subclassing.
+ * class BoxToCrateAdapter implements JsonbAdapter<Box<Integer>, Crate<String>> {...};
+ * jsonbConfig.withAdapters(new BoxToCrateAdapter());
  *
- * <p>Adapter runtime "Original" and "Adapted" generic types are inferred from subclassing information,
- * which is mandatory for adapter to work.</p>
+ * // Generic information is provided by subclassing with anonymous class
+ * jsonbConfig.withAdapters(new JsonbAdapter<Box<Integer>, Crate<String>> {...});
+ * }</pre>
+ *     <p>Sample 2:
+ *     <pre>{@code
+ * BoxToCrateAdapter<T> implements JsonbAdapter<Box<T>, Integer> {...};
  *
- * <p>Sample 1:</p>
- * <pre>
- * {@code
- *      // Generic information is provided by subclassing.
- *      class BoxToCrateAdapter implements JsonbAdapter<Box<Integer>, Crate<String>> {...};
- *      jsonbConfig.withAdapters(new BoxToCrateAdapter());
+ * // Bad way: Generic type information is lost due to type erasure
+ * jsonbConfig.withAdapters(new BoxToCrateAdapter<Integer>());
  *
- *      // Generic information is provided by subclassing with anonymous class
- *      jsonbConfig.withAdapters(new JsonbAdapter<Box<Integer>, Crate<String>> {...});
- * }
- * </pre>
- *
- * <p>Sample 2:</p>
- * <pre>
- * {@code
- *      BoxToCrateAdapter<T> implements JsonbAdapter<Box<T>, Integer> {...};
- *
- *      // Bad way: Generic type information is lost due to type erasure
- *      jsonbConfig.withAdapters(new BoxToCrateAdapter<Integer>());
- *
- *      // Proper way: Anonymous class holds generic type information
- *      jsonbConfig.withAdapters(new BoxToCrateAdapter<Integer>(){});
- * }
- * </pre>
+ * // Proper way: Anonymous class holds generic type information
+ * jsonbConfig.withAdapters(new BoxToCrateAdapter<Integer>(){});
+ * }</pre>
  *
  * @see jakarta.json.bind.JsonbConfig
  * @see jakarta.json.bind.annotation.JsonbTypeAdapter
@@ -66,24 +60,23 @@ package jakarta.json.bind.adapter;
  */
 public interface JsonbAdapter<Original, Adapted> {
 
-    /**
-     * This method is used on serialization only. It contains a conversion logic from type Original to type Adapted.
-     * After conversion Adapted type will be mapped to JSON the standard way.
-     *
-     * @param obj
-     *      Object to convert or {@code null}.
-     * @return Converted object which will be serialized to JSON or {@code null}.
-     * @throws Exception if there is an error during the conversion.
-     */
-    Adapted adaptToJson(Original obj) throws Exception;
+  /**
+   * This method is used on serialization only. It contains a conversion logic from type Original to
+   * type Adapted. After conversion Adapted type will be mapped to JSON the standard way.
+   *
+   * @param obj Object to convert or {@code null}.
+   * @return Converted object which will be serialized to JSON or {@code null}.
+   * @throws Exception if there is an error during the conversion.
+   */
+  Adapted adaptToJson(Original obj) throws Exception;
 
-    /**
-     * This method is used on deserialization only. It contains a conversion logic from type Adapted to type Original.
-     *
-     * @param obj
-     *      Object to convert or {@code null}.
-     * @return Converted object representing pojo to be set into object graph or {@code null}.
-     * @throws Exception if there is an error during the conversion.
-     */
-    Original adaptFromJson(Adapted obj) throws Exception;
+  /**
+   * This method is used on deserialization only. It contains a conversion logic from type Adapted
+   * to type Original.
+   *
+   * @param obj Object to convert or {@code null}.
+   * @return Converted object representing pojo to be set into object graph or {@code null}.
+   * @throws Exception if there is an error during the conversion.
+   */
+  Original adaptFromJson(Adapted obj) throws Exception;
 }

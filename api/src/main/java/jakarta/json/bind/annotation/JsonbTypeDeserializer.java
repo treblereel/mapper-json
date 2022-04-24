@@ -16,40 +16,44 @@
 
 package jakarta.json.bind.annotation;
 
-
 import jakarta.json.bind.serializer.JsonbDeserializer;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>
- *     Annotation provides way how to set custom JsonbDeserializer to field or JavaBean property.
- * </p>
+ * Annotation provides way how to set custom JsonbDeserializer to field or JavaBean property.
  *
- * <p><b>Usage</b></p>
- * <p> The {@code @JsonbDeserializer} annotation can be used with the following
- *     program elements:
+ * <p><b>Usage</b>
+ *
+ * <p>The {@code @JsonbDeserializer} annotation can be used with the following program elements:
+ *
  * <ul>
- *   <li> type </li>
- *   <li> field </li>
- *   <li> method </li>
- *   <li> creator parameter </li>
+ *   <li>type
+ *   <li>field
+ *   <li>method
+ *   <li>creator parameter
  * </ul>
  *
  * @since JSON Binding 1.0
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+@Target({
+  ElementType.ANNOTATION_TYPE,
+  ElementType.TYPE,
+  ElementType.FIELD,
+  ElementType.METHOD,
+  ElementType.PARAMETER
+})
 public @interface JsonbTypeDeserializer {
 
-    /**
-     * Custom {@link JsonbDeserializer} which provides custom mapping for given field or JavaBean property.
-     *
-     * @return Deserializer to use.
-     */
-    Class<? extends JsonbDeserializer> value();
+  /**
+   * Custom {@link JsonbDeserializer} which provides custom mapping for given field or JavaBean
+   * property.
+   *
+   * @return Deserializer to use.
+   */
+  Class<? extends JsonbDeserializer> value();
 }

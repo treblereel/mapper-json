@@ -20,14 +20,16 @@ import jakarta.json.stream.JsonParser;
 import java.lang.reflect.Type;
 
 /**
- * <p>Interface representing a custom deserializer for a given type. It provides a low-level API for java object
- * deserialization from JSON stream using {@link JsonParser}. Unlike {@link jakarta.json.bind.adapter.JsonbAdapter},
- * which acts more as converter from one java type to another, deserializer provides more fine grained control over
- * deserialization process.</p>
+ * Interface representing a custom deserializer for a given type. It provides a low-level API for
+ * java object deserialization from JSON stream using {@link JsonParser}. Unlike {@link
+ * jakarta.json.bind.adapter.JsonbAdapter}, which acts more as converter from one java type to
+ * another, deserializer provides more fine grained control over deserialization process.
  *
- * <p>{@link DeserializationContext} acts as JSONB runtime, able to deserialize any java object provided.</p>
+ * <p>{@link DeserializationContext} acts as JSONB runtime, able to deserialize any java object
+ * provided.
  *
- * <p>Sample of custom Deserializer:</p>
+ * <p>Sample of custom Deserializer:
+ *
  * <pre>
  *     class Box {
  *         public BoxInner boxInnerObject;
@@ -57,8 +59,9 @@ import java.lang.reflect.Type;
  *     }
  * </pre>
  *
- * <p>Deserializers are registered using {@link jakarta.json.bind.JsonbConfig#withDeserializers(JsonbDeserializer[])}
- * method or using {@link jakarta.json.bind.annotation.JsonbTypeDeserializer} annotation on type.</p>
+ * <p>Deserializers are registered using {@link
+ * jakarta.json.bind.JsonbConfig#withDeserializers(JsonbDeserializer[])} method or using {@link
+ * jakarta.json.bind.annotation.JsonbTypeDeserializer} annotation on type.
  *
  * @param <T> Type to bind deserializer for.
  * @see jakarta.json.bind.JsonbConfig
@@ -69,16 +72,13 @@ import java.lang.reflect.Type;
  */
 public interface JsonbDeserializer<T> {
 
-    /**
-     * Deserialize JSON stream into object.
-     *
-     * @param parser
-     *      Json parser.
-     * @param ctx
-     *      Deserialization context.
-     * @param rtType
-     *      Type of returned object.
-     * @return Deserialized instance.
-     */
-    T deserialize(JsonParser parser, DeserializationContext ctx, Type rtType);
+  /**
+   * Deserialize JSON stream into object.
+   *
+   * @param parser Json parser.
+   * @param ctx Deserialization context.
+   * @param rtType Type of returned object.
+   * @return Deserialized instance.
+   */
+  T deserialize(JsonParser parser, DeserializationContext ctx, Type rtType);
 }

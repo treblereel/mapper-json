@@ -17,14 +17,11 @@
 package jakarta.json.bind.config;
 
 /**
- * <p>Provides mechanism how to define customized property visibility strategy.</p>
+ * Provides mechanism how to define customized property visibility strategy.
  *
- * <p>This strategy can be set via {@link jakarta.json.bind.JsonbConfig}.</p>
+ * <p>This strategy can be set via {@link jakarta.json.bind.JsonbConfig}.
  *
  * @see jakarta.json.bind.JsonbConfig
  * @since JSON Binding 1.0
  */
-public interface PropertyVisibilityStrategy {
-
-
-}
+public interface PropertyVisibilityStrategy {}

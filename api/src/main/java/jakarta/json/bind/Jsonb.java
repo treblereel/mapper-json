@@ -23,15 +23,16 @@ import java.io.Writer;
 import java.lang.reflect.Type;
 
 /**
- * <p>{@code Jsonb} provides an abstraction over the JSON Binding framework operations:</p>
+ * {@code Jsonb} provides an abstraction over the JSON Binding framework operations:
  *
  * <ul>
- * <li>{@code fromJson}: read JSON input, deserialize to Java objects content tree
- * <li>{@code toJson}: serialize Java objects content tree to JSON input
+ *   <li>{@code fromJson}: read JSON input, deserialize to Java objects content tree
+ *   <li>{@code toJson}: serialize Java objects content tree to JSON input
  * </ul>
  *
  * <p>Instance of this class is created using {@link jakarta.json.bind.JsonbBuilder JsonbBuilder}
- * builder methods:</p>
+ * builder methods:
+ *
  * <pre>{@code
  * // Example 1 - Creating Jsonb using default JsonbBuilder instance provided by default JsonbProvider
  * Jsonb jsonb = JsonbBuilder.create();
@@ -44,62 +45,80 @@ import java.lang.reflect.Type;
  * }</pre>
  *
  * <b>Deserializing (reading) JSON</b><br>
+ *
  * <blockquote>
- * Can de-serialize JSON data that represents either an entire JSON
- * document or a subtree of a JSON document.
+ *
+ * Can de-serialize JSON data that represents either an entire JSON document or a subtree of a JSON
+ * document.
+ *
  * </blockquote>
+ *
  * <blockquote>
- * Reading (deserializing) object content tree from a File:<br><br>
- *    <pre>
+ *
+ * Reading (deserializing) object content tree from a File:<br>
+ * <br>
+ *
+ * <pre>
  *     Jsonb jsonb = JsonbBuilder.create();
  *     Book book = jsonb.fromJson(new FileReader("jsonfile.json"), Book.class);</pre>
- * If the deserialization process is unable to deserialize the JSON content to an object
- * content tree, fatal error is reported that terminates processing by
- * throwing JsonbException.
+ *
+ * If the deserialization process is unable to deserialize the JSON content to an object content
+ * tree, fatal error is reported that terminates processing by throwing JsonbException.
+ *
  * </blockquote>
  *
- * <p><b>Serializing (writing) to JSON</b></p>
+ * <p><b>Serializing (writing) to JSON</b>
+ *
  * <blockquote>
- * Serialization writes the representation of a Java object content tree into
- * JSON data.
+ *
+ * Serialization writes the representation of a Java object content tree into JSON data.
+ *
  * </blockquote>
+ *
  * <blockquote>
- * Writing (serializing) object content tree to a File:<br><br>
- *    <pre>
+ *
+ * Writing (serializing) object content tree to a File:<br>
+ * <br>
+ *
+ * <pre>
  *     jsonb.toJson(object, new FileWriter("foo.json"));</pre>
- * Writing (serializing) to a Writer:<br><br>
- *    <pre>
+ *
+ * Writing (serializing) to a Writer:<br>
+ * <br>
+ *
+ * <pre>
  *     jsonb.toJson(object, new PrintWriter(System.out));
  *    </pre>
+ *
  * </blockquote>
  *
- * <p><b>Encoding</b></p>
+ * <p><b>Encoding</b>
+ *
  * <blockquote>
- * In deserialization operations ({@code fromJson}), encoding of JSON data is detected automatically.
- * Use the {@link jakarta.json.bind.JsonbConfig JsonbConfig} API to configure expected
- * input encoding used within deserialization operations. Client applications are
- * expected to supply a valid character encoding as defined in the
- * <a href="http://tools.ietf.org/html/rfc7159">RFC 7159</a> and supported by Java Platform.
  *
- * In serialization operations ({@code toJson}), UTF-8 encoding is used by default
- * for writing JSON data.
- * Use the {@link jakarta.json.bind.JsonbConfig JsonbConfig} API to configure the
- * output encoding used within serialization operations. Client applications are
- * expected to supply a valid character encoding as defined in the
- * <a href="http://tools.ietf.org/html/rfc7159">RFC 7159</a> and supported by Java Platform.
+ * In deserialization operations ({@code fromJson}), encoding of JSON data is detected
+ * automatically. Use the {@link jakarta.json.bind.JsonbConfig JsonbConfig} API to configure
+ * expected input encoding used within deserialization operations. Client applications are expected
+ * to supply a valid character encoding as defined in the <a
+ * href="http://tools.ietf.org/html/rfc7159">RFC 7159</a> and supported by Java Platform.
+ *
+ * <p>In serialization operations ({@code toJson}), UTF-8 encoding is used by default for writing
+ * JSON data. Use the {@link jakarta.json.bind.JsonbConfig JsonbConfig} API to configure the output
+ * encoding used within serialization operations. Client applications are expected to supply a valid
+ * character encoding as defined in the <a href="http://tools.ietf.org/html/rfc7159">RFC 7159</a>
+ * and supported by Java Platform.
+ *
  * </blockquote>
  *
- * <p>For optimal use, {@code JsonbBuilder} and {@code Jsonb} instances should be
- * reused - for a typical use-case, only one {@code Jsonb} instance is
- * required by an application.</p>
+ * <p>For optimal use, {@code JsonbBuilder} and {@code Jsonb} instances should be reused - for a
+ * typical use-case, only one {@code Jsonb} instance is required by an application.
  *
- * <p>All the methods in this class are safe for use by multiple concurrent threads.</p>
+ * <p>All the methods in this class are safe for use by multiple concurrent threads.
  *
- * <p>Calling {@code Closable.close()} method will cleanup all CDI managed components
- * (such as adapters with CDI dependencies) created during interaction with Jsonb.
- * Calling {@code close()} must be done after all threads has finished interaction with Jsonb.
- * If there are remaining threads working with Jsonb and {@code close()} is called, behaviour is undefined.
- * </p>
+ * <p>Calling {@code Closable.close()} method will cleanup all CDI managed components (such as
+ * adapters with CDI dependencies) created during interaction with Jsonb. Calling {@code close()}
+ * must be done after all threads has finished interaction with Jsonb. If there are remaining
+ * threads working with Jsonb and {@code close()} is called, behaviour is undefined.
  *
  * @see Jsonb
  * @see JsonbBuilder
@@ -108,253 +127,153 @@ import java.lang.reflect.Type;
  */
 public interface Jsonb extends AutoCloseable {
 
-    /**
-     * Reads in a JSON data from the specified string and return the resulting
-     * content tree.
-     *
-     * @param str
-     *      The string to deserialize JSON data from.
-     * @param type
-     *      Type of the content tree's root object.
-     * @param <T>
-     *      Type of the content tree's root object.
-     *
-     * @return the newly created root object of the java content tree
-     *
-     * @throws JsonbException
-     *     If any unexpected error(s) occur(s) during deserialization.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     */
-    <T> T fromJson(String str, Class<T> type) throws JsonbException;
+  /**
+   * Reads in a JSON data from the specified string and return the resulting content tree.
+   *
+   * @param str The string to deserialize JSON data from.
+   * @param type Type of the content tree's root object.
+   * @param <T> Type of the content tree's root object.
+   * @return the newly created root object of the java content tree
+   * @throws JsonbException If any unexpected error(s) occur(s) during deserialization.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   */
+  <T> T fromJson(String str, Class<T> type) throws JsonbException;
 
-    /**
-     * Reads in a JSON data from the specified string and return the resulting
-     * content tree.
-     *
-     * @param str
-     *      The string to deserialize JSON data from.
-     * @param runtimeType
-     *      Runtime type of the content tree's root object.
-     * @param <T>
-     *      Type of the content tree's root object.
-     *
-     * @return the newly created root object of the java content tree
-     *
-     * @throws JsonbException
-     *     If any unexpected error(s) occur(s) during deserialization.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     */
-    <T> T fromJson(String str, Type runtimeType) throws JsonbException;
+  /**
+   * Reads in a JSON data from the specified string and return the resulting content tree.
+   *
+   * @param str The string to deserialize JSON data from.
+   * @param runtimeType Runtime type of the content tree's root object.
+   * @param <T> Type of the content tree's root object.
+   * @return the newly created root object of the java content tree
+   * @throws JsonbException If any unexpected error(s) occur(s) during deserialization.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   */
+  <T> T fromJson(String str, Type runtimeType) throws JsonbException;
 
-    /**
-     * Reads in a JSON data from the specified Reader and return the
-     * resulting content tree.
-     *
-     * @param reader
-     *      The character stream is read as a JSON data.
-     * @param type
-     *      Type of the content tree's root object.
-     * @param <T>
-     *      Type of the content tree's root object.
-     *
-     * @return the newly created root object of the java content tree
-     *
-     * @throws JsonbException
-     *     If any unexpected error(s) occur(s) during deserialization.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     */
-    <T> T fromJson(Reader reader, Class<T> type) throws JsonbException;
+  /**
+   * Reads in a JSON data from the specified Reader and return the resulting content tree.
+   *
+   * @param reader The character stream is read as a JSON data.
+   * @param type Type of the content tree's root object.
+   * @param <T> Type of the content tree's root object.
+   * @return the newly created root object of the java content tree
+   * @throws JsonbException If any unexpected error(s) occur(s) during deserialization.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   */
+  <T> T fromJson(Reader reader, Class<T> type) throws JsonbException;
 
-    /**
-     * Reads in a JSON data from the specified Reader and return the
-     * resulting content tree.
-     *
-     * @param reader
-     *      The character stream is read as a JSON data.
-     *
-     * @param runtimeType
-     *      Runtime type of the content tree's root object.
-     *
-     * @param <T>
-     *      Type of the content tree's root object.
-     *
-     * @return the newly created root object of the java content tree
-     *
-     * @throws JsonbException
-     *     If any unexpected error(s) occur(s) during deserialization.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     */
-    <T> T fromJson(Reader reader, Type runtimeType) throws JsonbException;
+  /**
+   * Reads in a JSON data from the specified Reader and return the resulting content tree.
+   *
+   * @param reader The character stream is read as a JSON data.
+   * @param runtimeType Runtime type of the content tree's root object.
+   * @param <T> Type of the content tree's root object.
+   * @return the newly created root object of the java content tree
+   * @throws JsonbException If any unexpected error(s) occur(s) during deserialization.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   */
+  <T> T fromJson(Reader reader, Type runtimeType) throws JsonbException;
 
-    /**
-     * Reads in a JSON data from the specified InputStream and return the
-     * resulting content tree.
-     *
-     * @param stream
-     *      The stream is read as a JSON data. Upon a
-     *      successful completion, the stream will be closed by this method.
-     * @param type
-     *      Type of the content tree's root object.
-     * @param <T>
-     *      Type of the content tree's root object.
-     *
-     * @return the newly created root object of the java content tree
-     *
-     * @throws JsonbException
-     *     If any unexpected error(s) occur(s) during deserialization.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     */
-    <T> T fromJson(InputStream stream, Class<T> type) throws JsonbException;
+  /**
+   * Reads in a JSON data from the specified InputStream and return the resulting content tree.
+   *
+   * @param stream The stream is read as a JSON data. Upon a successful completion, the stream will
+   *     be closed by this method.
+   * @param type Type of the content tree's root object.
+   * @param <T> Type of the content tree's root object.
+   * @return the newly created root object of the java content tree
+   * @throws JsonbException If any unexpected error(s) occur(s) during deserialization.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   */
+  <T> T fromJson(InputStream stream, Class<T> type) throws JsonbException;
 
-    /**
-     * Reads in a JSON data from the specified InputStream and return the
-     * resulting content tree.
-     *
-     * @param stream
-     *      The stream is read as a JSON data. Upon a
-     *      successful completion, the stream will be closed by this method.
-     *
-     * @param runtimeType
-     *      Runtime type of the content tree's root object.
-     *
-     * @param <T>
-     *      Type of the content tree's root object.
-     *
-     * @return the newly created root object of the java content tree
-     *
-     * @throws JsonbException
-     *     If any unexpected error(s) occur(s) during deserialization.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     */
-    <T> T fromJson(InputStream stream, Type runtimeType) throws JsonbException;
+  /**
+   * Reads in a JSON data from the specified InputStream and return the resulting content tree.
+   *
+   * @param stream The stream is read as a JSON data. Upon a successful completion, the stream will
+   *     be closed by this method.
+   * @param runtimeType Runtime type of the content tree's root object.
+   * @param <T> Type of the content tree's root object.
+   * @return the newly created root object of the java content tree
+   * @throws JsonbException If any unexpected error(s) occur(s) during deserialization.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   */
+  <T> T fromJson(InputStream stream, Type runtimeType) throws JsonbException;
 
-    /**
-     * Writes the Java object tree with root object {@code object} to a String
-     * instance as JSON.
-     *
-     * @param object
-     *      The root object of the object content tree to be serialized. Must not be null.
-     *
-     * @return String instance with serialized JSON data.
-     *
-     * @throws JsonbException If any unexpected problem occurs during the
-     * serialization, such as I/O error.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     *
-     * @since JSON Binding 1.0
-     */
-    String toJson(Object object) throws JsonbException;
+  /**
+   * Writes the Java object tree with root object {@code object} to a String instance as JSON.
+   *
+   * @param object The root object of the object content tree to be serialized. Must not be null.
+   * @return String instance with serialized JSON data.
+   * @throws JsonbException If any unexpected problem occurs during the serialization, such as I/O
+   *     error.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   * @since JSON Binding 1.0
+   */
+  String toJson(Object object) throws JsonbException;
 
-    /**
-     * Writes the Java object tree with root object {@code object} to a String
-     * instance as JSON.
-     *
-     * @param object
-     *      The root object of the object content tree to be serialized. Must not be null.
-     *
-     * @param runtimeType
-     *      Runtime type of the content tree's root object. Provided type needs to be
-     *      related to the type of the instance.
-     *
-     * @return String instance with serialized JSON data.
-     *
-     * @throws JsonbException If any unexpected problem occurs during the
-     * serialization, such as I/O error.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     *
-     * @since JSON Binding 1.0
-     */
-    String toJson(Object object, Type runtimeType) throws JsonbException;
+  /**
+   * Writes the Java object tree with root object {@code object} to a String instance as JSON.
+   *
+   * @param object The root object of the object content tree to be serialized. Must not be null.
+   * @param runtimeType Runtime type of the content tree's root object. Provided type needs to be
+   *     related to the type of the instance.
+   * @return String instance with serialized JSON data.
+   * @throws JsonbException If any unexpected problem occurs during the serialization, such as I/O
+   *     error.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   * @since JSON Binding 1.0
+   */
+  String toJson(Object object, Type runtimeType) throws JsonbException;
 
-    /**
-     * Writes the object content tree into a Writer character stream.
-     *
-     * @param object
-     *      The object content tree to be serialized.
-     * @param writer
-     *      The JSON will be sent as a character stream to the given
-     *      {@link Writer}.
-     *
-     * @throws JsonbException If any unexpected problem occurs during the
-     * serialization.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     *
-     * @since JSON Binding 1.0
-     */
-    void toJson(Object object, Writer writer) throws JsonbException;
+  /**
+   * Writes the object content tree into a Writer character stream.
+   *
+   * @param object The object content tree to be serialized.
+   * @param writer The JSON will be sent as a character stream to the given {@link Writer}.
+   * @throws JsonbException If any unexpected problem occurs during the serialization.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   * @since JSON Binding 1.0
+   */
+  void toJson(Object object, Writer writer) throws JsonbException;
 
-    /**
-     * Writes the object content tree into a Writer character stream.
-     *
-     * @param object
-     *      The object content tree to be serialized.
-     *
-     * @param runtimeType
-     *      Runtime type of the content tree's root object. Provided type needs to be
-     *      related to the type of the instance.
-     *
-     * @param writer
-     *      The JSON will be sent as a character stream to the given
-     *      {@link Writer}.
-     *
-     * @throws JsonbException If any unexpected problem occurs during the
-     * serialization.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     *
-     * @since JSON Binding 1.0
-     */
-    void toJson(Object object, Type runtimeType, Writer writer) throws JsonbException;
+  /**
+   * Writes the object content tree into a Writer character stream.
+   *
+   * @param object The object content tree to be serialized.
+   * @param runtimeType Runtime type of the content tree's root object. Provided type needs to be
+   *     related to the type of the instance.
+   * @param writer The JSON will be sent as a character stream to the given {@link Writer}.
+   * @throws JsonbException If any unexpected problem occurs during the serialization.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   * @since JSON Binding 1.0
+   */
+  void toJson(Object object, Type runtimeType, Writer writer) throws JsonbException;
 
-    /**
-     * Writes the object content tree into output stream.
-     *
-     * @param object
-     *      The object content tree to be serialized.
-     * @param stream
-     *      The JSON will be sent as a byte stream to the given
-     *      {@link OutputStream}. Upon a successful completion, the stream will be closed
-     *      by this method.
-     *
-     * @throws JsonbException If any unexpected problem occurs during the
-     * serialization.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     *
-     * @since JSON Binding 1.0
-     */
-    void toJson(Object object, OutputStream stream) throws JsonbException;
+  /**
+   * Writes the object content tree into output stream.
+   *
+   * @param object The object content tree to be serialized.
+   * @param stream The JSON will be sent as a byte stream to the given {@link OutputStream}. Upon a
+   *     successful completion, the stream will be closed by this method.
+   * @throws JsonbException If any unexpected problem occurs during the serialization.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   * @since JSON Binding 1.0
+   */
+  void toJson(Object object, OutputStream stream) throws JsonbException;
 
-    /**
-     * Writes the object content tree into output stream.
-     *
-     * @param object
-     *      The object content tree to be serialized.
-     *
-     * @param runtimeType
-     *      Runtime type of the content tree's root object. Provided type needs to be
-     *      related to the type of the instance.
-     *
-     * @param stream
-     *      The JSON will be sent as a byte stream to the given
-     *      {@link OutputStream}. Upon a successful completion, the stream will be closed
-     *      by this method.
-     *
-     * @throws JsonbException If any unexpected problem occurs during the
-     * serialization.
-     * @throws NullPointerException
-     *      If any of the parameters is {@code null}.
-     *
-     * @since JSON Binding 1.0
-     */
-    void toJson(Object object, Type runtimeType, OutputStream stream) throws JsonbException;
+  /**
+   * Writes the object content tree into output stream.
+   *
+   * @param object The object content tree to be serialized.
+   * @param runtimeType Runtime type of the content tree's root object. Provided type needs to be
+   *     related to the type of the instance.
+   * @param stream The JSON will be sent as a byte stream to the given {@link OutputStream}. Upon a
+   *     successful completion, the stream will be closed by this method.
+   * @throws JsonbException If any unexpected problem occurs during the serialization.
+   * @throws NullPointerException If any of the parameters is {@code null}.
+   * @since JSON Binding 1.0
+   */
+  void toJson(Object object, Type runtimeType, OutputStream stream) throws JsonbException;
 }

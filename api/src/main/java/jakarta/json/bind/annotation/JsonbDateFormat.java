@@ -22,56 +22,59 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotation provides way how to set custom date format to field or JavaBean property.</p>
+ * Annotation provides way how to set custom date format to field or JavaBean property.
  *
- * <p>The pattern format is specified in {@link java.time.format.DateTimeFormatter}</p>
+ * <p>The pattern format is specified in {@link java.time.format.DateTimeFormatter}
  *
- * <p><b>Usage</b></p>
- * <p>The {@code @JsonbDateFormat} annotation can be used with the following program elements:</p>
+ * <p><b>Usage</b>
+ *
+ * <p>The {@code @JsonbDateFormat} annotation can be used with the following program elements:
+ *
  * <ul>
- *   <li> field </li>
- *   <li> getter/setter </li>
- *   <li> type </li>
- *   <li> parameter </li>
- *   <li> package </li>
+ *   <li>field
+ *   <li>getter/setter
+ *   <li>type
+ *   <li>parameter
+ *   <li>package
  * </ul>
  *
  * @since JSON Binding 1.0
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.ANNOTATION_TYPE, ElementType.FIELD,
-        ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER, ElementType.PACKAGE})
+@Target({
+  ElementType.ANNOTATION_TYPE,
+  ElementType.FIELD,
+  ElementType.METHOD,
+  ElementType.TYPE,
+  ElementType.PARAMETER,
+  ElementType.PACKAGE
+})
 public @interface JsonbDateFormat {
 
-    /**
-     * Value that indicates that default {@link java.util.Locale}.
-     */
-    String DEFAULT_LOCALE = "##default";
+  /** Value that indicates that default {@link java.util.Locale}. */
+  String DEFAULT_LOCALE = "##default";
 
-    /**
-     * Value that indicates the default format.
-     */
-    String DEFAULT_FORMAT = "##default";
+  /** Value that indicates the default format. */
+  String DEFAULT_FORMAT = "##default";
 
-    /**
-     * Special date format which serializes given date as milliseconds.
-     * Such date is serialized as a number.
-     */
-    String TIME_IN_MILLIS = "##time-in-millis";
+  /**
+   * Special date format which serializes given date as milliseconds. Such date is serialized as a
+   * number.
+   */
+  String TIME_IN_MILLIS = "##time-in-millis";
 
-    /**
-     * Specifies the date pattern to use.
-     *
-     * @return Date pattern to use.
-     */
-    String value() default DEFAULT_FORMAT;
+  /**
+   * Specifies the date pattern to use.
+   *
+   * @return Date pattern to use.
+   */
+  String value() default DEFAULT_FORMAT;
 
-    /**
-     * Custom {@link java.util.Locale} to use.
-     *
-     * @return Locale to use.
-     */
-    String locale() default DEFAULT_LOCALE;
-
+  /**
+   * Custom {@link java.util.Locale} to use.
+   *
+   * @return Locale to use.
+   */
+  String locale() default DEFAULT_LOCALE;
 }

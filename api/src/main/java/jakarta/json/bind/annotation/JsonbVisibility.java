@@ -17,22 +17,23 @@
 package jakarta.json.bind.annotation;
 
 import jakarta.json.bind.config.PropertyVisibilityStrategy;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotation provides way how to customize visibility strategy of the JSON Binding.</p>
+ * Annotation provides way how to customize visibility strategy of the JSON Binding.
  *
- * <p>It allows for example to specify, that only public getters and setter should be visible.</p>
+ * <p>It allows for example to specify, that only public getters and setter should be visible.
  *
- * <p><b>Usage</b></p>
- * <p>The {@code @JsonbVisibility} annotation can be used with the following program elements:</p>
+ * <p><b>Usage</b>
+ *
+ * <p>The {@code @JsonbVisibility} annotation can be used with the following program elements:
+ *
  * <ul>
- *   <li> type </li>
- *   <li> package </li>
+ *   <li>type
+ *   <li>package
  * </ul>
  *
  * @since JSON Binding 1.0
@@ -42,10 +43,10 @@ import java.lang.annotation.Target;
 @Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE, ElementType.PACKAGE})
 public @interface JsonbVisibility {
 
-    /**
-     * Custom property visibility strategy used to resolve visibility of the members.
-     *
-     * @return Visibility strategy to use.
-     */
-    Class<? extends PropertyVisibilityStrategy> value();
+  /**
+   * Custom property visibility strategy used to resolve visibility of the members.
+   *
+   * @return Visibility strategy to use.
+   */
+  Class<? extends PropertyVisibilityStrategy> value();
 }

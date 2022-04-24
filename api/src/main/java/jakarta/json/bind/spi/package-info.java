@@ -15,14 +15,13 @@
  */
 
 /**
- * Service Provider Interface (SPI) to plug in implementations of JSON
- * Binding API {@link jakarta.json.bind.JsonbBuilder JsonbBuilder} objects.
+ * Service Provider Interface (SPI) to plug in implementations of JSON Binding API {@link
+ * jakarta.json.bind.JsonbBuilder JsonbBuilder} objects.
  *
- * <p> {@link jakarta.json.bind.spi.JsonbProvider JsonbProvider} is an abstract class
- * that provides a service for creating JSON Binding builder implementation instances.
- * A <i>service provider</i> for {@link jakarta.json.bind.spi.JsonbProvider JsonbProvider} provides an
- * specific implementation by subclassing and implementing the
- * {@link jakarta.json.bind.JsonbBuilder JsonbBuilder} creation
+ * <p>{@link jakarta.json.bind.spi.JsonbProvider JsonbProvider} is an abstract class that provides a
+ * service for creating JSON Binding builder implementation instances. A <i>service provider</i> for
+ * {@link jakarta.json.bind.spi.JsonbProvider JsonbProvider} provides an specific implementation by
+ * subclassing and implementing the {@link jakarta.json.bind.JsonbBuilder JsonbBuilder} creation
  * method(s) in {@link jakarta.json.bind.spi.JsonbProvider JsonbProvider}.
  *
  * <p>The API locates and loads providers using {@link java.util.ServiceLoader ServiceLoader}.

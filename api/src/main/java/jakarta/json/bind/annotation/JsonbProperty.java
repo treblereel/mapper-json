@@ -22,15 +22,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Allows customization of field (or JavaBean property) name.This name is used either in serialization or
- * in deserialization.</p>
+ * Allows customization of field (or JavaBean property) name.This name is used either in
+ * serialization or in deserialization.
  *
- * <p><b>Usage</b></p>
- * <p>The {@code @JsonbProperty} annotation can be used with the following program elements:</p>
+ * <p><b>Usage</b>
+ *
+ * <p>The {@code @JsonbProperty} annotation can be used with the following program elements:
+ *
  * <ul>
- *   <li> a JavaBean property </li>
- *   <li> field </li>
- *   <li> parameter </li>
+ *   <li>a JavaBean property
+ *   <li>field
+ *   <li>parameter
  * </ul>
  *
  * @since JSON Binding 1.0
@@ -40,11 +42,10 @@ import java.lang.annotation.Target;
 @Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 public @interface JsonbProperty {
 
-    /**
-     * Customized name of the field (or JavaBean property).
-     *
-     * @return Customized property name.
-     */
-    String value() default "";
-
+  /**
+   * Customized name of the field (or JavaBean property).
+   *
+   * @return Customized property name.
+   */
+  String value() default "";
 }

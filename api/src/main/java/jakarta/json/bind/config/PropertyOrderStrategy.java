@@ -17,33 +17,23 @@
 package jakarta.json.bind.config;
 
 /**
- * Specifies predefined property order strategies.
- * This strategy can be set via {@link jakarta.json.bind.JsonbConfig#withPropertyOrderStrategy(String)}
+ * Specifies predefined property order strategies. This strategy can be set via {@link
+ * jakarta.json.bind.JsonbConfig#withPropertyOrderStrategy(String)}
  *
  * @see jakarta.json.bind.JsonbConfig
  * @since JSON Binding 1.0
  */
 public final class PropertyOrderStrategy {
 
-    /**
-     * Private constructor to disallow instantiation.
-     */
-    private PropertyOrderStrategy() { };
+  /** Private constructor to disallow instantiation. */
+  private PropertyOrderStrategy() {};
 
-    /**
-     * Using this strategy, the order of properties is lexicographical.
-     */
-    public static final String LEXICOGRAPHICAL = "LEXICOGRAPHICAL";
+  /** Using this strategy, the order of properties is lexicographical. */
+  public static final String LEXICOGRAPHICAL = "LEXICOGRAPHICAL";
 
-    /**
-     * Using this strategy, the order of properties
-     * is not guaranteed to retain any order.
-     */
-    public static final String ANY = "ANY";
+  /** Using this strategy, the order of properties is not guaranteed to retain any order. */
+  public static final String ANY = "ANY";
 
-    /**
-     * Using this strategy, the order of properties is in reverse order
-     * to lexicographical order.
-     */
-    public static final String REVERSE = "REVERSE";
+  /** Using this strategy, the order of properties is in reverse order to lexicographical order. */
+  public static final String REVERSE = "REVERSE";
 }

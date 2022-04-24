@@ -28,75 +28,75 @@ import java.util.Set;
  */
 final class EmptyObject extends AbstractMap<String, JsonValue> implements JsonObject, Serializable {
 
-    private static final long serialVersionUID = -1461653546889072583L;
+  private static final long serialVersionUID = -1461653546889072583L;
 
-    @Override
-    public Set<Entry<String, JsonValue>> entrySet() {
-        return Collections.<Entry<String, JsonValue>>emptySet();
-    }
+  @Override
+  public Set<Entry<String, JsonValue>> entrySet() {
+    return Collections.<Entry<String, JsonValue>>emptySet();
+  }
 
-    @Override
-    public JsonArray getJsonArray(String name) {
-        return (JsonArray) get(name);
-    }
+  @Override
+  public JsonArray getJsonArray(String name) {
+    return (JsonArray) get(name);
+  }
 
-    @Override
-    public JsonObject getJsonObject(String name) {
-        return (JsonObject) get(name);
-    }
+  @Override
+  public JsonObject getJsonObject(String name) {
+    return (JsonObject) get(name);
+  }
 
-    @Override
-    public JsonNumber getJsonNumber(String name) {
-        return (JsonNumber) get(name);
-    }
+  @Override
+  public JsonNumber getJsonNumber(String name) {
+    return (JsonNumber) get(name);
+  }
 
-    @Override
-    public JsonString getJsonString(String name) {
-        return (JsonString) get(name);
-    }
+  @Override
+  public JsonString getJsonString(String name) {
+    return (JsonString) get(name);
+  }
 
-    @Override
-    public String getString(String name) {
-        return getJsonString(name).getString();
-    }
+  @Override
+  public String getString(String name) {
+    return getJsonString(name).getString();
+  }
 
-    @Override
-    public String getString(String name, String defaultValue) {
-        return defaultValue;
-    }
+  @Override
+  public String getString(String name, String defaultValue) {
+    return defaultValue;
+  }
 
-    @Override
-    public int getInt(String name) {
-        return getJsonNumber(name).intValue();
-    }
+  @Override
+  public int getInt(String name) {
+    return getJsonNumber(name).intValue();
+  }
 
-    @Override
-    public int getInt(String name, int defaultValue) {
-        return defaultValue;
-    }
+  @Override
+  public int getInt(String name, int defaultValue) {
+    return defaultValue;
+  }
 
-    @Override
-    public boolean getBoolean(String name) {
-        throw new NullPointerException();
-    }
+  @Override
+  public boolean getBoolean(String name) {
+    throw new NullPointerException();
+  }
 
-    @Override
-    public boolean getBoolean(String name, boolean defaultValue) {
-        return defaultValue;
-    }
+  @Override
+  public boolean getBoolean(String name, boolean defaultValue) {
+    return defaultValue;
+  }
 
-    @Override
-    public boolean isNull(String name) {
-        throw new NullPointerException();
-    }
+  @Override
+  public boolean isNull(String name) {
+    throw new NullPointerException();
+  }
 
-    @Override
-    public ValueType getValueType() {
-        return ValueType.OBJECT;
-    }
+  @Override
+  public ValueType getValueType() {
+    return ValueType.OBJECT;
+  }
 
-    // Preserves singleton property
-    private Object readResolve() {
-        return JsonValue.EMPTY_JSON_OBJECT;
-    }
+  // Preserves singleton property
+  private Object readResolve() {
+    return JsonValue.EMPTY_JSON_OBJECT;
+  }
 }

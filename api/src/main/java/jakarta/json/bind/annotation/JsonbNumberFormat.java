@@ -22,44 +22,50 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Annotation provides way how to set custom number format to field or JavaBean property.</p>
+ * Annotation provides way how to set custom number format to field or JavaBean property.
  *
- * <p>The pattern format is specified in {@link java.text.DecimalFormat}</p>
+ * <p>The pattern format is specified in {@link java.text.DecimalFormat}
  *
- * <p><b>Usage</b></p>
- * <p>The {@code @JsonbNumberFormat} annotation can be used with the following program elements:</p>
+ * <p><b>Usage</b>
+ *
+ * <p>The {@code @JsonbNumberFormat} annotation can be used with the following program elements:
+ *
  * <ul>
- *   <li> field </li>
- *   <li> getter/setter </li>
- *   <li> type </li>
- *   <li> parameter </li>
- *   <li> package </li>
+ *   <li>field
+ *   <li>getter/setter
+ *   <li>type
+ *   <li>parameter
+ *   <li>package
  * </ul>
  *
  * @since JSON Binding 1.0
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.ANNOTATION_TYPE, ElementType.FIELD,
-        ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER, ElementType.PACKAGE})
+@Target({
+  ElementType.ANNOTATION_TYPE,
+  ElementType.FIELD,
+  ElementType.METHOD,
+  ElementType.TYPE,
+  ElementType.PARAMETER,
+  ElementType.PACKAGE
+})
 public @interface JsonbNumberFormat {
 
-    /**
-     * Value that indicates that default {@link java.util.Locale}.
-     */
-    String DEFAULT_LOCALE = "##default";
+  /** Value that indicates that default {@link java.util.Locale}. */
+  String DEFAULT_LOCALE = "##default";
 
-    /**
-     * Specifies the number pattern to use.
-     *
-     * @return Number pattern to use.
-     */
-    String value() default "";
+  /**
+   * Specifies the number pattern to use.
+   *
+   * @return Number pattern to use.
+   */
+  String value() default "";
 
-    /**
-     * Custom {@link java.util.Locale} to use.
-     *
-     * @return Custom locale to use.
-     */
-    String locale() default DEFAULT_LOCALE;
+  /**
+   * Custom {@link java.util.Locale} to use.
+   *
+   * @return Custom locale to use.
+   */
+  String locale() default DEFAULT_LOCALE;
 }

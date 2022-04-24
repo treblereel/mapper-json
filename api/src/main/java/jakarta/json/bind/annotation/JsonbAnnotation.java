@@ -16,17 +16,17 @@
 
 package jakarta.json.bind.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+
 /**
- * Marks any relevant JSON Binding annotations. Includes
- * {@code @Documented} and {@code @Retention(RUNTIME)} definitions.
+ * Marks any relevant JSON Binding annotations. Includes {@code @Documented} and
+ * {@code @Retention(RUNTIME)} definitions.
  *
  * @since JSON Binding 1.0
  */
-
 @Documented
 @Retention(RUNTIME)
-public @interface JsonbAnnotation { }
+public @interface JsonbAnnotation {}

@@ -19,65 +19,61 @@ package jakarta.json;
 import java.io.Serializable;
 
 /**
- * Private implementation of {@link JsonValue} for simple {@link ValueType}s
- * allowing their usage in constants which are better to implement {@link Serializable}.
+ * Private implementation of {@link JsonValue} for simple {@link ValueType}s allowing their usage in
+ * constants which are better to implement {@link Serializable}.
  *
  * @author Lukas Jungmann
  */
 final class JsonValueImpl implements JsonValue, Serializable {
 
-    private final ValueType valueType;
+  private final ValueType valueType;
 
-    JsonValueImpl(ValueType valueType) {
-        this.valueType = valueType;
+  JsonValueImpl(ValueType valueType) {
+    this.valueType = valueType;
+  }
+
+  /**
+   * Returns the value type of this JSON value.
+   *
+   * @return JSON value type
+   */
+  @Override
+  public ValueType getValueType() {
+    return valueType;
+  }
+
+  /**
+   * Compares the specified object with this {@link JsonValue} object for equality. Returns {@code
+   * true} if and only if the specified object is also a JsonValue, and their {@link
+   * #getValueType()} objects are <i>equal</i>.
+   *
+   * @param obj the object to be compared for equality with this JsonValue
+   * @return {@code true} if the specified object is equal to this JsonValue
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
     }
-
-    /**
-     * Returns the value type of this JSON value.
-     *
-     * @return JSON value type
-     */
-    @Override
-    public ValueType getValueType() {
-        return valueType;
+    if (obj instanceof JsonValue) {
+      return getValueType().equals(((JsonValue) obj).getValueType());
     }
+    return false;
+  }
 
-    /**
-     * Compares the specified object with this {@link JsonValue}
-     * object for equality. Returns {@code true} if and only if the
-     * specified object is also a JsonValue, and their
-     * {@link #getValueType()} objects are <i>equal</i>.
-     *
-     * @param obj the object to be compared for equality with this JsonValue
-     * @return {@code true} if the specified object is equal to this
-     * JsonValue
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof JsonValue) {
-            return getValueType().equals(((JsonValue) obj).getValueType());
-        }
-        return false;
-    }
+  /**
+   * Returns the hash code value for this {@link JsonValue} object. The hash code of the {@link
+   * JsonValue} object is defined to be its {@link #getValueType()} object's hash code.
+   *
+   * @return the hash code value for this {@link JsonValue} object
+   */
+  @Override
+  public int hashCode() {
+    return valueType.hashCode();
+  }
 
-    /**
-     * Returns the hash code value for this {@link JsonValue} object.
-     * The hash code of the {@link JsonValue} object is defined to be
-     * its {@link #getValueType()} object's hash code.
-     *
-     * @return the hash code value for this {@link JsonValue} object
-     */
-    @Override
-    public int hashCode() {
-        return valueType.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return valueType.name().toLowerCase();
-    }
-
+  @Override
+  public String toString() {
+    return valueType.name().toLowerCase();
+  }
 }

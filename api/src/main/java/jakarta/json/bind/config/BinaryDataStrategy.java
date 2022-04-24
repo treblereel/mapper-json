@@ -17,34 +17,29 @@
 package jakarta.json.bind.config;
 
 /**
- * Specifies predefined binary data handling strategies.
- * This strategy can be set via {@link jakarta.json.bind.JsonbConfig#withBinaryDataStrategy(String)}.
+ * Specifies predefined binary data handling strategies. This strategy can be set via {@link
+ * jakarta.json.bind.JsonbConfig#withBinaryDataStrategy(String)}.
  *
  * @see jakarta.json.bind.JsonbConfig
  * @since JSON Binding 1.0
  */
 public final class BinaryDataStrategy {
 
-    /**
-     * Private constructor to disallow instantiation.
-     */
-    private BinaryDataStrategy() { };
+  /** Private constructor to disallow instantiation. */
+  private BinaryDataStrategy() {};
 
-    /**
-     * Using this strategy, binary data is encoded as a byte array.
-     * Default encoding strategy.
-     */
-    public static final String BYTE = "BYTE";
+  /** Using this strategy, binary data is encoded as a byte array. Default encoding strategy. */
+  public static final String BYTE = "BYTE";
 
-    /**
-     * Using this strategy, binary data is encoded using
-     * the Base64 encoding scheme as specified in RFC 4648 and RFC 2045.
-     */
-    public static final String BASE_64 = "BASE_64";
+  /**
+   * Using this strategy, binary data is encoded using the Base64 encoding scheme as specified in
+   * RFC 4648 and RFC 2045.
+   */
+  public static final String BASE_64 = "BASE_64";
 
-    /**
-     * Using this strategy, binary data is encoded using
-     * the "URL and Filename safe Base64 Alphabet" as specified in Table 2 of RFC 4648.
-     */
-    public static final String BASE_64_URL = "BASE_64_URL";
+  /**
+   * Using this strategy, binary data is encoded using the "URL and Filename safe Base64 Alphabet"
+   * as specified in Table 2 of RFC 4648.
+   */
+  public static final String BASE_64_URL = "BASE_64_URL";
 }

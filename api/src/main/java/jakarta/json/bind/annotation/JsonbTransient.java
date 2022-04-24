@@ -16,41 +16,42 @@
 
 package jakarta.json.bind.annotation;
 
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
-
 /**
- * <p>Prevents mapping of a Java Bean property, field or type to JSON representation.</p>
+ * Prevents mapping of a Java Bean property, field or type to JSON representation.
  *
- * <p><b>Usage</b></p>
- * <p>The {@code @JsonbTransient} annotation can be used with the following program elements:</p>
+ * <p><b>Usage</b>
+ *
+ * <p>The {@code @JsonbTransient} annotation can be used with the following program elements:
+ *
  * <ul>
- *   <li> getter/setter </li>
- *   <li> field </li>
+ *   <li>getter/setter
+ *   <li>field
  * </ul>
  *
- * <p>{@code @JsonbTransient} is mutually exclusive with all other JSON Binding defined annotations. </p>
+ * <p>{@code @JsonbTransient} is mutually exclusive with all other JSON Binding defined annotations.
  *
- * <p>If a class field is annotated with {@code @JsonbTransient}, exception is thrown when this field,
- * getter or setter is annotated with other JSON Binding annotations.</p>
+ * <p>If a class field is annotated with {@code @JsonbTransient}, exception is thrown when this
+ * field, getter or setter is annotated with other JSON Binding annotations.
  *
  * <p>If a getter is annotated with {@code @JsonbTransient}, exception is thrown if when the field
- * or this getter are annotated with other JSON Binding annotations. Exception is not thrown
- * if JSON Binding annotations are presented on the setter.</p>
+ * or this getter are annotated with other JSON Binding annotations. Exception is not thrown if JSON
+ * Binding annotations are presented on the setter.
  *
  * <p>If a setter is annotated with {@code @JsonbTransient}, exception is thrown if when the field
- * or this setter are annotated with other JSON Binding annotations. Exception is not thrown
- * if JSON Binding annotations are presented on the getter.</p>
+ * or this setter are annotated with other JSON Binding annotations. Exception is not thrown if JSON
+ * Binding annotations are presented on the getter.
  *
  * @since JSON Binding 1.0
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ANNOTATION_TYPE, FIELD, METHOD})
-public @interface JsonbTransient { }
-
+public @interface JsonbTransient {}

@@ -15,9 +15,8 @@
  */
 
 /**
- * <p>
  * Defines serializer depending classes.
- * </p>
+ *
  * @since JSON Binding 1.0
  */
 package jakarta.json.bind.serializer;

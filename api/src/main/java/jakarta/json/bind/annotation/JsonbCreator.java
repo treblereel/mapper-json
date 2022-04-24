@@ -22,19 +22,22 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>This annotation identifies the custom constructor or factory method to use when creating an instance
- * of the associated class.</p>
+ * This annotation identifies the custom constructor or factory method to use when creating an
+ * instance of the associated class.
  *
- * <p>Only one constructor or static factory method can be annotated with {@code JsonbCreator} in a given class.</p>
+ * <p>Only one constructor or static factory method can be annotated with {@code JsonbCreator} in a
+ * given class.
  *
- * <p>The {@code @JsonbCreator} annotation is intended to be used with constructors/methods with parameters.
- * Such parameters could be annotated for instance with {@code @JsonbProperty}.</p>
+ * <p>The {@code @JsonbCreator} annotation is intended to be used with constructors/methods with
+ * parameters. Such parameters could be annotated for instance with {@code @JsonbProperty}.
  *
- * <p><b>Usage</b></p>
- * <p>The {@code @JsonbCreator} annotation can be used with the following program elements:</p>
+ * <p><b>Usage</b>
+ *
+ * <p>The {@code @JsonbCreator} annotation can be used with the following program elements:
+ *
  * <ul>
- *   <li> method </li>
- *   <li> constructor </li>
+ *   <li>method
+ *   <li>constructor
  * </ul>
  *
  * @since JSON Binding 1.0
@@ -42,5 +45,4 @@ import java.lang.annotation.Target;
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR})
-public @interface JsonbCreator {
-}
+public @interface JsonbCreator {}

@@ -15,11 +15,10 @@
  */
 
 /**
- * Provides JSON Binding API, which enables binding Java objects from and to
- * JSON documents.
+ * Provides JSON Binding API, which enables binding Java objects from and to JSON documents.
  *
- * Main user entry points to the API is {@link jakarta.json.bind.JsonbBuilder JsonbBuilder}
- * which builds {@link jakarta.json.bind.Jsonb Jsonb} instances.
+ * <p>Main user entry points to the API is {@link jakarta.json.bind.JsonbBuilder JsonbBuilder} which
+ * builds {@link jakarta.json.bind.Jsonb Jsonb} instances.
  *
  * @since JSON Binding 1.0
  */

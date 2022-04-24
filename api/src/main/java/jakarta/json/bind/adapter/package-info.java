@@ -15,9 +15,7 @@
  */
 
 /**
- * <p>
  * Defines adapter related classes.
- * </p>
  *
  * @since JSON Binding 1.0
  */

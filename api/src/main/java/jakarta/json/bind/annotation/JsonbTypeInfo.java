@@ -22,9 +22,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Configuration annotation of the type information handling.
- * <br>
- * This annotation is required on the most common parent of all classes when type information will be applied.
+ * Configuration annotation of the type information handling. <br>
+ * This annotation is required on the most common parent of all classes when type information will
+ * be applied.
+ *
  * <pre><code>
  * // Example
  * {@literal @}JsonbTypeInfo(key = "@key")
@@ -33,32 +34,29 @@ import java.lang.annotation.Target;
  * class Dog implements Animal {}
  * class Cat implements Animal {}
  * </code></pre>
- * This annotation is tightly bound to {@link JsonbSubtype}. It is required to use
- * {@link JsonbSubtype} annotations to specify all the possible classes and their aliases.
+ *
+ * This annotation is tightly bound to {@link JsonbSubtype}. It is required to use {@link
+ * JsonbSubtype} annotations to specify all the possible classes and their aliases.
  */
 @JsonbAnnotation
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})
 public @interface JsonbTypeInfo {
 
-    /**
-     * Default type information key name.
-     */
-    String DEFAULT_KEY_NAME = "@type";
+  /** Default type information key name. */
+  String DEFAULT_KEY_NAME = "@type";
 
-    /**
-     * Key used for keeping the type information (alias).
-     * Default value is {@code @type}.
-     *
-     * @return key name
-     */
-    String key() default DEFAULT_KEY_NAME;
+  /**
+   * Key used for keeping the type information (alias). Default value is {@code @type}.
+   *
+   * @return key name
+   */
+  String key() default DEFAULT_KEY_NAME;
 
-    /**
-     * Allowed aliases of the handled type.
-     *
-     * @return list of allowed aliases
-     */
-    JsonbSubtype[] value() default {};
-
+  /**
+   * Allowed aliases of the handled type.
+   *
+   * @return list of allowed aliases
+   */
+  JsonbSubtype[] value() default {};
 }

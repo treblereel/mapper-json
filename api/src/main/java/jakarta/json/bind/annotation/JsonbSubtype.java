@@ -21,14 +21,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Subtype is tightly bound to the {@link JsonbTypeInfo}.
- * <br>
- * Type defines class which instance will be created when processing specific alias, or when processing
- * instance of the specified type, to determine which alias should be used.
- * <br>
+ * Subtype is tightly bound to the {@link JsonbTypeInfo}. <br>
+ * Type defines class which instance will be created when processing specific alias, or when
+ * processing instance of the specified type, to determine which alias should be used. <br>
  * Alias is used instead of a class name. It has to be unique value among all the defined subtypes
  * bound to the specific {@link JsonbTypeInfo}. An exception should be thrown when processing and
  * validating aliases and duplicate alias is found.
+ *
  * <pre><code>
  * // Example
  * {@literal @}JsonbTypeInfo({
@@ -57,18 +56,17 @@ import java.lang.annotation.Target;
 @Target({})
 public @interface JsonbSubtype {
 
-    /**
-     * Type alias which is used instead of a class name.
-     *
-     * @return alias value
-     */
-    String alias();
+  /**
+   * Type alias which is used instead of a class name.
+   *
+   * @return alias value
+   */
+  String alias();
 
-    /**
-     * An actual type bound to the alias.
-     *
-     * @return alias bound type
-     */
-    Class<?> type();
-
+  /**
+   * An actual type bound to the alias.
+   *
+   * @return alias bound type
+   */
+  Class<?> type();
 }
