@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package jakarta.json.stream;
+package org.treblereel.gwt.json.mapper.annotation;
 
-import jakarta.json.bind.serializer.JsonbSerializer;
-import jakarta.json.bind.serializer.SerializationContext;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiConsumer;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class AbstractBeanJsonSerializer<T> implements JsonbSerializer<T> {
-
-  protected List<BiConsumer<T, JsonGeneratorDecorator>> properties = new ArrayList<>();
-
-  @Override
-  public void serialize(T obj, JsonGenerator generator, SerializationContext ctx) {
-    properties.forEach(p -> p.accept(obj, (JsonGeneratorDecorator) generator));
-  }
+@Retention(RetentionPolicy.CLASS)
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD})
+@Documented
+public @interface GwtIncompatible {
+  String value() default "";
 }

@@ -25,7 +25,7 @@ import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.google.auto.common.MoreElements;
 import jakarta.json.stream.AbstractBeanJsonSerializer;
-import jakarta.json.stream.JsonGenerator;
+import jakarta.json.stream.JsonGeneratorDecorator;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
@@ -101,7 +101,10 @@ public class SerializerGenerator extends AbstractGenerator {
                 .setName("bean"));
     lambda
         .getParameters()
-        .add(new Parameter().setType(JsonGenerator.class.getCanonicalName()).setName("generator"));
+        .add(
+            new Parameter()
+                .setType(JsonGeneratorDecorator.class.getCanonicalName())
+                .setName("generator"));
     lambda.setBody(new ExpressionStmt(call));
 
     body.addStatement(new MethodCallExpr(new NameExpr("properties"), "add").addArgument(lambda));

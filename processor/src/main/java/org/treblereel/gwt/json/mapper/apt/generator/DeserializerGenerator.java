@@ -27,7 +27,7 @@ import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.google.auto.common.MoreElements;
-import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectDecorator;
 import jakarta.json.stream.AbstractBeanJsonDeserializer;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -119,7 +119,10 @@ public class DeserializerGenerator extends AbstractGenerator {
                 .setName("bean"));
     lambda
         .getParameters()
-        .add(new Parameter().setType(JsonObject.class.getCanonicalName()).setName("jsonObject"));
+        .add(
+            new Parameter()
+                .setType(JsonObjectDecorator.class.getCanonicalName())
+                .setName("jsonObject"));
     lambda.setBody(new ExpressionStmt(call));
 
     body.addStatement(new MethodCallExpr(new NameExpr("properties"), "add").addArgument(lambda));

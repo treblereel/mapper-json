@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package jakarta.json.stream;
+package jakarta.json.stream.jre;
 
-import jakarta.json.bind.serializer.JsonbSerializer;
-import jakarta.json.bind.serializer.SerializationContext;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiConsumer;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.stream.JsonGeneratorDecorator;
 
-public class AbstractBeanJsonSerializer<T> implements JsonbSerializer<T> {
+public class JreJsonGenerator extends JsonGeneratorDecorator {
 
-  protected List<BiConsumer<T, JsonGeneratorDecorator>> properties = new ArrayList<>();
-
-  @Override
-  public void serialize(T obj, JsonGenerator generator, SerializationContext ctx) {
-    properties.forEach(p -> p.accept(obj, (JsonGeneratorDecorator) generator));
+  public JreJsonGenerator(JsonObjectBuilder builder) {
+    super(builder);
   }
 }

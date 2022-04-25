@@ -21,11 +21,11 @@ import jakarta.json.JsonValue;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class JsonGeneratorImpl implements JsonGenerator {
+public class JsonGeneratorDecorator implements JsonGenerator {
 
-  private final JsonObjectBuilder builder;
+  protected final JsonObjectBuilder builder;
 
-  public JsonGeneratorImpl(JsonObjectBuilder builder) {
+  public JsonGeneratorDecorator(JsonObjectBuilder builder) {
     this.builder = builder;
   }
 
@@ -61,19 +61,19 @@ public class JsonGeneratorImpl implements JsonGenerator {
 
   @Override
   public JsonGenerator write(String name, String value) {
-    builder.add(name, value);
+    if (value != null) builder.add(name, value);
     return this;
   }
 
   @Override
   public JsonGenerator write(String name, BigInteger value) {
-    builder.add(name, value);
+    if (value != null) builder.add(name, value);
     return this;
   }
 
   @Override
   public JsonGenerator write(String name, BigDecimal value) {
-    builder.add(name, value);
+    if (value != null) builder.add(name, value);
     return this;
   }
 
@@ -83,9 +83,34 @@ public class JsonGeneratorImpl implements JsonGenerator {
     return this;
   }
 
+  public JsonGenerator write(String name, Integer value) {
+    if (value != null) builder.add(name, value);
+    return this;
+  }
+
+  public JsonGenerator write(String name, Character value) {
+    if (value != null) builder.add(name, value);
+    return this;
+  }
+
+  public JsonGenerator write(String name, Float value) {
+    if (value != null) builder.add(name, value);
+    return this;
+  }
+
+  public JsonGenerator write(String name, Short value) {
+    if (value != null) builder.add(name, value);
+    return this;
+  }
+
   @Override
   public JsonGenerator write(String name, long value) {
     builder.add(name, value);
+    return this;
+  }
+
+  public JsonGenerator write(String name, Long value) {
+    if (value != null) builder.add(name, value);
     return this;
   }
 
@@ -95,9 +120,19 @@ public class JsonGeneratorImpl implements JsonGenerator {
     return this;
   }
 
+  public JsonGenerator write(String name, Double value) {
+    if (value != null) builder.add(name, value);
+    return this;
+  }
+
   @Override
   public JsonGenerator write(String name, boolean value) {
     builder.add(name, value);
+    return this;
+  }
+
+  public JsonGenerator write(String name, Boolean value) {
+    if (value != null) builder.add(name, value);
     return this;
   }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Dmitrii Tikhomirov
+ * Copyright © 2022 Treblereel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,131 +16,147 @@
 
 package jakarta.json.stream.gwt;
 
+import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonValue;
 import jakarta.json.stream.JsonGenerator;
+import jakarta.json.stream.JsonGeneratorDecorator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class GWTJsonGenerator implements JsonGenerator {
+public class GWTJsonGenerator extends JsonGeneratorDecorator {
+
+  public GWTJsonGenerator(JsonObjectBuilder builder) {
+    super(builder);
+  }
 
   @Override
   public JsonGenerator writeStartObject() {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator writeStartObject(String name) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator writeKey(String name) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator writeStartArray() {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator writeStartArray(String name) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(String name, JsonValue value) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(String name, String value) {
-    return null;
+    if (value != null) {
+      builder.add(name, value);
+    }
+    return this;
   }
 
   @Override
   public JsonGenerator write(String name, BigInteger value) {
-    return null;
+    builder.add(name, value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(String name, BigDecimal value) {
-    return null;
+    builder.add(name, value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(String name, int value) {
-    return null;
+    builder.add(name, value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(String name, long value) {
-    return null;
+    builder.add(name, value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(String name, double value) {
-    return null;
+    builder.add(name, value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(String name, boolean value) {
-    return null;
+    builder.add(name, value);
+    return this;
   }
 
   @Override
   public JsonGenerator writeNull(String name) {
-    return null;
+    builder.addNull(name);
+    return this;
   }
 
   @Override
   public JsonGenerator writeEnd() {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(JsonValue value) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(String value) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(BigDecimal value) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(BigInteger value) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(int value) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(long value) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(double value) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(boolean value) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator writeNull() {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -148,4 +164,8 @@ public class GWTJsonGenerator implements JsonGenerator {
 
   @Override
   public void flush() {}
+
+  public JsonObjectBuilder builder() {
+    return builder;
+  }
 }

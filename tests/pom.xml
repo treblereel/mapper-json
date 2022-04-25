@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tests</artifactId>
-    <name>mapper-parent</name>
+    <name>JRE tests</name>
     <description>JSON marshallers</description>
     <url>https://github.com/treblereel</url>
 
@@ -34,6 +34,11 @@
         <name>Treblereel</name>
         <url>https://github.com/treblereel</url>
     </organization>
+
+    <properties>
+        <j2cl.version>0.10.0-3c97afeac</j2cl.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -44,6 +49,12 @@
             <artifactId>jakarta.json</artifactId>
             <version>2.0.1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vertispan.j2cl</groupId>
+            <artifactId>junit-annotations</artifactId>
+            <version>${j2cl.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.treblereel.gwt.json.mapper</groupId>

@@ -77,8 +77,6 @@ public class BeanProcessor {
   }
 
   private void checkTypeAndAdd(TypeMirror type) {
-    logger.log(TreeLogger.DEBUG, "Checking type " + type);
-
     if (type.getKind().isPrimitive() || typeUtils.isBoxedTypeOrString(type)) {
       return;
     }

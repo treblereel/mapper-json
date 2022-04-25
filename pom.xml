@@ -85,6 +85,7 @@
         <jakarta.json.version>2.0.1</jakarta.json.version>
 
         <!-- J2CL deps -->
+        <com.google.jsinterop.base.version>1.0.0</com.google.jsinterop.base.version>
         <elemental2.version>1.1.0</elemental2.version>
         <j2cl.version>0.10</j2cl.version>
 
@@ -103,6 +104,11 @@
                 <groupId>com.google.elemental2</groupId>
                 <artifactId>elemental2-dom</artifactId>
                 <version>${elemental2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.jsinterop</groupId>
+                <artifactId>base</artifactId>
+                <version>${com.google.jsinterop.base.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.auto</groupId>
@@ -221,6 +227,7 @@
                         <exclude>**/src/main/resources/**</exclude>
                         <exclude>**/war</exclude>
                         <exclude>**/pom.xml</exclude>
+                        <exclude>**/j2cl-pom.xml</exclude>
                         <exclude>**/.flattened-pom.xml</exclude>
                         <exclude>**/gwt-unitcache</exclude>
                         <exclude>**/src/test/java/org/treblereel/gwt/xml/mapper/client/tests/pmml/model/**</exclude>

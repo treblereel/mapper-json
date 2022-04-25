@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-package jakarta.json.stream;
+package jakarta.json;
 
-import jakarta.json.bind.serializer.JsonbSerializer;
-import jakarta.json.bind.serializer.SerializationContext;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiConsumer;
+import elemental2.core.JsObject;
 
-public class AbstractBeanJsonSerializer<T> implements JsonbSerializer<T> {
+public class _JsonValueImpl implements JsonValue {
 
-  protected List<BiConsumer<T, JsonGeneratorDecorator>> properties = new ArrayList<>();
+  JsObject holder;
+
+  public _JsonValueImpl(Object holder) {
+    this(new JsObject(holder));
+  }
+
+  public _JsonValueImpl(JsObject holder) {
+    this.holder = holder;
+  }
 
   @Override
-  public void serialize(T obj, JsonGenerator generator, SerializationContext ctx) {
-    properties.forEach(p -> p.accept(obj, (JsonGeneratorDecorator) generator));
+  public ValueType getValueType() {
+    throw new UnsupportedOperationException();
   }
 }

@@ -55,37 +55,49 @@ public class BasicTypeFieldDefinition extends FieldDefinition {
       return new MethodCallExpr(jsonObject, "getString").addArgument(name);
     }
     if (boxedTypes.isBoolean(type)) {
-      return new MethodCallExpr(jsonObject, "getBoolean").addArgument(name);
+      if (type.getKind().isPrimitive()) {
+        return new MethodCallExpr(jsonObject, "getBoolean").addArgument(name);
+      }
+      return new MethodCallExpr(jsonObject, "getBooleanBoxed").addArgument(name);
     }
     if (boxedTypes.isInt(type)) {
-      return new MethodCallExpr(jsonObject, "getInt").addArgument(name);
+      if (type.getKind().isPrimitive()) {
+        return new MethodCallExpr(jsonObject, "getInt").addArgument(name);
+      }
+      return new MethodCallExpr(jsonObject, "getInteger").addArgument(name);
     }
 
     if (boxedTypes.isLong(type)) {
-      return new MethodCallExpr(
-          new MethodCallExpr(jsonObject, "getJsonNumber").addArgument(name), "longValue");
+      if (type.getKind().isPrimitive()) {
+        return new MethodCallExpr(jsonObject, "getLong").addArgument(name);
+      }
+      return new MethodCallExpr(jsonObject, "getLongBoxed").addArgument(name);
     }
 
     if (boxedTypes.isDouble(type)) {
-      return new MethodCallExpr(
-          new MethodCallExpr(jsonObject, "getJsonNumber").addArgument(name), "doubleValue");
+      if (type.getKind().isPrimitive()) {
+        return new MethodCallExpr(jsonObject, "getDouble").addArgument(name);
+      }
+      return new MethodCallExpr(jsonObject, "getDoubleBoxed").addArgument(name);
     }
 
     if (boxedTypes.isChar(type)) {
-      return new CastExpr()
-          .setType(char.class)
-          .setExpression(new MethodCallExpr(jsonObject, "getInt").addArgument(name));
+      if (type.getKind().isPrimitive()) {
+        return new MethodCallExpr(jsonObject, "getChar").addArgument(name);
+      }
+      return new MethodCallExpr(jsonObject, "getCharBoxed").addArgument(name);
     }
     if (boxedTypes.isFloat(type)) {
-      return new MethodCallExpr(
-          new MethodCallExpr(
-              new MethodCallExpr(jsonObject, "getJsonNumber").addArgument(name), "bigDecimalValue"),
-          "floatValue");
+      if (type.getKind().isPrimitive()) {
+        return new MethodCallExpr(jsonObject, "getFloat").addArgument(name);
+      }
+      return new MethodCallExpr(jsonObject, "getFloatBoxed").addArgument(name);
     }
     if (boxedTypes.isShort(type)) {
-      return new CastExpr()
-          .setType(short.class)
-          .setExpression(new MethodCallExpr(jsonObject, "getInt").addArgument(name));
+      if (type.getKind().isPrimitive()) {
+        return new MethodCallExpr(jsonObject, "getShort").addArgument(name);
+      }
+      return new MethodCallExpr(jsonObject, "getShortBoxed").addArgument(name);
     }
 
     throw new IllegalArgumentException("Unsupported type " + type);

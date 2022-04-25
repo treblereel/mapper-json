@@ -16,9 +16,13 @@
 
 package org.treblereel.gwt.json.mapper;
 
-import jakarta.json.JsonObject;
-import jakarta.json.bind.serializer.*;
-import jakarta.json.stream.JsonGeneratorImpl;
+import jakarta.json.bind.serializer.DeserializationContext;
+import jakarta.json.bind.serializer.JsonDeserializationContext;
+import jakarta.json.bind.serializer.JsonSerializationContext;
+import jakarta.json.bind.serializer.JsonbDeserializer;
+import jakarta.json.bind.serializer.JsonbSerializer;
+import jakarta.json.bind.serializer.SerializationContext;
+import jakarta.json.stream.JsonGeneratorDecorator;
 import jakarta.json.stream.JsonParser;
 
 public abstract class AbstractObjectMapper<T> {
@@ -27,22 +31,22 @@ public abstract class AbstractObjectMapper<T> {
 
   protected abstract JsonbSerializer<T> newSerializer();
 
-  public T fromJSON(JsonObject json) {
+  public T fromJSON(String json) {
     return fromJSON(json, new JsonDeserializationContext());
   }
 
-  public T fromJSON(JsonObject json, DeserializationContext context) {
+  public T fromJSON(String json, DeserializationContext context) {
     JsonParser parser = ((JsonDeserializationContext) context).createParser(json);
     return newDeserializer().deserialize(parser, context, null);
   }
 
-  public JsonObject toJSON(T bean) {
+  public String toJSON(T bean) {
     return toJSON(bean, new JsonSerializationContext());
   }
 
-  public JsonObject toJSON(T bean, SerializationContext context) {
-    JsonGeneratorImpl generator = ((JsonSerializationContext) context).createGenerator();
+  public String toJSON(T bean, SerializationContext context) {
+    JsonGeneratorDecorator generator = ((JsonSerializationContext) context).createGenerator();
     newSerializer().serialize(bean, generator, context);
-    return generator.builder().build();
+    return generator.builder().build().toString();
   }
 }

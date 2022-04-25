@@ -17,6 +17,7 @@
 package jakarta.json.stream;
 
 import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectDecorator;
 import jakarta.json.bind.serializer.DeserializationContext;
 import jakarta.json.bind.serializer.JsonbDeserializer;
 import java.lang.reflect.Type;
@@ -26,7 +27,7 @@ import java.util.function.BiConsumer;
 
 public abstract class AbstractBeanJsonDeserializer<T> implements JsonbDeserializer<T> {
 
-  protected List<BiConsumer<T, JsonObject>> properties = new ArrayList<>();
+  protected List<BiConsumer<T, JsonObjectDecorator>> properties = new ArrayList<>();
 
   @Override
   public T deserialize(JsonParser parser, DeserializationContext ctx, Type rtType) {
@@ -39,7 +40,8 @@ public abstract class AbstractBeanJsonDeserializer<T> implements JsonbDeserializ
 
   private T deserialize(JsonObject jsonObject, DeserializationContext ctx) {
     T instance = newInstance();
-    properties.forEach(p -> p.accept(instance, jsonObject));
+    JsonObjectDecorator jsonObjectDecorator = new JsonObjectDecorator(jsonObject);
+    properties.forEach(p -> p.accept(instance, jsonObjectDecorator));
     return instance;
   }
 
