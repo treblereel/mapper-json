@@ -18,9 +18,11 @@ package org.treblereel.gwt.json.mapper.apt.definition;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.Statement;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
-import org.treblereel.gwt.json.mapper.apt.utils.TypeUtils;
 
 public class BasicTypeFieldDefinition extends FieldDefinition {
 
@@ -29,77 +31,90 @@ public class BasicTypeFieldDefinition extends FieldDefinition {
   }
 
   @Override
-  public Expression getFieldDeserializer(PropertyDefinition field, CompilationUnit cu) {
+  public Statement getFieldDeserializer(PropertyDefinition field, CompilationUnit cu) {
     String setter = field.getSetter().getSimpleName().toString();
     Expression jsonGetter = getPropertyAccessor(field);
 
     MethodCallExpr method = new MethodCallExpr(new NameExpr("bean"), setter);
     method.addArgument(jsonGetter);
-    return method;
+    return new ExpressionStmt(method);
   }
 
   @Override
-  public Expression getFieldSerializer(PropertyDefinition field, CompilationUnit cu) {
-    return new MethodCallExpr(new NameExpr("generator"), "write")
-        .addArgument(new StringLiteralExpr(field.getName()))
-        .addArgument(
-            new MethodCallExpr(new NameExpr("bean"), field.getGetter().getSimpleName().toString()));
+  public Statement getFieldSerializer(PropertyDefinition field, CompilationUnit cu) {
+    return new ExpressionStmt(
+        new MethodCallExpr(new NameExpr("generator"), "write")
+            .addArgument(new StringLiteralExpr(field.getName()))
+            .addArgument(
+                new MethodCallExpr(
+                    new NameExpr("bean"), field.getGetter().getSimpleName().toString())));
   }
 
   private Expression getPropertyAccessor(PropertyDefinition field) {
-    TypeUtils.BoxedTypes boxedTypes = context.getTypeUtils().getBoxedTypes();
-    TypeMirror type = field.getType();
+    TypeElement deser = context.getTypeRegistry().getDeserializer(field.getType());
+
+    System.out.println("DESER " + deser);
     NameExpr jsonObject = new NameExpr("jsonObject");
     StringLiteralExpr name = new StringLiteralExpr(field.getName());
-    if (boxedTypes.isString(type)) {
-      return new MethodCallExpr(jsonObject, "getString").addArgument(name);
-    }
-    if (boxedTypes.isBoolean(type)) {
-      if (type.getKind().isPrimitive()) {
-        return new MethodCallExpr(jsonObject, "getBoolean").addArgument(name);
-      }
-      return new MethodCallExpr(jsonObject, "getBooleanBoxed").addArgument(name);
-    }
-    if (boxedTypes.isInt(type)) {
-      if (type.getKind().isPrimitive()) {
-        return new MethodCallExpr(jsonObject, "getInt").addArgument(name);
-      }
-      return new MethodCallExpr(jsonObject, "getInteger").addArgument(name);
-    }
 
-    if (boxedTypes.isLong(type)) {
-      if (type.getKind().isPrimitive()) {
-        return new MethodCallExpr(jsonObject, "getLong").addArgument(name);
-      }
-      return new MethodCallExpr(jsonObject, "getLongBoxed").addArgument(name);
-    }
+    /*
+        TypeUtils.BoxedTypes boxedTypes = context.getTypeUtils().getBoxedTypes();
+        TypeMirror type = field.getType();
+        NameExpr jsonObject = new NameExpr("jsonObject");
+        StringLiteralExpr name = new StringLiteralExpr(field.getName());
+        if (boxedTypes.isString(type)) {
+          return new MethodCallExpr(jsonObject, "getString").addArgument(name);
+        }
+        if (boxedTypes.isBoolean(type)) {
+          if (type.getKind().isPrimitive()) {
+            return new MethodCallExpr(jsonObject, "getBoolean").addArgument(name);
+          }
+          return new MethodCallExpr(jsonObject, "getBooleanBoxed").addArgument(name);
+        }
+        if (boxedTypes.isInt(type)) {
+          if (type.getKind().isPrimitive()) {
+            return new MethodCallExpr(jsonObject, "getInt").addArgument(name);
+          }
+          return new MethodCallExpr(jsonObject, "getInteger").addArgument(name);
+        }
 
-    if (boxedTypes.isDouble(type)) {
-      if (type.getKind().isPrimitive()) {
-        return new MethodCallExpr(jsonObject, "getDouble").addArgument(name);
-      }
-      return new MethodCallExpr(jsonObject, "getDoubleBoxed").addArgument(name);
-    }
+        if (boxedTypes.isLong(type)) {
+          if (type.getKind().isPrimitive()) {
+            return new MethodCallExpr(jsonObject, "getLong").addArgument(name);
+          }
+          return new MethodCallExpr(jsonObject, "getLongBoxed").addArgument(name);
+        }
 
-    if (boxedTypes.isChar(type)) {
-      if (type.getKind().isPrimitive()) {
-        return new MethodCallExpr(jsonObject, "getChar").addArgument(name);
-      }
-      return new MethodCallExpr(jsonObject, "getCharBoxed").addArgument(name);
-    }
-    if (boxedTypes.isFloat(type)) {
-      if (type.getKind().isPrimitive()) {
-        return new MethodCallExpr(jsonObject, "getFloat").addArgument(name);
-      }
-      return new MethodCallExpr(jsonObject, "getFloatBoxed").addArgument(name);
-    }
-    if (boxedTypes.isShort(type)) {
-      if (type.getKind().isPrimitive()) {
-        return new MethodCallExpr(jsonObject, "getShort").addArgument(name);
-      }
-      return new MethodCallExpr(jsonObject, "getShortBoxed").addArgument(name);
-    }
+        if (boxedTypes.isDouble(type)) {
+          if (type.getKind().isPrimitive()) {
+            return new MethodCallExpr(jsonObject, "getDouble").addArgument(name);
+          }
+          return new MethodCallExpr(jsonObject, "getDoubleBoxed").addArgument(name);
+        }
 
-    throw new IllegalArgumentException("Unsupported type " + type);
+        if (boxedTypes.isChar(type)) {
+          if (type.getKind().isPrimitive()) {
+            return new MethodCallExpr(jsonObject, "getChar").addArgument(name);
+          }
+          return new MethodCallExpr(jsonObject, "getCharBoxed").addArgument(name);
+        }
+        if (boxedTypes.isFloat(type)) {
+          if (type.getKind().isPrimitive()) {
+            return new MethodCallExpr(jsonObject, "getFloat").addArgument(name);
+          }
+          return new MethodCallExpr(jsonObject, "getFloatBoxed").addArgument(name);
+        }
+        if (boxedTypes.isShort(type)) {
+          if (type.getKind().isPrimitive()) {
+            return new MethodCallExpr(jsonObject, "getShort").addArgument(name);
+          }
+          return new MethodCallExpr(jsonObject, "getShortBoxed").addArgument(name);
+        }
+    */
+
+    return new MethodCallExpr(
+            new ObjectCreationExpr().setType(deser.getQualifiedName().toString()), "deserialize")
+        .addArgument(new MethodCallExpr(jsonObject, "get").addArgument(name))
+        .addArgument(new NameExpr("ctx"));
   }
 }

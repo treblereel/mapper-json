@@ -21,11 +21,11 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.type.UnknownType;
 import com.google.auto.common.MoreElements;
 import jakarta.json.stream.AbstractBeanJsonSerializer;
-import jakarta.json.stream.JsonGeneratorDecorator;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
@@ -90,22 +90,14 @@ public class SerializerGenerator extends AbstractGenerator {
             });
   }
 
-  private void addSetter(BeanDefinition type, BlockStmt body, Expression call) {
+  private void addSetter(BeanDefinition type, BlockStmt body, Statement call) {
     LambdaExpr lambda = new LambdaExpr();
     lambda.setEnclosingParameters(true);
-    lambda
-        .getParameters()
-        .add(
-            new Parameter()
-                .setType(type.getElement().getQualifiedName().toString())
-                .setName("bean"));
-    lambda
-        .getParameters()
-        .add(
-            new Parameter()
-                .setType(JsonGeneratorDecorator.class.getCanonicalName())
-                .setName("generator"));
-    lambda.setBody(new ExpressionStmt(call));
+    lambda.getParameters().add(new Parameter().setType(new UnknownType()).setName("bean"));
+    lambda.getParameters().add(new Parameter().setType(new UnknownType()).setName("generator"));
+    lambda.getParameters().add(new Parameter().setType(new UnknownType()).setName("ctx"));
+
+    lambda.setBody(call);
 
     body.addStatement(new MethodCallExpr(new NameExpr("properties"), "add").addArgument(lambda));
   }

@@ -23,11 +23,10 @@ import jakarta.json.bind.serializer.JsonbDeserializer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 public abstract class AbstractBeanJsonDeserializer<T> implements JsonbDeserializer<T> {
 
-  protected List<BiConsumer<T, JsonObjectDecorator>> properties = new ArrayList<>();
+  protected List<JsonbPropertyDeserializer<T>> properties = new ArrayList<>();
 
   @Override
   public T deserialize(JsonParser parser, DeserializationContext ctx, Type rtType) {
@@ -41,7 +40,10 @@ public abstract class AbstractBeanJsonDeserializer<T> implements JsonbDeserializ
   private T deserialize(JsonObject jsonObject, DeserializationContext ctx) {
     T instance = newInstance();
     JsonObjectDecorator jsonObjectDecorator = new JsonObjectDecorator(jsonObject);
-    properties.forEach(p -> p.accept(instance, jsonObjectDecorator));
+
+    properties.add((boxedBean, uaaaa, context) -> System.out.println("?? " + boxedBean));
+
+    properties.forEach(p -> p.accept(instance, jsonObjectDecorator, ctx));
     return instance;
   }
 

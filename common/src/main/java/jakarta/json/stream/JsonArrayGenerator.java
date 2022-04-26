@@ -16,19 +16,22 @@
 
 package jakarta.json.stream;
 
-import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonValue;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class JsonGeneratorDecorator implements JsonGenerator {
+public class JsonArrayGenerator implements JsonGenerator {
 
-  protected final JsonObjectBuilder builder;
+  private final JsonArrayBuilder arrayBuilder;
+  private final JsonObjectBuilder builder;
+  private final String name;
 
-  public JsonGeneratorDecorator(JsonObjectBuilder builder) {
+  public JsonArrayGenerator(JsonArrayBuilder arrayBuilder, JsonObjectBuilder builder, String name) {
+    this.arrayBuilder = arrayBuilder;
     this.builder = builder;
+    this.name = name;
   }
 
   @Override
@@ -53,8 +56,7 @@ public class JsonGeneratorDecorator implements JsonGenerator {
 
   @Override
   public JsonGenerator writeStartArray(String name) {
-    JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-    return new JsonArrayGenerator(arrayBuilder, builder, name);
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -64,136 +66,102 @@ public class JsonGeneratorDecorator implements JsonGenerator {
 
   @Override
   public JsonGenerator write(String name, String value) {
-    if (value != null) builder.add(name, value);
-    return this;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(String name, BigInteger value) {
-    if (value != null) builder.add(name, value);
-    return this;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(String name, BigDecimal value) {
-    if (value != null) builder.add(name, value);
-    return this;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(String name, int value) {
-    builder.add(name, value);
-    return this;
-  }
-
-  public JsonGenerator write(String name, Integer value) {
-    if (value != null) builder.add(name, value);
-    return this;
-  }
-
-  public JsonGenerator write(String name, Character value) {
-    if (value != null) builder.add(name, value);
-    return this;
-  }
-
-  public JsonGenerator write(String name, Float value) {
-    if (value != null) builder.add(name, value);
-    return this;
-  }
-
-  public JsonGenerator write(String name, Short value) {
-    if (value != null) builder.add(name, value);
-    return this;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(String name, long value) {
-    builder.add(name, value);
-    return this;
-  }
-
-  public JsonGenerator write(String name, Long value) {
-    if (value != null) builder.add(name, value);
-    return this;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(String name, double value) {
-    builder.add(name, value);
-    return this;
-  }
-
-  public JsonGenerator write(String name, Double value) {
-    if (value != null) builder.add(name, value);
-    return this;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator write(String name, boolean value) {
-    builder.add(name, value);
-    return this;
-  }
-
-  public JsonGenerator write(String name, Boolean value) {
-    if (value != null) builder.add(name, value);
-    return this;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator writeNull(String name) {
-    builder.addNull(name);
-    return this;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonGenerator writeEnd() {
-    builder.build();
+    builder.add(name, arrayBuilder);
     return this;
   }
 
   @Override
   public JsonGenerator write(JsonValue value) {
-    throw new UnsupportedOperationException();
+    arrayBuilder.add(value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(String value) {
-    throw new UnsupportedOperationException();
+    arrayBuilder.add(value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(BigDecimal value) {
-    throw new UnsupportedOperationException();
+    arrayBuilder.add(value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(BigInteger value) {
-    throw new UnsupportedOperationException();
+    arrayBuilder.add(value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(int value) {
-    throw new UnsupportedOperationException();
+    arrayBuilder.add(value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(long value) {
-    throw new UnsupportedOperationException();
+    arrayBuilder.add(value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(double value) {
-    throw new UnsupportedOperationException();
+    arrayBuilder.add(value);
+    return this;
   }
 
   @Override
   public JsonGenerator write(boolean value) {
-    throw new UnsupportedOperationException();
+    arrayBuilder.add(value);
+    return this;
   }
 
   @Override
   public JsonGenerator writeNull() {
-    throw new UnsupportedOperationException();
+    arrayBuilder.addNull();
+    return this;
   }
 
   @Override
@@ -201,8 +169,4 @@ public class JsonGeneratorDecorator implements JsonGenerator {
 
   @Override
   public void flush() {}
-
-  public JsonObjectBuilder builder() {
-    return builder;
-  }
 }

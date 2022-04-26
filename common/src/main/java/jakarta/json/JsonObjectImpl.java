@@ -27,10 +27,6 @@ public class JsonObjectImpl implements JsonObject {
 
   private JsPropertyMap holder;
 
-  public JsonObjectImpl() {
-    this(JsPropertyMap.of());
-  }
-
   public JsonObjectImpl(String json) {
     this(Global.JSON.parse(json));
   }

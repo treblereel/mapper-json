@@ -17,7 +17,7 @@
 package org.treblereel.gwt.json.mapper.apt.definition;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.stmt.Statement;
 import javax.lang.model.type.TypeMirror;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 
@@ -31,7 +31,7 @@ public abstract class FieldDefinition {
     this.property = property;
   }
 
-  public abstract Expression getFieldDeserializer(PropertyDefinition field, CompilationUnit cu);
+  public abstract Statement getFieldDeserializer(PropertyDefinition field, CompilationUnit cu);
 
-  public abstract Expression getFieldSerializer(PropertyDefinition field, CompilationUnit cu);
+  public abstract Statement getFieldSerializer(PropertyDefinition field, CompilationUnit cu);
 }

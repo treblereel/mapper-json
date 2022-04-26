@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-package jakarta.json.stream;
+package org.treblereel.gwt.json.mapper.internal.serializer.array;
 
-import jakarta.json.bind.serializer.JsonbSerializer;
-import jakarta.json.bind.serializer.SerializationContext;
-import java.util.ArrayList;
-import java.util.List;
+import org.treblereel.gwt.json.mapper.internal.serializer.JsonSerializer;
 
-public class AbstractBeanJsonSerializer<T> implements JsonbSerializer<T> {
-
-  protected List<JsonbPropertySerializer<T>> properties = new ArrayList<>();
-
-  @Override
-  public void serialize(T obj, JsonGenerator generator, SerializationContext ctx) {
-    properties.forEach(p -> p.accept(obj, (JsonGeneratorDecorator) generator, ctx));
-  }
-}
+public abstract class BasicArrayJsonSerializer<T> extends JsonSerializer<T> {}

@@ -23,11 +23,11 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.type.UnknownType;
 import com.google.auto.common.MoreElements;
-import jakarta.json.JsonObjectDecorator;
 import jakarta.json.stream.AbstractBeanJsonDeserializer;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -108,22 +108,16 @@ public class DeserializerGenerator extends AbstractGenerator {
                 new ObjectCreationExpr().setType(type.getElement().getQualifiedName().toString())));
   }
 
-  private void addGetter(BeanDefinition type, BlockStmt body, Expression call) {
+  private void addGetter(BeanDefinition type, BlockStmt body, Statement call) {
+
     LambdaExpr lambda = new LambdaExpr();
     lambda.setEnclosingParameters(true);
-    lambda
-        .getParameters()
-        .add(
-            new Parameter()
-                .setType(type.getElement().getQualifiedName().toString())
-                .setName("bean"));
-    lambda
-        .getParameters()
-        .add(
-            new Parameter()
-                .setType(JsonObjectDecorator.class.getCanonicalName())
-                .setName("jsonObject"));
-    lambda.setBody(new ExpressionStmt(call));
+    lambda.getParameters().add(new Parameter().setType(new UnknownType()).setName("bean"));
+    lambda.getParameters().add(new Parameter().setType(new UnknownType()).setName("jsonObject"));
+    lambda.getParameters().add(new Parameter().setType(new UnknownType()).setName("ctx"));
+    lambda.setBody(call);
+
+    new NameExpr(String.format("(bean, jsonObject, context) -> %s", call));
 
     body.addStatement(new MethodCallExpr(new NameExpr("properties"), "add").addArgument(lambda));
   }

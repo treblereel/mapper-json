@@ -81,7 +81,12 @@ public class BeanProcessor {
       return;
     }
 
-    if (context.getTypeUtils().isAssignableFrom(type, Map.class)) {
+    if (type.getKind().equals(TypeKind.ARRAY)) {
+      ArrayType arrayType = (ArrayType) type;
+      if (!context.getTypeUtils().isSimpleType(arrayType.getComponentType())) {
+        processBean(MoreTypes.asTypeElement(arrayType.getComponentType()));
+      }
+    } else if (context.getTypeUtils().isAssignableFrom(type, Map.class)) {
       DeclaredType collection = (DeclaredType) type;
       collection.getTypeArguments().forEach(this::checkTypeAndAdd);
     } else if (context.getTypeUtils().isAssignableFrom(type, Collection.class)) {
