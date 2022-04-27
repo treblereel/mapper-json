@@ -19,7 +19,12 @@ package jakarta.json.stream.gwt;
 import elemental2.core.Global;
 import elemental2.core.JsArray;
 import elemental2.core.Reflect;
-import jakarta.json.*;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonNumberImpl;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonString;
+import jakarta.json.JsonValue;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +50,10 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public JsonObject getJsonObject(String name) {
-    throw new UnsupportedOperationException();
+    if (Reflect.has(holder, name)) {
+      return new JsonObjectImpl(Reflect.get(holder, name));
+    }
+    return null;
   }
 
   @Override
@@ -105,7 +113,7 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public boolean isEmpty() {
-    throw new UnsupportedOperationException();
+    return Global.JSON.stringify(holder).equals("{}");
   }
 
   @Override

@@ -22,7 +22,6 @@ import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonArrayGenerator;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonGeneratorDecorator;
-import jakarta.json.stream.JsonNestedObjecGenerator;
 import org.treblereel.gwt.json.mapper.annotation.GwtIncompatible;
 
 public class JreJsonGenerator extends JsonGeneratorDecorator {
@@ -36,12 +35,5 @@ public class JreJsonGenerator extends JsonGeneratorDecorator {
   public JsonGenerator writeStartArray(String name) {
     JsonArrayBuilder arrayBuilder = jakarta.json.Json.createArrayBuilder();
     return new JsonArrayGenerator(arrayBuilder, builder, name, ctx);
-  }
-
-  @GwtIncompatible
-  @Override
-  public JsonGenerator writeStartObject(String name) {
-    JsonObjectBuilder objBuilder = jakarta.json.Json.createObjectBuilder();
-    return new JsonNestedObjecGenerator(builder, objBuilder, name, ctx);
   }
 }

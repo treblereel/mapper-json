@@ -19,11 +19,11 @@ package jakarta.json.stream.gwt;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonValue;
 
-public class _JsonValueImpl implements JsonValue {
+public class JsonValueImpl implements JsonValue {
 
   Object holder;
 
-  public _JsonValueImpl(Object holder) {
+  public JsonValueImpl(Object holder) {
     this.holder = holder;
   }
 

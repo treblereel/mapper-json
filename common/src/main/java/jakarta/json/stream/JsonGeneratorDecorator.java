@@ -43,7 +43,8 @@ public class JsonGeneratorDecorator implements JsonGenerator {
 
   @Override
   public JsonGenerator writeStartObject(String name) {
-    throw new UnsupportedOperationException();
+    JsonObjectBuilder objBuilder = ctx.createGenerator().builder();
+    return new JsonNestedObjecGenerator(builder, objBuilder, name, ctx);
   }
 
   @Override

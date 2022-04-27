@@ -19,7 +19,7 @@ package jakarta.json;
 import elemental2.core.JsBoolean;
 import elemental2.core.JsNumber;
 import jakarta.json.stream.gwt.JsonObjectImpl;
-import jakarta.json.stream.gwt._JsonValueImpl;
+import jakarta.json.stream.gwt.JsonValueImpl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import jsinterop.base.Js;
@@ -82,8 +82,8 @@ public class JsonValueDecorator {
     private JsonObjectImpl delegate;
 
     public GWTDecorator setDelegate(Object delegate) {
-      if (delegate instanceof _JsonValueImpl) {
-        this.delegate = (JsonObjectImpl) ((_JsonValueImpl) delegate).asJsonObject();
+      if (delegate instanceof JsonValueImpl) {
+        this.delegate = (JsonObjectImpl) ((JsonValueImpl) delegate).asJsonObject();
       } else {
         this.delegate = (JsonObjectImpl) delegate;
       }

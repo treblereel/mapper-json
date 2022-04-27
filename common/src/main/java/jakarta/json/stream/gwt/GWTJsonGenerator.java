@@ -18,7 +18,6 @@ package jakarta.json.stream.gwt;
 
 import elemental2.core.JsArray;
 import jakarta.json.JsonObjectBuilder;
-import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonGeneratorDecorator;
@@ -32,36 +31,11 @@ public class GWTJsonGenerator extends JsonGeneratorDecorator {
   }
 
   @Override
-  public JsonGenerator writeStartObject() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator writeStartObject(String name) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator writeKey(String name) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator writeStartArray() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public JsonGenerator writeStartArray(String name) {
     JsArray array = new JsArray();
     GwtArrayJsonGenerator generator = new GwtArrayJsonGenerator(array, ctx);
     builder.add(name, generator.build());
     return generator;
-  }
-
-  @Override
-  public JsonGenerator write(String name, JsonValue value) {
-    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -113,62 +87,6 @@ public class GWTJsonGenerator extends JsonGeneratorDecorator {
     builder.addNull(name);
     return this;
   }
-
-  @Override
-  public JsonGenerator writeEnd() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(JsonValue value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(String value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(BigDecimal value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(BigInteger value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(int value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(long value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(double value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(boolean value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator writeNull() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void close() {}
-
-  @Override
-  public void flush() {}
 
   public JsonObjectBuilder builder() {
     return builder;
