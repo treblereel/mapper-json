@@ -24,9 +24,7 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.UnknownType;
-import com.google.auto.common.MoreElements;
 import jakarta.json.stream.AbstractBeanJsonSerializer;
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.apt.definition.BeanDefinition;
@@ -35,8 +33,6 @@ import org.treblereel.gwt.json.mapper.apt.definition.FieldDefinitionFactory;
 import org.treblereel.gwt.json.mapper.apt.logger.TreeLogger;
 
 public class SerializerGenerator extends AbstractGenerator {
-
-  private static final String BEAN_JSON_SERIALIZER_IMPL = "_JsonSerializerImpl";
 
   private final FieldDefinitionFactory fieldDefinitionFactory;
 
@@ -49,11 +45,7 @@ public class SerializerGenerator extends AbstractGenerator {
 
   @Override
   protected String getMapperName(TypeElement type) {
-    return (type.getEnclosingElement().getKind().equals(ElementKind.PACKAGE)
-            ? ""
-            : MoreElements.asType(type.getEnclosingElement()).getSimpleName().toString() + "_")
-        + type.getSimpleName()
-        + BEAN_JSON_SERIALIZER_IMPL;
+    return context.getTypeUtils().getJsonSerializerImplName(type);
   }
 
   @Override

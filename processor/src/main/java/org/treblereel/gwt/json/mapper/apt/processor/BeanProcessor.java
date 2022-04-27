@@ -19,10 +19,7 @@ package org.treblereel.gwt.json.mapper.apt.processor;
 import com.google.auto.common.MoreTypes;
 import jakarta.json.bind.annotation.JsonbTransient;
 import java.util.*;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
@@ -69,8 +66,6 @@ public class BeanProcessor {
 
   private void processField(VariableElement field) {
     if (checkField(field)) {
-      // Ensure the serializer/deserializer is generated for the fields concrete type, considering
-      // XmlElement and XmlElementRef types
       TypeMirror typeMirror = field.asType();
       checkTypeAndAdd(typeMirror);
     }
@@ -100,6 +95,9 @@ public class BeanProcessor {
     } else if (type.getKind().equals(TypeKind.ARRAY)) {
       ArrayType arrayType = (ArrayType) type;
       processBean(MoreTypes.asTypeElement(arrayType.getComponentType()));
+    } else if (MoreTypes.isType(type)
+        && !MoreTypes.asElement(type).getKind().equals(ElementKind.ENUM)) {
+      processBean(MoreTypes.asTypeElement(type));
     }
   }
 

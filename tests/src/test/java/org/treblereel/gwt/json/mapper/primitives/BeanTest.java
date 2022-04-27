@@ -39,7 +39,6 @@ public class BeanTest {
   @Test
   public void testValues() {
     Bean bean = new Bean();
-
     bean.setName("Bean");
     bean.set_int(3);
     bean.set_boolean(true);

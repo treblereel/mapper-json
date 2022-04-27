@@ -188,6 +188,34 @@ public class TypeUtils {
     return property.getKind().isPrimitive() || isBoxedTypeOrString(property);
   }
 
+  private static final String BEAN_JSON_SERIALIZER_IMPL = "_JsonSerializerImpl";
+
+  private static final String BEAN_JSON_DESERIALIZER_IMPL = "_JsonDeserializerImpl";
+
+  public String getJsonSerializerImplQualifiedName(TypeElement type) {
+    return elements.getPackageOf(type) + "." + getJsonSerializerImplName(type);
+  }
+
+  public String getJsonSerializerImplName(TypeElement type) {
+    return (type.getEnclosingElement().getKind().equals(ElementKind.PACKAGE)
+            ? ""
+            : MoreElements.asType(type.getEnclosingElement()).getSimpleName().toString() + "_")
+        + type.getSimpleName()
+        + BEAN_JSON_SERIALIZER_IMPL;
+  }
+
+  public String getJsonDeserializerImplQualifiedName(TypeElement type) {
+    return elements.getPackageOf(type) + "." + getJsonDeserializerImplName(type);
+  }
+
+  public String getJsonDeserializerImplName(TypeElement type) {
+    return (type.getEnclosingElement().getKind().equals(ElementKind.PACKAGE)
+            ? ""
+            : MoreElements.asType(type.getEnclosingElement()).getSimpleName().toString() + "_")
+        + type.getSimpleName()
+        + BEAN_JSON_DESERIALIZER_IMPL;
+  }
+
   public class BoxedTypes {
 
     private Set<TypeMirror> boxedTypes = new HashSet<>();

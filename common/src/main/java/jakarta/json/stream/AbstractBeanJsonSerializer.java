@@ -29,4 +29,13 @@ public class AbstractBeanJsonSerializer<T> implements JsonbSerializer<T> {
   public void serialize(T obj, JsonGenerator generator, SerializationContext ctx) {
     properties.forEach(p -> p.accept(obj, (JsonGeneratorDecorator) generator, ctx));
   }
+
+  public void serialize(
+      T obj, String objectName, JsonGenerator generator, SerializationContext ctx) {
+    if (obj != null) {
+      JsonGenerator objBuilder = generator.writeStartObject(objectName);
+      properties.forEach(p -> p.accept(obj, (JsonGeneratorDecorator) objBuilder, ctx));
+      objBuilder.writeEnd();
+    }
+  }
 }

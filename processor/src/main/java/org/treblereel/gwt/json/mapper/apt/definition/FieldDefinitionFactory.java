@@ -45,6 +45,8 @@ public class FieldDefinitionFactory {
       result = new BasicTypeFieldDefinition(property, context);
     } else if (type.getKind().equals(TypeKind.ARRAY)) {
       result = new ArrayBeanFieldDefinition(property, context);
+    } else {
+      result = new DefaultBeanFieldDefinition(property, context);
     }
 
     if (result == null) {

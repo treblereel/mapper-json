@@ -19,89 +19,24 @@ package jakarta.json.stream;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonValue;
+import jakarta.json.bind.serializer.SerializationContext;
+import jakarta.json.stream.jre.JreJsonGenerator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class JsonArrayGenerator implements JsonGenerator {
+public class JsonArrayGenerator extends JreJsonGenerator {
 
   private final JsonArrayBuilder arrayBuilder;
-  private final JsonObjectBuilder builder;
   private final String name;
 
-  public JsonArrayGenerator(JsonArrayBuilder arrayBuilder, JsonObjectBuilder builder, String name) {
+  public JsonArrayGenerator(
+      JsonArrayBuilder arrayBuilder,
+      JsonObjectBuilder builder,
+      String name,
+      SerializationContext ctx) {
+    super(builder, ctx);
     this.arrayBuilder = arrayBuilder;
-    this.builder = builder;
     this.name = name;
-  }
-
-  @Override
-  public JsonGenerator writeStartObject() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator writeStartObject(String name) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator writeKey(String name) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator writeStartArray() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator writeStartArray(String name) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(String name, JsonValue value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(String name, String value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(String name, BigInteger value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(String name, BigDecimal value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(String name, int value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(String name, long value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(String name, double value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator write(String name, boolean value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public JsonGenerator writeNull(String name) {
-    throw new UnsupportedOperationException();
   }
 
   @Override
