@@ -34,4 +34,9 @@ public abstract class AbstractArrayJsonDeserializer<T> extends JsonDeserializer<
     }
     return collection;
   }
+
+  @Override
+  public T deserialize(JsonValue value, DeserializationContext ctx) {
+    throw new UnsupportedOperationException();
+  }
 }

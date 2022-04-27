@@ -45,6 +45,11 @@ public class JsonArrayGenerator extends JreJsonGenerator {
     return this;
   }
 
+  public JsonGenerator write(JsonGeneratorDecorator value) {
+    arrayBuilder.add(value.builder);
+    return this;
+  }
+
   @Override
   public JsonGenerator write(JsonValue value) {
     arrayBuilder.add(value);

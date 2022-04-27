@@ -86,6 +86,10 @@ public class TypeRegistry {
     throw new TypeDeserializerNotFoundException(typeName);
   }
 
+  public boolean has(TypeMirror typeMirror) {
+    return buildIn.containsKey(typeMirror.toString());
+  }
+
   public ClassMapper get(String typeName) {
     if (buildIn.containsKey(typeName)) {
       return buildIn.get(typeName);

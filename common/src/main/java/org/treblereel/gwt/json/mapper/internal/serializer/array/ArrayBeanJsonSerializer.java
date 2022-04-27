@@ -16,17 +16,17 @@
 
 package org.treblereel.gwt.json.mapper.internal.serializer.array;
 
+import jakarta.json.bind.serializer.JsonSerializationContext;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonArrayGenerator;
 import jakarta.json.stream.JsonGenerator;
+import jakarta.json.stream.JsonGeneratorDecorator;
 import org.treblereel.gwt.json.mapper.internal.serializer.JsonSerializer;
 
-public class ArrayJsonSerializer<T> extends BasicArrayJsonSerializer<T[]> {
+public class ArrayBeanJsonSerializer<T> extends ArrayJsonSerializer<T> {
 
-  protected final JsonSerializer<T> serializer;
-
-  public ArrayJsonSerializer(JsonSerializer<T> serializer) {
-    this.serializer = serializer;
+  public ArrayBeanJsonSerializer(JsonSerializer<T> serializer) {
+    super(serializer);
   }
 
   @Override
@@ -34,15 +34,13 @@ public class ArrayJsonSerializer<T> extends BasicArrayJsonSerializer<T[]> {
       T[] obj, String property, JsonGenerator generator, SerializationContext ctx) {
     if (obj != null) {
       JsonArrayGenerator builder = (JsonArrayGenerator) generator.writeStartArray(property);
+      JsonSerializationContext jsonSerializationContext = (JsonSerializationContext) ctx;
       for (int i = 0; i < obj.length; i++) {
-        serializer.serialize(obj[i], builder, ctx);
+        JsonGeneratorDecorator arrayElmBuilder = jsonSerializationContext.createGenerator();
+        serializer.serialize(obj[i], arrayElmBuilder, ctx);
+        builder.write(arrayElmBuilder);
       }
       builder.writeEnd();
     }
-  }
-
-  @Override
-  public void serialize(T[] obj, JsonGenerator generator, SerializationContext ctx) {
-    throw new UnsupportedOperationException();
   }
 }

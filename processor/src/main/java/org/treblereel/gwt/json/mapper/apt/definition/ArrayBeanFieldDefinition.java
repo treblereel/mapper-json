@@ -20,6 +20,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.stmt.*;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.google.auto.common.MoreTypes;
 import java.util.HashMap;
 import java.util.Map;
 import javax.lang.model.element.TypeElement;
@@ -27,6 +28,7 @@ import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeMirror;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.internal.deserializer.array.ArrayJsonDeserializer;
+import org.treblereel.gwt.json.mapper.internal.serializer.array.ArrayBeanJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.array.ArrayJsonSerializer;
 
 public class ArrayBeanFieldDefinition extends FieldDefinition {
@@ -70,8 +72,21 @@ public class ArrayBeanFieldDefinition extends FieldDefinition {
       return generatePrimitiveArrayDeserCall(field, arrayType);
     }
 
-    TypeElement deser =
-        context.getTypeRegistry().getDeserializer(arrayType.getComponentType().toString());
+    String deser;
+    if (context.getTypeRegistry().has(arrayType.getComponentType())) {
+      deser =
+          context
+              .getTypeRegistry()
+              .getDeserializer(arrayType.getComponentType().toString())
+              .getQualifiedName()
+              .toString();
+    } else {
+      deser =
+          context
+              .getTypeUtils()
+              .getJsonDeserializerImplQualifiedName(
+                  MoreTypes.asTypeElement(arrayType.getComponentType()));
+    }
 
     ObjectCreationExpr arrayJsonDeserializer = new ObjectCreationExpr();
     ClassOrInterfaceType type = new ClassOrInterfaceType();
@@ -85,9 +100,7 @@ public class ArrayBeanFieldDefinition extends FieldDefinition {
             .addArgument(
                 new MethodCallExpr(
                         arrayJsonDeserializer
-                            .addArgument(
-                                new ObjectCreationExpr()
-                                    .setType(deser.getQualifiedName().toString()))
+                            .addArgument(new ObjectCreationExpr().setType(deser))
                             .addArgument(createArrayCreatorCall(arrayType.getComponentType())),
                         "deserialize")
                     .addArgument(
@@ -127,6 +140,7 @@ public class ArrayBeanFieldDefinition extends FieldDefinition {
   @Override
   public Statement getFieldSerializer(PropertyDefinition field, CompilationUnit cu) {
     cu.addImport(ArrayJsonSerializer.class);
+    cu.addImport(ArrayBeanJsonSerializer.class);
 
     ArrayType arrayType = (ArrayType) property;
 
@@ -134,21 +148,34 @@ public class ArrayBeanFieldDefinition extends FieldDefinition {
       return generatePrimitiveArraySerCall(field, arrayType);
     }
 
-    TypeElement ser =
-        context.getTypeRegistry().getSerializer(arrayType.getComponentType().toString());
-
     ObjectCreationExpr arrayJsonSerializer = new ObjectCreationExpr();
     ClassOrInterfaceType type = new ClassOrInterfaceType();
-    type.setName(ArrayJsonSerializer.class.getSimpleName());
+
+    String ser;
+    if (context.getTypeRegistry().has(arrayType.getComponentType())) {
+      type.setName(ArrayJsonSerializer.class.getSimpleName());
+      ser =
+          context
+              .getTypeRegistry()
+              .getSerializer(arrayType.getComponentType().toString())
+              .getQualifiedName()
+              .toString();
+    } else {
+      type.setName(ArrayBeanJsonSerializer.class.getSimpleName());
+      ser =
+          context
+              .getTypeUtils()
+              .getJsonSerializerImplQualifiedName(
+                  MoreTypes.asTypeElement(arrayType.getComponentType()));
+    }
+
     type.setTypeArguments(
         new ClassOrInterfaceType().setName(arrayType.getComponentType().toString()));
     arrayJsonSerializer.setType(type);
 
     return new ExpressionStmt(
         new MethodCallExpr(
-                arrayJsonSerializer.addArgument(
-                    new ObjectCreationExpr().setType(ser.getQualifiedName().toString())),
-                "serialize")
+                arrayJsonSerializer.addArgument(new ObjectCreationExpr().setType(ser)), "serialize")
             .addArgument(
                 new MethodCallExpr(
                     new NameExpr("bean"), field.getGetter().getSimpleName().toString()))
