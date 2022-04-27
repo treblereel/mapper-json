@@ -14,35 +14,33 @@
  * limitations under the License.
  */
 
-package jakarta.json;
+package jakarta.json.stream.gwt;
 
 import elemental2.core.Global;
+import elemental2.core.JsArray;
+import elemental2.core.Reflect;
+import jakarta.json.*;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import jsinterop.base.Js;
-import jsinterop.base.JsPropertyMap;
 
 public class JsonObjectImpl implements JsonObject {
 
-  private JsPropertyMap holder;
+  public Object holder; // TODO make it private
 
   public JsonObjectImpl(String json) {
     this(Global.JSON.parse(json));
   }
 
   public JsonObjectImpl(Object holder) {
-    this(Js.asPropertyMap(holder));
-  }
-
-  public JsonObjectImpl(JsPropertyMap holder) {
     this.holder = holder;
   }
 
   @Override
   public JsonArray getJsonArray(String name) {
-    holder.get(name);
-    return null;
+    JsArray array = (JsArray) Reflect.get(holder, name);
+    return new JsonArrayImpl(array);
   }
 
   @Override
@@ -52,7 +50,7 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public JsonNumber getJsonNumber(String name) {
-    return new JsonNumberImpl(holder.get(name));
+    return new JsonNumberImpl(Js.asPropertyMap(holder).get(name));
   }
 
   @Override
@@ -62,7 +60,7 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public String getString(String name) {
-    return holder.get(name).toString();
+    return Js.asPropertyMap(holder).get(name).toString();
   }
 
   @Override
@@ -72,7 +70,7 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public int getInt(String name) {
-    return Integer.valueOf(holder.get(name).toString());
+    return Integer.valueOf(Js.asPropertyMap(holder).get(name).toString());
   }
 
   @Override
@@ -82,7 +80,7 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public boolean getBoolean(String name) {
-    return Boolean.valueOf(holder.get(name).toString());
+    return Boolean.valueOf(Js.asPropertyMap(holder).get(name).toString());
   }
 
   @Override
@@ -112,7 +110,7 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public boolean containsKey(Object key) {
-    return holder.has(key.toString());
+    return Js.asPropertyMap(holder).has(key.toString());
   }
 
   @Override
@@ -122,7 +120,7 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public JsonValue get(Object key) {
-    throw new UnsupportedOperationException();
+    return new JsonObjectImpl(Js.asPropertyMap(holder).get(key.toString()));
   }
 
   @Override
@@ -158,6 +156,10 @@ public class JsonObjectImpl implements JsonObject {
   @Override
   public Set<Entry<String, JsonValue>> entrySet() {
     throw new UnsupportedOperationException();
+  }
+
+  public Double asBoxedDouble() {
+    return Js.uncheckedCast(holder);
   }
 
   @Override

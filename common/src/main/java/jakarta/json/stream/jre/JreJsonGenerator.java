@@ -16,12 +16,24 @@
 
 package jakarta.json.stream.jre;
 
+import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObjectBuilder;
+import jakarta.json.bind.serializer.SerializationContext;
+import jakarta.json.stream.JsonArrayGenerator;
+import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonGeneratorDecorator;
+import org.treblereel.gwt.json.mapper.annotation.GwtIncompatible;
 
 public class JreJsonGenerator extends JsonGeneratorDecorator {
 
-  public JreJsonGenerator(JsonObjectBuilder builder) {
-    super(builder);
+  public JreJsonGenerator(JsonObjectBuilder builder, SerializationContext ctx) {
+    super(builder, ctx);
+  }
+
+  @GwtIncompatible
+  @Override
+  public JsonGenerator writeStartArray(String name) {
+    JsonArrayBuilder arrayBuilder = jakarta.json.Json.createArrayBuilder();
+    return new JsonArrayGenerator(arrayBuilder, builder, name);
   }
 }

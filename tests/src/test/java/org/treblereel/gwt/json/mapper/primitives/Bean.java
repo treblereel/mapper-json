@@ -30,6 +30,8 @@ public class Bean {
   private boolean _boolean;
   private short _short;
 
+  private String _string;
+
   public String getName() {
     return name;
   }
@@ -106,11 +108,20 @@ public class Bean {
         && Float.compare(bean._float, _float) == 0
         && _boolean == bean._boolean
         && _short == bean._short
-        && Objects.equals(name, bean.name);
+        && Objects.equals(name, bean.name)
+        && Objects.equals(_string, bean._string);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, _int, _long, _double, _char, _float, _boolean, _short);
+    return Objects.hash(name, _int, _long, _double, _char, _float, _boolean, _short, _string);
+  }
+
+  public String get_string() {
+    return _string;
+  }
+
+  public void set_string(String _string) {
+    this._string = _string;
   }
 }

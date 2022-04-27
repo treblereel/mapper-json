@@ -33,6 +33,7 @@ public class BeanTest {
     assertEquals(
         "{\"_int\":0,\"_long\":0,\"_double\":0.0,\"_char\":0,\"_float\":0.0,\"_boolean\":false,\"_short\":0}",
         mapper.toJSON(bean));
+    assertEquals(bean, mapper.fromJSON(mapper.toJSON(bean)));
   }
 
   @Test
@@ -46,19 +47,15 @@ public class BeanTest {
     bean.set_double(10d);
     bean.set_char('a');
     bean.set_float(10f);
+    bean.set_string("testValues");
 
     String result = mapper.toJSON(bean);
     assertEquals(
-        "{\"name\":\"Bean\",\"_int\":3,\"_long\":10,\"_double\":10.0,\"_char\":97,\"_float\":10.0,\"_boolean\":true,\"_short\":0}",
+        "{\"name\":\"Bean\",\"_int\":3,\"_long\":10,\"_double\":10.0,\"_char\":97,\"_float\":10.0,\"_boolean\":true,\"_short\":0,\"_string\":\"testValues\"}",
         result);
 
     Bean parsed = mapper.fromJSON(result);
 
     assertEquals(bean, parsed);
-    assertEquals(bean.is_boolean(), parsed.is_boolean());
-    assertEquals(bean.get_long(), parsed.get_long());
-    assertEquals(bean.get_double(), parsed.get_double(), 0.0);
-    assertEquals(bean.get_char(), parsed.get_char());
-    assertEquals(bean.get_float(), parsed.get_float(), 0.1);
   }
 }

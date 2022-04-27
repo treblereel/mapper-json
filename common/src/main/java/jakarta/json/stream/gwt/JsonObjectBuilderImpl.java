@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package jakarta.json;
+package jakarta.json.stream.gwt;
 
 import elemental2.core.JsNumber;
+import jakarta.json.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import jsinterop.base.JsPropertyMap;
@@ -29,7 +30,12 @@ public class JsonObjectBuilderImpl implements JsonObjectBuilder {
 
   @Override
   public JsonObjectBuilder add(String name, JsonValue value) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (value instanceof JsonArrayImpl) {
+      object.set(name, ((JsonArrayImpl) value).array);
+    } else {
+      object.set(name, value);
+    }
+    return this;
   }
 
   @Override
@@ -94,7 +100,8 @@ public class JsonObjectBuilderImpl implements JsonObjectBuilder {
 
   @Override
   public JsonObjectBuilder add(String name, JsonArrayBuilder builder) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    object.set(name, builder.build());
+    return this;
   }
 
   @Override

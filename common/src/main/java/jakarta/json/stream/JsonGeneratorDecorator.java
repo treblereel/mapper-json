@@ -16,10 +16,11 @@
 
 package jakarta.json.stream;
 
-import jakarta.json.Json;
-import jakarta.json.JsonArrayBuilder;
+import elemental2.core.JsArray;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonValue;
+import jakarta.json.bind.serializer.SerializationContext;
+import jakarta.json.stream.gwt.GwtArrayJsonGenerator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -27,8 +28,11 @@ public class JsonGeneratorDecorator implements JsonGenerator {
 
   protected final JsonObjectBuilder builder;
 
-  public JsonGeneratorDecorator(JsonObjectBuilder builder) {
+  protected final SerializationContext ctx;
+
+  public JsonGeneratorDecorator(JsonObjectBuilder builder, SerializationContext ctx) {
     this.builder = builder;
+    this.ctx = ctx;
   }
 
   @Override
@@ -53,8 +57,10 @@ public class JsonGeneratorDecorator implements JsonGenerator {
 
   @Override
   public JsonGenerator writeStartArray(String name) {
-    JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-    return new JsonArrayGenerator(arrayBuilder, builder, name);
+    JsArray array = new JsArray();
+    GwtArrayJsonGenerator generator = new GwtArrayJsonGenerator(array, ctx);
+    builder.add(name, generator);
+    return generator;
   }
 
   @Override

@@ -17,9 +17,9 @@
 package jakarta.json.bind.serializer;
 
 import jakarta.json.Json;
-import jakarta.json.JsonObjectImpl;
 import jakarta.json.stream.JsonParser;
 import jakarta.json.stream.JsonParserImpl;
+import jakarta.json.stream.gwt.JsonObjectImpl;
 import java.io.StringReader;
 import java.lang.reflect.Type;
 import org.treblereel.gwt.json.mapper.annotation.GwtIncompatible;

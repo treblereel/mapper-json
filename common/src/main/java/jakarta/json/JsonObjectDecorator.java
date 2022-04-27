@@ -134,6 +134,9 @@ public class JsonObjectDecorator implements JsonObject {
 
   @Override
   public JsonValue get(Object key) {
+    if (!holder.containsKey(key)) {
+      return null;
+    }
     return holder.get(key);
   }
 
@@ -170,80 +173,5 @@ public class JsonObjectDecorator implements JsonObject {
   @Override
   public Set<Entry<String, JsonValue>> entrySet() {
     return holder.entrySet();
-  }
-
-  public long getLong(String name) {
-    if (holder.containsKey(name)) {
-      return holder.getJsonNumber(name).longValue();
-    } else {
-      return 0;
-    }
-  }
-
-  public Long getLongBoxed(String name) {
-    if (holder.containsKey(name)) {
-      return holder.getJsonNumber(name).longValue();
-    }
-    return null;
-  }
-
-  public double getDouble(String name) {
-    if (holder.containsKey(name)) {
-      return holder.getJsonNumber(name).doubleValue();
-    } else {
-      return 0;
-    }
-  }
-
-  public Double getDoubleBoxed(String name) {
-    if (holder.containsKey(name)) {
-      return holder.getJsonNumber(name).doubleValue();
-    }
-    return null;
-  }
-
-  public char getChar(String name) {
-    if (holder.containsKey(name)) {
-      return (char) holder.getJsonNumber(name).intValue();
-    } else {
-      return '\u0000';
-    }
-  }
-
-  public Character getCharBoxed(String name) {
-    if (holder.containsKey(name)) {
-      return (char) holder.getJsonNumber(name).intValue();
-    }
-    return null;
-  }
-
-  public float getFloat(String name) {
-    if (holder.containsKey(name)) {
-      return holder.getJsonNumber(name).numberValue().floatValue();
-    } else {
-      return 0;
-    }
-  }
-
-  public Float getFloatBoxed(String name) {
-    if (holder.containsKey(name)) {
-      return holder.getJsonNumber(name).numberValue().floatValue();
-    }
-    return null;
-  }
-
-  public short getShort(String name) {
-    if (holder.containsKey(name)) {
-      return (short) holder.getJsonNumber(name).intValue();
-    } else {
-      return 0;
-    }
-  }
-
-  public Short getShortBoxed(String name) {
-    if (holder.containsKey(name)) {
-      return (short) holder.getJsonNumber(name).intValue();
-    }
-    return null;
   }
 }

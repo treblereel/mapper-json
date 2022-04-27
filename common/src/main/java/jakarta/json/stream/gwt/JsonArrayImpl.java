@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-package jakarta.json;
+package jakarta.json.stream.gwt;
 
 import elemental2.core.JsArray;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonNumber;
+import jakarta.json.JsonNumberImpl;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonString;
+import jakarta.json.JsonStringImpl;
+import jakarta.json.JsonValue;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -24,18 +31,19 @@ import java.util.ListIterator;
 
 public class JsonArrayImpl implements JsonArray {
 
-  private JsArray array;
+  JsArray array;
 
   public JsonArrayImpl() {
     this(new JsArray());
   }
 
-  public JsonArrayImpl(Object array) {
-    this(JsArray.of(array));
-  }
-
   public JsonArrayImpl(JsArray array) {
     this.array = array;
+  }
+
+  @Override
+  public JsonArray asJsonArray() {
+    return this;
   }
 
   @Override
@@ -45,7 +53,7 @@ public class JsonArrayImpl implements JsonArray {
 
   @Override
   public JsonArray getJsonArray(int index) {
-    return new JsonArrayImpl(array.getAt(index));
+    throw new UnsupportedOperationException();
   }
 
   @Override

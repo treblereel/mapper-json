@@ -53,64 +53,8 @@ public class BasicTypeFieldDefinition extends FieldDefinition {
   private Expression getPropertyAccessor(PropertyDefinition field) {
     TypeElement deser = context.getTypeRegistry().getDeserializer(field.getType());
 
-    System.out.println("DESER " + deser);
     NameExpr jsonObject = new NameExpr("jsonObject");
     StringLiteralExpr name = new StringLiteralExpr(field.getName());
-
-    /*
-        TypeUtils.BoxedTypes boxedTypes = context.getTypeUtils().getBoxedTypes();
-        TypeMirror type = field.getType();
-        NameExpr jsonObject = new NameExpr("jsonObject");
-        StringLiteralExpr name = new StringLiteralExpr(field.getName());
-        if (boxedTypes.isString(type)) {
-          return new MethodCallExpr(jsonObject, "getString").addArgument(name);
-        }
-        if (boxedTypes.isBoolean(type)) {
-          if (type.getKind().isPrimitive()) {
-            return new MethodCallExpr(jsonObject, "getBoolean").addArgument(name);
-          }
-          return new MethodCallExpr(jsonObject, "getBooleanBoxed").addArgument(name);
-        }
-        if (boxedTypes.isInt(type)) {
-          if (type.getKind().isPrimitive()) {
-            return new MethodCallExpr(jsonObject, "getInt").addArgument(name);
-          }
-          return new MethodCallExpr(jsonObject, "getInteger").addArgument(name);
-        }
-
-        if (boxedTypes.isLong(type)) {
-          if (type.getKind().isPrimitive()) {
-            return new MethodCallExpr(jsonObject, "getLong").addArgument(name);
-          }
-          return new MethodCallExpr(jsonObject, "getLongBoxed").addArgument(name);
-        }
-
-        if (boxedTypes.isDouble(type)) {
-          if (type.getKind().isPrimitive()) {
-            return new MethodCallExpr(jsonObject, "getDouble").addArgument(name);
-          }
-          return new MethodCallExpr(jsonObject, "getDoubleBoxed").addArgument(name);
-        }
-
-        if (boxedTypes.isChar(type)) {
-          if (type.getKind().isPrimitive()) {
-            return new MethodCallExpr(jsonObject, "getChar").addArgument(name);
-          }
-          return new MethodCallExpr(jsonObject, "getCharBoxed").addArgument(name);
-        }
-        if (boxedTypes.isFloat(type)) {
-          if (type.getKind().isPrimitive()) {
-            return new MethodCallExpr(jsonObject, "getFloat").addArgument(name);
-          }
-          return new MethodCallExpr(jsonObject, "getFloatBoxed").addArgument(name);
-        }
-        if (boxedTypes.isShort(type)) {
-          if (type.getKind().isPrimitive()) {
-            return new MethodCallExpr(jsonObject, "getShort").addArgument(name);
-          }
-          return new MethodCallExpr(jsonObject, "getShortBoxed").addArgument(name);
-        }
-    */
 
     return new MethodCallExpr(
             new ObjectCreationExpr().setType(deser.getQualifiedName().toString()), "deserialize")

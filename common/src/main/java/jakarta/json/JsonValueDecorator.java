@@ -18,8 +18,8 @@ package jakarta.json;
 
 import elemental2.core.JsBoolean;
 import elemental2.core.JsNumber;
-import elemental2.core.JsObject;
-import elemental2.core.JsString;
+import jakarta.json.stream.gwt.JsonObjectImpl;
+import jakarta.json.stream.gwt._JsonValueImpl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import jsinterop.base.Js;
@@ -79,55 +79,62 @@ public class JsonValueDecorator {
 
   private static class GWTDecorator {
 
-    private JsObject delegate;
+    private JsonObjectImpl delegate;
 
-    private GWTDecorator setDelegate(Object delegate) {
-      this.delegate = (JsObject) delegate;
+    public GWTDecorator setDelegate(Object delegate) {
+      if (delegate instanceof _JsonValueImpl) {
+        this.delegate = (JsonObjectImpl) ((_JsonValueImpl) delegate).asJsonObject();
+      } else {
+        this.delegate = (JsonObjectImpl) delegate;
+      }
       return this;
     };
 
-    private Integer getInteger() {
-      return ((Double) Js.<JsNumber>uncheckedCast(delegate).valueOf()).intValue();
+    public Integer getInteger() {
+      return Double.valueOf(Js.<JsNumber>uncheckedCast(delegate).valueOf()).intValue();
     }
 
-    private Double getDouble() {
-      return Js.<JsNumber>uncheckedCast(delegate).valueOf();
+    public Double getDouble() {
+      return new JsNumber(delegate).valueOf();
     }
 
-    private Float getFloat() {
-      return ((Double) Js.<JsNumber>uncheckedCast(delegate).valueOf()).floatValue();
+    public Float getFloat() {
+      return Double.valueOf(new JsNumber(delegate).valueOf()).floatValue();
     }
 
-    private Long getLong() {
-      return ((Double) Js.<JsNumber>uncheckedCast(delegate).valueOf()).longValue();
+    public Long getLong() {
+      return Double.valueOf(new JsNumber(delegate).valueOf()).longValue();
     }
 
-    private Byte getByte() {
-      return ((Double) Js.<JsNumber>uncheckedCast(delegate).valueOf()).byteValue();
+    public Byte getByte() {
+      return Double.valueOf(new JsNumber(delegate).valueOf()).byteValue();
     }
 
-    private Short getShort() {
-      return (short) ((Double) Js.<JsNumber>uncheckedCast(delegate).valueOf()).intValue();
+    public Short getShort() {
+      return (short) Double.valueOf(new JsNumber(delegate).valueOf()).intValue();
     }
 
-    private Character getCharacter() {
-      return (char) ((Double) Js.<JsNumber>uncheckedCast(delegate).valueOf()).intValue();
+    public Character getCharacter() {
+      return (char) Double.valueOf(new JsNumber(delegate).valueOf()).intValue();
     }
 
-    private String getString() {
-      return Js.<JsString>uncheckedCast(delegate).toString_();
+    public String getString() {
+      if (delegate == null) {
+        return null;
+      }
+      return Js.asString(delegate.holder);
     }
 
-    private Boolean getBoolean() {
-      return Js.<JsBoolean>uncheckedCast(delegate).valueOf();
+    public Boolean getBoolean() {
+      return new JsBoolean(delegate.holder).valueOf();
     }
 
-    private BigInteger getBigInteger() {
-      return BigDecimal.valueOf(Js.<JsNumber>uncheckedCast(delegate).valueOf()).toBigInteger();
+    public BigInteger getBigInteger() {
+      return BigDecimal.valueOf(new JsNumber(delegate).valueOf()).toBigInteger();
     }
 
-    private BigDecimal getBigDecimal() {
-      return BigDecimal.valueOf(Js.<JsNumber>uncheckedCast(delegate).valueOf());
+    public BigDecimal getBigDecimal() {
+      return BigDecimal.valueOf(new JsNumber(delegate).valueOf());
     }
   }
 
@@ -135,64 +142,79 @@ public class JsonValueDecorator {
 
     @GwtIncompatible private JsonValue delegate;
 
+    @Override
     @GwtIncompatible
-    private JreDecorator setDelegate(Object delegate) {
+    public GWTDecorator setDelegate(Object delegate) {
       this.delegate = (JsonValue) delegate;
       return this;
     };
 
+    @Override
     @GwtIncompatible
-    private Integer getInteger() {
+    public Integer getInteger() {
       return ((JsonNumber) delegate).intValue();
     }
 
+    @Override
     @GwtIncompatible
-    private Double getDouble() {
+    public Double getDouble() {
       return ((JsonNumber) delegate).doubleValue();
     }
 
+    @Override
     @GwtIncompatible
-    private Float getFloat() {
+    public Float getFloat() {
       return ((JsonNumber) delegate).numberValue().floatValue();
     }
 
+    @Override
     @GwtIncompatible
-    private Long getLong() {
+    public Long getLong() {
       return ((JsonNumber) delegate).numberValue().longValue();
     }
 
+    @Override
     @GwtIncompatible
-    private Byte getByte() {
+    public Byte getByte() {
       return ((JsonNumber) delegate).numberValue().byteValue();
     }
 
+    @Override
     @GwtIncompatible
-    private Short getShort() {
+    public Short getShort() {
       return (short) ((JsonNumber) delegate).intValue();
     }
 
+    @Override
     @GwtIncompatible
-    private Character getCharacter() {
+    public Character getCharacter() {
       return (char) ((JsonNumber) delegate).intValue();
     }
 
+    @Override
     @GwtIncompatible
-    private String getString() {
+    public String getString() {
+      if (delegate == null) {
+        return null;
+      }
       return ((JsonString) delegate).getString();
     }
 
+    @Override
     @GwtIncompatible
-    private Boolean getBoolean() {
+    public Boolean getBoolean() {
       return delegate.getValueType().equals(JsonValue.ValueType.TRUE) ? true : false;
     }
 
+    @Override
     @GwtIncompatible
-    private BigInteger getBigInteger() {
+    public BigInteger getBigInteger() {
       return ((JsonNumber) delegate).bigIntegerValue();
     }
 
+    @Override
     @GwtIncompatible
-    private BigDecimal getBigDecimal() {
+    public BigDecimal getBigDecimal() {
       return ((JsonNumber) delegate).bigDecimalValue();
     }
   }

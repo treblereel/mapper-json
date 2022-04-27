@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package jakarta.json;
+package jakarta.json.stream.gwt;
 
-import elemental2.core.JsObject;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 
 public class _JsonValueImpl implements JsonValue {
 
-  JsObject holder;
+  Object holder;
 
   public _JsonValueImpl(Object holder) {
-    this(new JsObject(holder));
-  }
-
-  public _JsonValueImpl(JsObject holder) {
     this.holder = holder;
   }
 
   @Override
   public ValueType getValueType() {
     throw new UnsupportedOperationException();
+  }
+
+  public JsonObject asJsonObject() {
+    return new JsonObjectImpl(holder);
   }
 }

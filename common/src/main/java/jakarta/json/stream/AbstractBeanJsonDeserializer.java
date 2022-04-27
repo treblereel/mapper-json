@@ -40,9 +40,6 @@ public abstract class AbstractBeanJsonDeserializer<T> implements JsonbDeserializ
   private T deserialize(JsonObject jsonObject, DeserializationContext ctx) {
     T instance = newInstance();
     JsonObjectDecorator jsonObjectDecorator = new JsonObjectDecorator(jsonObject);
-
-    properties.add((boxedBean, uaaaa, context) -> System.out.println("?? " + boxedBean));
-
     properties.forEach(p -> p.accept(instance, jsonObjectDecorator, ctx));
     return instance;
   }
