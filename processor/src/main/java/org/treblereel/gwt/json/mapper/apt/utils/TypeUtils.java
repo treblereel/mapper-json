@@ -28,6 +28,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import org.apache.commons.lang3.StringUtils;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
+import org.treblereel.gwt.json.mapper.apt.exception.GenerationException;
 
 public class TypeUtils {
 
@@ -123,7 +124,12 @@ public class TypeUtils {
         .filter(elm -> elm.getParameters().isEmpty())
         .filter(elm -> types.isSameType(elm.getReturnType(), variable.asType()))
         .findFirst()
-        .orElse(null);
+        .orElseThrow(
+            () ->
+                new GenerationException(
+                    String.format(
+                        "Unable to find suitable getter for %s.%s",
+                        variable.getEnclosingElement(), variable.getSimpleName())));
   }
 
   public List<String> compileGetterMethodName(VariableElement variable) {
@@ -152,7 +158,12 @@ public class TypeUtils {
         .filter(elm -> elm.getParameters().size() == 1)
         .filter(elm -> types.isSameType(elm.getParameters().get(0).asType(), variable.asType()))
         .findFirst()
-        .orElse(null);
+        .orElseThrow(
+            () ->
+                new GenerationException(
+                    String.format(
+                        "Unable to find suitable setter for %s.%s",
+                        variable.getEnclosingElement(), variable.getSimpleName())));
   }
 
   private String compileSetterMethodName(VariableElement variable) {
@@ -186,6 +197,34 @@ public class TypeUtils {
 
   public boolean isSimpleType(TypeMirror property) {
     return property.getKind().isPrimitive() || isBoxedTypeOrString(property);
+  }
+
+  private static final String BEAN_JSON_SERIALIZER_IMPL = "_JsonSerializerImpl";
+
+  private static final String BEAN_JSON_DESERIALIZER_IMPL = "_JsonDeserializerImpl";
+
+  public String getJsonSerializerImplQualifiedName(TypeElement type) {
+    return elements.getPackageOf(type) + "." + getJsonSerializerImplName(type);
+  }
+
+  public String getJsonSerializerImplName(TypeElement type) {
+    return (type.getEnclosingElement().getKind().equals(ElementKind.PACKAGE)
+            ? ""
+            : MoreElements.asType(type.getEnclosingElement()).getSimpleName().toString() + "_")
+        + type.getSimpleName()
+        + BEAN_JSON_SERIALIZER_IMPL;
+  }
+
+  public String getJsonDeserializerImplQualifiedName(TypeElement type) {
+    return elements.getPackageOf(type) + "." + getJsonDeserializerImplName(type);
+  }
+
+  public String getJsonDeserializerImplName(TypeElement type) {
+    return (type.getEnclosingElement().getKind().equals(ElementKind.PACKAGE)
+            ? ""
+            : MoreElements.asType(type.getEnclosingElement()).getSimpleName().toString() + "_")
+        + type.getSimpleName()
+        + BEAN_JSON_DESERIALIZER_IMPL;
   }
 
   public class BoxedTypes {

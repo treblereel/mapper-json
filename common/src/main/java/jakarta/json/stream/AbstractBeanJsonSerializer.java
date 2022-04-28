@@ -20,14 +20,23 @@ import jakarta.json.bind.serializer.JsonbSerializer;
 import jakarta.json.bind.serializer.SerializationContext;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
+import org.treblereel.gwt.json.mapper.internal.serializer.JsonSerializer;
 
-public class AbstractBeanJsonSerializer<T> implements JsonbSerializer<T> {
+public class AbstractBeanJsonSerializer<T> extends JsonSerializer<T> implements JsonbSerializer<T> {
 
-  protected List<BiConsumer<T, JsonGenerator>> properties = new ArrayList<>();
+  protected List<JsonbPropertySerializer<T>> properties = new ArrayList<>();
 
   @Override
   public void serialize(T obj, JsonGenerator generator, SerializationContext ctx) {
-    properties.forEach(p -> p.accept(obj, generator));
+    properties.forEach(p -> p.accept(obj, (JsonGeneratorDecorator) generator, ctx));
+  }
+
+  public void serialize(
+      T obj, String objectName, JsonGenerator generator, SerializationContext ctx) {
+    if (obj != null) {
+      JsonGenerator objBuilder = generator.writeStartObject(objectName);
+      properties.forEach(p -> p.accept(obj, (JsonGeneratorDecorator) objBuilder, ctx));
+      objBuilder.writeEnd();
+    }
   }
 }

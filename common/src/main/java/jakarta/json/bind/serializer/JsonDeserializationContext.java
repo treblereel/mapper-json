@@ -17,16 +17,17 @@
 package jakarta.json.bind.serializer;
 
 import jakarta.json.Json;
-import jakarta.json.JsonObject;
 import jakarta.json.stream.JsonParser;
+import jakarta.json.stream.JsonParserImpl;
+import jakarta.json.stream.gwt.JsonObjectImpl;
 import java.io.StringReader;
 import java.lang.reflect.Type;
+import org.treblereel.gwt.json.mapper.annotation.GwtIncompatible;
 
 public class JsonDeserializationContext implements DeserializationContext {
 
-  public JsonParser createParser(JsonObject json) {
-    JsonParser parser = Json.createParser(new StringReader(json.toString()));
-    return parser;
+  public JsonParser createParser(String json) {
+    return new JREParserFactory().createParser(json);
   }
 
   @Override
@@ -37,5 +38,19 @@ public class JsonDeserializationContext implements DeserializationContext {
   @Override
   public <T> T deserialize(Type type, JsonParser parser) {
     throw new UnsupportedOperationException("Not supported yet.");
+  }
+
+  private static class GWTParserFactory {
+    public JsonParser createParser(String json) {
+      return new JsonParserImpl(new JsonObjectImpl(json));
+    }
+  }
+
+  private static class JREParserFactory extends GWTParserFactory {
+    @GwtIncompatible
+    @Override
+    public JsonParser createParser(String json) {
+      return Json.createParser(new StringReader(json));
+    }
   }
 }

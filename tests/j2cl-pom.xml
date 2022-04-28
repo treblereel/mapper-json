@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>j2cl-tests</artifactId>
+    <groupId>org.treblereel.gwt.json.mapper</groupId>
+    <version>0.2-SNAPSHOT</version>
+
+    <name>J2CL tests</name>
+    <description>JSON marshallers</description>
+    <url>https://github.com/treblereel</url>
+
+    <developers>
+        <developer>
+            <id>treblereel</id>
+            <name>Dmitrii Tikhomirov</name>
+            <email>chani.liet@gmail.com</email>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache License Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>Treblereel</name>
+        <url>https://github.com/treblereel</url>
+    </organization>
+
+    <properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+
+        <j2cl.maven.plugin.version>0.19</j2cl.maven.plugin.version>
+        <elemental2.version>1.1.0</elemental2.version>
+        <jsinterop.base.version>1.0.0</jsinterop.base.version>
+        <j2cl.version>0.10.0-3c97afeac</j2cl.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+            <version>4.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.treblereel.gwt.json.mapper</groupId>
+            <artifactId>common</artifactId>
+            <version>0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.treblereel.gwt.json.mapper</groupId>
+            <artifactId>processor</artifactId>
+            <version>0.2-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vertispan.j2cl</groupId>
+            <artifactId>junit-annotations</artifactId>
+            <version>${j2cl.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vertispan.j2cl</groupId>
+            <artifactId>junit-emul</artifactId>
+            <version>${j2cl.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vertispan.j2cl</groupId>
+            <artifactId>junit-emul</artifactId>
+            <version>${j2cl.version}</version>
+            <classifier>sources</classifier>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.vertispan.j2cl</groupId>
+                <artifactId>j2cl-maven-plugin</artifactId>
+                <version>${j2cl.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>build</id>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <compilationLevel>ADVANCED</compilationLevel>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -16,10 +16,6 @@
 
 package jakarta.json.bind;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
 import java.lang.reflect.Type;
 
 /**
@@ -161,7 +157,8 @@ public interface Jsonb extends AutoCloseable {
    * @throws JsonbException If any unexpected error(s) occur(s) during deserialization.
    * @throws NullPointerException If any of the parameters is {@code null}.
    */
-  <T> T fromJson(Reader reader, Class<T> type) throws JsonbException;
+  @GwtIncompatible
+  <T> T fromJson(java.io.Reader reader, Class<T> type) throws JsonbException;
 
   /**
    * Reads in a JSON data from the specified Reader and return the resulting content tree.
@@ -173,7 +170,8 @@ public interface Jsonb extends AutoCloseable {
    * @throws JsonbException If any unexpected error(s) occur(s) during deserialization.
    * @throws NullPointerException If any of the parameters is {@code null}.
    */
-  <T> T fromJson(Reader reader, Type runtimeType) throws JsonbException;
+  @GwtIncompatible
+  <T> T fromJson(java.io.Reader reader, Type runtimeType) throws JsonbException;
 
   /**
    * Reads in a JSON data from the specified InputStream and return the resulting content tree.
@@ -186,7 +184,8 @@ public interface Jsonb extends AutoCloseable {
    * @throws JsonbException If any unexpected error(s) occur(s) during deserialization.
    * @throws NullPointerException If any of the parameters is {@code null}.
    */
-  <T> T fromJson(InputStream stream, Class<T> type) throws JsonbException;
+  @GwtIncompatible
+  <T> T fromJson(java.io.InputStream stream, Class<T> type) throws JsonbException;
 
   /**
    * Reads in a JSON data from the specified InputStream and return the resulting content tree.
@@ -199,7 +198,8 @@ public interface Jsonb extends AutoCloseable {
    * @throws JsonbException If any unexpected error(s) occur(s) during deserialization.
    * @throws NullPointerException If any of the parameters is {@code null}.
    */
-  <T> T fromJson(InputStream stream, Type runtimeType) throws JsonbException;
+  @GwtIncompatible
+  <T> T fromJson(java.io.InputStream stream, Type runtimeType) throws JsonbException;
 
   /**
    * Writes the Java object tree with root object {@code object} to a String instance as JSON.
@@ -236,7 +236,8 @@ public interface Jsonb extends AutoCloseable {
    * @throws NullPointerException If any of the parameters is {@code null}.
    * @since JSON Binding 1.0
    */
-  void toJson(Object object, Writer writer) throws JsonbException;
+  @GwtIncompatible
+  void toJson(Object object, java.io.Writer writer) throws JsonbException;
 
   /**
    * Writes the object content tree into a Writer character stream.
@@ -249,7 +250,8 @@ public interface Jsonb extends AutoCloseable {
    * @throws NullPointerException If any of the parameters is {@code null}.
    * @since JSON Binding 1.0
    */
-  void toJson(Object object, Type runtimeType, Writer writer) throws JsonbException;
+  @GwtIncompatible
+  void toJson(Object object, Type runtimeType, java.io.Writer writer) throws JsonbException;
 
   /**
    * Writes the object content tree into output stream.
@@ -261,7 +263,8 @@ public interface Jsonb extends AutoCloseable {
    * @throws NullPointerException If any of the parameters is {@code null}.
    * @since JSON Binding 1.0
    */
-  void toJson(Object object, OutputStream stream) throws JsonbException;
+  @GwtIncompatible
+  void toJson(Object object, java.io.OutputStream stream) throws JsonbException;
 
   /**
    * Writes the object content tree into output stream.
@@ -275,5 +278,6 @@ public interface Jsonb extends AutoCloseable {
    * @throws NullPointerException If any of the parameters is {@code null}.
    * @since JSON Binding 1.0
    */
-  void toJson(Object object, Type runtimeType, OutputStream stream) throws JsonbException;
+  @GwtIncompatible
+  void toJson(Object object, Type runtimeType, java.io.OutputStream stream) throws JsonbException;
 }

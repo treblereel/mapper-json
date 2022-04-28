@@ -306,7 +306,7 @@ public interface JsonParser extends /*Auto*/ Closeable {
    *
    * @return a non-null location corresponding to the current parser state in JSON input source
    */
-  JsonLocation getLocation();
+  jakarta.json.stream.JsonLocation getLocation();
 
   /**
    * Returns a {@code JsonObject} and advances the parser to the corresponding {@code END_OBJECT}.

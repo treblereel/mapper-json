@@ -16,11 +16,17 @@
 
 package jakarta.json.stream;
 
+import jakarta.json.JsonObject;
 import java.math.BigDecimal;
+import jsinterop.base.Js;
 
 public class JsonParserImpl implements JsonParser {
 
-  public JsonParserImpl() {}
+  private JsonObject holder;
+
+  public JsonParserImpl(JsonObject holder) {
+    this.holder = holder;
+  }
 
   @Override
   public boolean hasNext() {
@@ -29,37 +35,44 @@ public class JsonParserImpl implements JsonParser {
 
   @Override
   public Event next() {
+    if (holder != null && Js.typeof(holder) == "object") {
+      return Event.START_OBJECT;
+    }
     return null;
+  }
+
+  public JsonObject getObject() {
+    return holder;
   }
 
   @Override
   public String getString() {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean isIntegralNumber() {
-    return false;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public int getInt() {
-    return 0;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public long getLong() {
-    return 0;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public BigDecimal getBigDecimal() {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public JsonLocation getLocation() {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override

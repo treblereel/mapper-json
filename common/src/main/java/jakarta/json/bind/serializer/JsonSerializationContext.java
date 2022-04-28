@@ -19,7 +19,11 @@ package jakarta.json.bind.serializer;
 import jakarta.json.Json;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.stream.JsonGenerator;
-import jakarta.json.stream.JsonGeneratorImpl;
+import jakarta.json.stream.JsonGeneratorDecorator;
+import jakarta.json.stream.gwt.GWTJsonGenerator;
+import jakarta.json.stream.gwt.JsonObjectBuilderImpl;
+import jakarta.json.stream.jre.JreJsonGenerator;
+import org.treblereel.gwt.json.mapper.annotation.GwtIncompatible;
 
 public class JsonSerializationContext implements SerializationContext {
 
@@ -33,9 +37,27 @@ public class JsonSerializationContext implements SerializationContext {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
-  public JsonGeneratorImpl createGenerator() {
-    JsonObjectBuilder builder = Json.createObjectBuilder();
-    JsonGeneratorImpl generator = new JsonGeneratorImpl(builder);
-    return generator;
+  public JsonGeneratorDecorator createGenerator() {
+    return new JREGenerator().createGenerator(this);
+  }
+
+  private static class GWTGenerator {
+
+    public JsonGeneratorDecorator createGenerator(SerializationContext ctx) {
+      JsonObjectBuilder builder = new JsonObjectBuilderImpl();
+      JsonGeneratorDecorator generator = new GWTJsonGenerator(builder, ctx);
+      return generator;
+    }
+  }
+
+  private static class JREGenerator extends GWTGenerator {
+
+    @GwtIncompatible
+    @Override
+    public JsonGeneratorDecorator createGenerator(SerializationContext ctx) {
+      JsonObjectBuilder builder = Json.createObjectBuilder();
+      JsonGeneratorDecorator generator = new JreJsonGenerator(builder, ctx);
+      return generator;
+    }
   }
 }

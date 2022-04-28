@@ -17,16 +17,24 @@
 package jakarta.json.stream;
 
 import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectDecorator;
+import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.DeserializationContext;
 import jakarta.json.bind.serializer.JsonbDeserializer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
+import org.treblereel.gwt.json.mapper.internal.deserializer.JsonDeserializer;
 
-public abstract class AbstractBeanJsonDeserializer<T> implements JsonbDeserializer<T> {
+public abstract class AbstractBeanJsonDeserializer<T> extends JsonDeserializer<T>
+    implements JsonbDeserializer<T> {
 
-  protected List<BiConsumer<T, JsonObject>> properties = new ArrayList<>();
+  protected List<JsonbPropertyDeserializer<T>> properties = new ArrayList<>();
+
+  @Override
+  public T deserialize(JsonValue value, DeserializationContext ctx) {
+    return deserialize(value.asJsonObject(), ctx);
+  }
 
   @Override
   public T deserialize(JsonParser parser, DeserializationContext ctx, Type rtType) {
@@ -37,9 +45,15 @@ public abstract class AbstractBeanJsonDeserializer<T> implements JsonbDeserializ
     return null;
   }
 
-  private T deserialize(JsonObject jsonObject, DeserializationContext ctx) {
+  public T deserialize(JsonObject jsonObject, DeserializationContext ctx) {
+    if (jsonObject == null) {
+      return null;
+    }
     T instance = newInstance();
-    properties.forEach(p -> p.accept(instance, jsonObject));
+    if (!jsonObject.isEmpty()) {
+      JsonObjectDecorator jsonObjectDecorator = new JsonObjectDecorator(jsonObject);
+      properties.forEach(p -> p.accept(instance, jsonObjectDecorator, ctx));
+    }
     return instance;
   }
 

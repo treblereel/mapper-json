@@ -7,7 +7,7 @@
     <groupId>org.treblereel.gwt.json.mapper</groupId>
     <artifactId>mapper-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
     <modules>
         <module>api</module>
         <module>common</module>
@@ -15,8 +15,8 @@
         <module>tests</module>
     </modules>
 
-    <name>mapper-parent</name>
-    <description>JSON marshallers</description>
+    <name>GWT/J2CL Jakarta JSON Binding parent</name>
+    <description>GWT/J2CL Jakarta JSON Binding parent</description>
     <url>https://github.com/treblereel</url>
 
     <developers>
@@ -39,16 +39,18 @@
         <name>Treblereel</name>
         <url>https://github.com/treblereel</url>
     </organization>
+
+    <scm>
+        <url>https://github.com/treblereel/mapper-json</url>
+        <developerConnection>scm:git:git@github.com:treblereel/mapper-json.git</developerConnection>
+        <connection>scm:git:git://github.com/treblereel/mapper-json.git</connection>
+        <tag>HEAD</tag>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.treblereel.gwt.json.mapper</groupId>
-            <artifactId>api</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -85,6 +87,7 @@
         <jakarta.json.version>2.0.1</jakarta.json.version>
 
         <!-- J2CL deps -->
+        <com.google.jsinterop.base.version>1.0.0</com.google.jsinterop.base.version>
         <elemental2.version>1.1.0</elemental2.version>
         <j2cl.version>0.10</j2cl.version>
 
@@ -103,6 +106,11 @@
                 <groupId>com.google.elemental2</groupId>
                 <artifactId>elemental2-dom</artifactId>
                 <version>${elemental2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.jsinterop</groupId>
+                <artifactId>base</artifactId>
+                <version>${com.google.jsinterop.base.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.auto</groupId>
@@ -221,9 +229,12 @@
                         <exclude>**/src/main/resources/**</exclude>
                         <exclude>**/war</exclude>
                         <exclude>**/pom.xml</exclude>
+                        <exclude>**/j2cl-pom.xml</exclude>
                         <exclude>**/.flattened-pom.xml</exclude>
                         <exclude>**/gwt-unitcache</exclude>
-                        <exclude>**/src/test/java/org/treblereel/gwt/xml/mapper/client/tests/pmml/model/**</exclude>
+                        <exclude>**/*.html</exclude>
+                        <exclude>**/*.css</exclude>
+                        <exclude>**/*.xml</exclude>
                     </excludes>
                     <properties>
                         <year>${project.inceptionYear}</year>
@@ -292,5 +303,56 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- release profile to create sources, javadoc, and sign all artifacts before uploading -->
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- see http://central.sonatype.org/pages/working-with-pgp-signatures.html for more detail -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 </project>

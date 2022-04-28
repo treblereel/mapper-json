@@ -18,6 +18,7 @@ package org.treblereel.gwt.json.mapper.apt.definition;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.apt.exception.GenerationException;
@@ -42,7 +43,12 @@ public class FieldDefinitionFactory {
       result = holder.get(property);
     } else if (typeUtils.isSimpleType(property)) {
       result = new BasicTypeFieldDefinition(property, context);
+    } else if (type.getKind().equals(TypeKind.ARRAY)) {
+      result = new ArrayBeanFieldDefinition(property, context);
+    } else {
+      result = new DefaultBeanFieldDefinition(property, context);
     }
+
     if (result == null) {
       throw new GenerationException("Unsupported type: " + type);
     }
