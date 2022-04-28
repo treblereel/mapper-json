@@ -113,8 +113,6 @@ public class PojoArrayTest {
     arr.setId("id");
     arr.setArr(new BeanOne[] {beanOne1, beanOne2});
 
-    System.out.println("JSON  " + mapper.toJSON(arr));
-
     String expected =
         "{\"arr\":[{\"name\":\"AAAAA\",\"value\":\"VVVVV\",\"beanTwo\":{\"name\":\"BeanTwo\",\"age\":111111,\"beanThree\":{\"id\":\"my_id\"}}},{\"name\":\"AAAAA2\",\"value\":\"VVVVV2\",\"beanTwo\":{\"name\":\"BeanTwo\",\"age\":111111,\"beanThree\":{\"id\":\"my_id\"}}}],\"id\":\"id\"}";
     assertEquals(expected, mapper.toJSON(arr));

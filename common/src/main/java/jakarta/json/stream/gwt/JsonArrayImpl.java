@@ -118,7 +118,7 @@ public class JsonArrayImpl implements JsonArray {
 
   @Override
   public boolean isEmpty() {
-    return array.length == 0;
+    return array == null || array.length == 0;
   }
 
   @Override

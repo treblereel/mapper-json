@@ -33,7 +33,7 @@ public abstract class AbstractBeanJsonDeserializer<T> extends JsonDeserializer<T
 
   @Override
   public T deserialize(JsonValue value, DeserializationContext ctx) {
-    return deserialize((JsonObject) value, ctx);
+    return deserialize(value.asJsonObject(), ctx);
   }
 
   @Override

@@ -27,8 +27,16 @@ public abstract class AbstractArrayJsonDeserializer<T> extends JsonDeserializer<
 
   protected <T> List<T> deserializeIntoList(
       JsonValue json, JsonDeserializer<T> internalDeser, DeserializationContext ctx) {
+    if (json == null) {
+      return null;
+    }
     List<T> collection = new ArrayList<>();
     JsonArray array = json.asJsonArray();
+
+    if (array.isEmpty()) {
+      return collection;
+    }
+
     for (int i = 0; i < array.size(); i++) {
       collection.add(internalDeser.deserialize(array.get(i), ctx));
     }
