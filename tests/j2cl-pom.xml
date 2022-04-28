@@ -6,7 +6,7 @@
 
     <artifactId>j2cl-tests</artifactId>
     <groupId>org.treblereel.gwt.json.mapper</groupId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
 
     <name>J2CL tests</name>
     <description>JSON marshallers</description>
@@ -55,12 +55,12 @@
         <dependency>
             <groupId>org.treblereel.gwt.json.mapper</groupId>
             <artifactId>common</artifactId>
-            <version>0.1</version>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.treblereel.gwt.json.mapper</groupId>
             <artifactId>processor</artifactId>
-            <version>0.1</version>
+            <version>0.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
