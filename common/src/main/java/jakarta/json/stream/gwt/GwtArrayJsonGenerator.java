@@ -21,18 +21,17 @@ import elemental2.core.JsNumber;
 import jakarta.json.*;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
+import jakarta.json.stream.JsonGeneratorDecorator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class GwtArrayJsonGenerator implements JsonGenerator, JsonArrayBuilder {
+public class GwtArrayJsonGenerator extends JsonGeneratorDecorator implements JsonArrayBuilder {
 
   private final JsArray array;
 
-  private final SerializationContext ctx;
-
   public GwtArrayJsonGenerator(JsArray array, SerializationContext ctx) {
+    super(null, ctx);
     this.array = array;
-    this.ctx = ctx;
   }
 
   @Override
@@ -112,7 +111,7 @@ public class GwtArrayJsonGenerator implements JsonGenerator, JsonArrayBuilder {
 
   @Override
   public JsonGenerator write(JsonValue value) {
-    array.push(value);
+    array.push(value.asJsonObject());
     return this;
   }
 

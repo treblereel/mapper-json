@@ -17,7 +17,10 @@
 package jakarta.json.stream.gwt;
 
 import elemental2.core.JsNumber;
-import jakarta.json.*;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonValue;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import jsinterop.base.JsPropertyMap;
@@ -100,7 +103,8 @@ public class JsonObjectBuilderImpl implements JsonObjectBuilder {
 
   @Override
   public JsonObjectBuilder add(String name, JsonArrayBuilder builder) {
-    object.set(name, builder.build());
+    JsonArrayImpl impl = (JsonArrayImpl) builder.build();
+    object.set(name, impl.array);
     return this;
   }
 

@@ -44,7 +44,7 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public JsonArray getJsonArray(String name) {
-    JsArray array = (JsArray) Reflect.get(holder, name);
+    JsArray array = Js.uncheckedCast(Reflect.get(holder, name));
     return new JsonArrayImpl(array);
   }
 
@@ -167,6 +167,10 @@ public class JsonObjectImpl implements JsonObject {
   }
 
   public Double asBoxedDouble() {
+    return Js.uncheckedCast(holder);
+  }
+
+  public JsonObject asJsonObject() {
     return Js.uncheckedCast(holder);
   }
 

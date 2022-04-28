@@ -17,7 +17,6 @@
 package org.treblereel.gwt.json.mapper.internal.serializer.array;
 
 import jakarta.json.bind.serializer.SerializationContext;
-import jakarta.json.stream.JsonArrayGenerator;
 import jakarta.json.stream.JsonGenerator;
 import org.treblereel.gwt.json.mapper.internal.serializer.JsonSerializer;
 
@@ -33,7 +32,7 @@ public class ArrayJsonSerializer<T> extends BasicArrayJsonSerializer<T[]> {
   public void serialize(
       T[] obj, String property, JsonGenerator generator, SerializationContext ctx) {
     if (obj != null) {
-      JsonArrayGenerator builder = (JsonArrayGenerator) generator.writeStartArray(property);
+      JsonGenerator builder = generator.writeStartArray(property);
       for (int i = 0; i < obj.length; i++) {
         serializer.serialize(obj[i], builder, ctx);
       }

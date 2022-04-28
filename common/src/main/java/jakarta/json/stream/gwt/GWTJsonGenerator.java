@@ -16,7 +16,6 @@
 
 package jakarta.json.stream.gwt;
 
-import elemental2.core.JsArray;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
@@ -28,14 +27,6 @@ public class GWTJsonGenerator extends JsonGeneratorDecorator {
 
   public GWTJsonGenerator(JsonObjectBuilder builder, SerializationContext ctx) {
     super(builder, ctx);
-  }
-
-  @Override
-  public JsonGenerator writeStartArray(String name) {
-    JsArray array = new JsArray();
-    GwtArrayJsonGenerator generator = new GwtArrayJsonGenerator(array, ctx);
-    builder.add(name, generator.build());
-    return generator;
   }
 
   @Override
