@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package org.treblereel.gwt.json.mapper.collections.list;
+package org.treblereel.gwt.json.mapper.collections.set;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
 import org.treblereel.gwt.json.mapper.annotation.JSONMapper;
 import org.treblereel.gwt.json.mapper.collections.User;
 
 @JSONMapper
-public class Users {
+public class UsersHashSet {
 
-  private List<User> users;
+  private HashSet<User> users;
 
-  public List<User> getUsers() {
+  public HashSet<User> getUsers() {
     return users;
   }
 
-  public void setUsers(List<User> users) {
+  public void setUsers(HashSet<User> users) {
     this.users = users;
   }
 
@@ -38,8 +38,8 @@ public class Users {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    Users users1 = (Users) o;
-    return Objects.equals(users, users1.users);
+    UsersHashSet that = (UsersHashSet) o;
+    return Objects.equals(users, that.users);
   }
 
   @Override

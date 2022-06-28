@@ -19,6 +19,7 @@ package org.treblereel.gwt.json.mapper.collections.list;
 import java.util.ArrayList;
 import java.util.Objects;
 import org.treblereel.gwt.json.mapper.annotation.JSONMapper;
+import org.treblereel.gwt.json.mapper.collections.User;
 
 @JSONMapper
 public class UsersWithArrayList {

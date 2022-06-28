@@ -38,9 +38,7 @@ import org.treblereel.gwt.json.mapper.internal.deserializer.BooleanJsonDeseriali
 import org.treblereel.gwt.json.mapper.internal.deserializer.CharacterJsonDeserializer;
 import org.treblereel.gwt.json.mapper.internal.deserializer.StringJsonDeserializer;
 import org.treblereel.gwt.json.mapper.internal.deserializer.array.*;
-import org.treblereel.gwt.json.mapper.internal.deserializer.collection.ArrayListDeserializer;
-import org.treblereel.gwt.json.mapper.internal.deserializer.collection.LinkedListDeserializer;
-import org.treblereel.gwt.json.mapper.internal.deserializer.collection.ListDeserializer;
+import org.treblereel.gwt.json.mapper.internal.deserializer.collection.*;
 import org.treblereel.gwt.json.mapper.internal.serializer.BaseNumberJsonSerializer.*;
 import org.treblereel.gwt.json.mapper.internal.serializer.BooleanJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.CharacterJsonSerializer;
@@ -306,6 +304,34 @@ public class TypeRegistry {
         .forType(LinkedList.class)
         .serializer(CollectionJsonSerializer.class)
         .deserializer(LinkedListDeserializer.class)
+        .register(buildIn);
+
+    MAPPER
+        .forType(Set.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(HashSetDeserializer.class)
+        .register(buildIn);
+    MAPPER
+        .forType(SortedSet.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(SortedSetDeserializer.class)
+        .register(buildIn);
+
+    MAPPER
+        .forType(HashSet.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(HashSetDeserializer.class)
+        .register(buildIn);
+
+    MAPPER
+        .forType(LinkedHashSet.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(LinkedHashSetDeserializer.class)
+        .register(buildIn);
+    MAPPER
+        .forType(TreeSet.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(SortedSetDeserializer.class)
         .register(buildIn);
   }
 

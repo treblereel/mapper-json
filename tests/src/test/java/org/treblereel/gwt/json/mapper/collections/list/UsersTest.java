@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import org.junit.Test;
+import org.treblereel.gwt.json.mapper.collections.User;
 
 public class UsersTest {
 

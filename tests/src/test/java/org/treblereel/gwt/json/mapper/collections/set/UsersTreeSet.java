@@ -14,52 +14,36 @@
  * limitations under the License.
  */
 
-package org.treblereel.gwt.json.mapper.collections.list;
+package org.treblereel.gwt.json.mapper.collections.set;
 
 import java.util.Objects;
+import java.util.TreeSet;
+import org.treblereel.gwt.json.mapper.annotation.JSONMapper;
+import org.treblereel.gwt.json.mapper.collections.User;
 
-public class User {
+@JSONMapper
+public class UsersTreeSet {
 
-  private String firstName;
-  private String secondName;
-  private boolean isMarried;
+  private TreeSet<User> users;
 
-  public String getFirstName() {
-    return firstName;
+  public TreeSet<User> getUsers() {
+    return users;
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getSecondName() {
-    return secondName;
-  }
-
-  public void setSecondName(String secondName) {
-    this.secondName = secondName;
-  }
-
-  public boolean getIsMarried() {
-    return isMarried;
-  }
-
-  public void setIsMarried(boolean married) {
-    isMarried = married;
+  public void setUsers(TreeSet<User> users) {
+    this.users = users;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    User user = (User) o;
-    return isMarried == user.isMarried
-        && Objects.equals(firstName, user.firstName)
-        && Objects.equals(secondName, user.secondName);
+    UsersTreeSet that = (UsersTreeSet) o;
+    return Objects.equals(users, that.users);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(firstName, secondName, isMarried);
+    return Objects.hash(users);
   }
 }
