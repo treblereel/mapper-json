@@ -41,9 +41,6 @@ public class CollectionsFieldDefinition extends FieldDefinition {
             .getDeserializer(context.getProcessingEnv().getTypeUtils().erasure(property));
 
     cu.addImport(deserializer.getQualifiedName().toString());
-
-    System.out.println("FieldDefinition.getFieldDeserializer: " + deserializer.getQualifiedName());
-
     TypeMirror typeMirror = MoreTypes.asDeclared(field.getType()).getTypeArguments().get(0);
 
     String deser =

@@ -17,11 +17,11 @@
 package org.treblereel.gwt.json.mapper.internal.deserializer.collection;
 
 import java.util.ArrayList;
-import org.treblereel.gwt.json.mapper.internal.deserializer.JsonDeserializer;
+import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
 
 public class ArrayListDeserializer<T> extends CollectionDeserializer<ArrayList<T>, T> {
 
-  public ArrayListDeserializer(JsonDeserializer<T> deserializer) {
+  public ArrayListDeserializer(JsonbDeserializer<T> deserializer) {
     super(deserializer);
   }
 }

@@ -21,11 +21,11 @@ import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.DeserializationContext;
 import java.util.Collection;
 import java.util.LinkedList;
-import org.treblereel.gwt.json.mapper.internal.deserializer.JsonDeserializer;
+import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
 
 public class LinkedListDeserializer<T> extends CollectionDeserializer<LinkedList<T>, T> {
 
-  public LinkedListDeserializer(JsonDeserializer<T> deserializer) {
+  public LinkedListDeserializer(JsonbDeserializer<T> deserializer) {
     super(deserializer);
   }
 

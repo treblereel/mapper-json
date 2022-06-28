@@ -21,12 +21,12 @@ import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.DeserializationContext;
 import java.util.ArrayList;
 import java.util.List;
-import org.treblereel.gwt.json.mapper.internal.deserializer.JsonDeserializer;
+import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
 
-public abstract class AbstractArrayJsonDeserializer<T> extends JsonDeserializer<T> {
+public abstract class AbstractArrayJsonDeserializer<T> extends JsonbDeserializer<T> {
 
   protected <T> List<T> deserializeIntoList(
-      JsonValue json, JsonDeserializer<T> internalDeser, DeserializationContext ctx) {
+      JsonValue json, JsonbDeserializer<T> internalDeser, DeserializationContext ctx) {
     if (json == null) {
       return null;
     }

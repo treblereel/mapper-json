@@ -20,15 +20,15 @@ import jakarta.json.JsonException;
 import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.DeserializationContext;
 import java.util.Collection;
-import org.treblereel.gwt.json.mapper.internal.deserializer.JsonDeserializer;
+import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
 import org.treblereel.gwt.json.mapper.internal.deserializer.array.AbstractArrayJsonDeserializer;
 
 public class CollectionDeserializer<C extends Collection<T>, T>
     extends AbstractArrayJsonDeserializer<C> {
 
-  protected final JsonDeserializer<T> deserializer;
+  protected final JsonbDeserializer<T> deserializer;
 
-  public CollectionDeserializer(JsonDeserializer<T> deserializer) {
+  public CollectionDeserializer(JsonbDeserializer<T> deserializer) {
     this.deserializer = deserializer;
   }
 

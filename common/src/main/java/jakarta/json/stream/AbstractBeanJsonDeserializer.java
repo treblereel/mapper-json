@@ -20,14 +20,13 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectDecorator;
 import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.DeserializationContext;
-import jakarta.json.bind.serializer.JsonbDeserializer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import org.treblereel.gwt.json.mapper.internal.deserializer.JsonDeserializer;
+import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
 
-public abstract class AbstractBeanJsonDeserializer<T> extends JsonDeserializer<T>
-    implements JsonbDeserializer<T> {
+public abstract class AbstractBeanJsonDeserializer<T> extends JsonbDeserializer<T>
+    implements jakarta.json.bind.serializer.JsonbDeserializer<T> {
 
   protected List<JsonbPropertyDeserializer<T>> properties = new ArrayList<>();
 

@@ -17,6 +17,7 @@
 package org.treblereel.gwt.json.mapper.apt.utils;
 
 import com.google.auto.common.MoreElements;
+import com.google.auto.common.MoreTypes;
 import java.util.*;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
@@ -202,6 +203,10 @@ public class TypeUtils {
   private static final String BEAN_JSON_SERIALIZER_IMPL = "_JsonSerializerImpl";
 
   private static final String BEAN_JSON_DESERIALIZER_IMPL = "_JsonDeserializerImpl";
+
+  public String getJsonSerializerImplQualifiedName(VariableElement variable) {
+    return getJsonSerializerImplQualifiedName(MoreTypes.asTypeElement(variable.asType()));
+  }
 
   public String getJsonSerializerImplQualifiedName(TypeElement type) {
     return elements.getPackageOf(type) + "." + getJsonSerializerImplName(type);

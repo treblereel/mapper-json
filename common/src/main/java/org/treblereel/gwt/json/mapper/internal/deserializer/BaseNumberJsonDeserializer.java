@@ -23,7 +23,7 @@ import jakarta.json.bind.serializer.DeserializationContext;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public abstract class BaseNumberJsonDeserializer<N extends Number> extends JsonDeserializer<N> {
+public abstract class BaseNumberJsonDeserializer<N extends Number> extends JsonbDeserializer<N> {
 
   public static final class BigDecimalJsonDeserializer
       extends BaseNumberJsonDeserializer<BigDecimal> {

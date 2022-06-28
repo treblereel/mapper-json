@@ -20,14 +20,14 @@ import jakarta.json.JsonException;
 import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.DeserializationContext;
 import java.util.List;
-import org.treblereel.gwt.json.mapper.internal.deserializer.JsonDeserializer;
+import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
 
 public class ArrayJsonDeserializer<T> extends AbstractArrayJsonDeserializer<T[]> {
 
-  private final JsonDeserializer<T> deserializer;
+  private final JsonbDeserializer<T> deserializer;
   private final ArrayCreator<T> arrayCreator;
 
-  public ArrayJsonDeserializer(JsonDeserializer<T> deserializer, ArrayCreator<T> arrayCreator) {
+  public ArrayJsonDeserializer(JsonbDeserializer<T> deserializer, ArrayCreator<T> arrayCreator) {
     if (null == deserializer) {
       throw new IllegalArgumentException("deserializer cannot be null");
     }
