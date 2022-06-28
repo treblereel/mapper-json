@@ -227,6 +227,10 @@ public class TypeUtils {
         + BEAN_JSON_DESERIALIZER_IMPL;
   }
 
+  public boolean isIterable(TypeMirror property) {
+    return !property.getKind().isPrimitive() && isAssignableFrom(property, Iterable.class);
+  }
+
   public class BoxedTypes {
 
     private Set<TypeMirror> boxedTypes = new HashSet<>();

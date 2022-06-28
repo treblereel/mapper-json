@@ -35,7 +35,7 @@ public class JsonParserImpl implements JsonParser {
 
   @Override
   public Event next() {
-    if (holder != null && Js.typeof(holder) == "object") {
+    if (holder != null && Js.typeof(holder).equals("object")) {
       return Event.START_OBJECT;
     }
     return null;
