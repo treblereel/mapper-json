@@ -76,8 +76,6 @@ public class TreeSetTest {
 
     String rez = INSTANCE1.toJSON(users);
 
-    System.out.println("rez = " + rez);
-
     assertEquals(
         "{\"users\":[{\"firstName\":\"John\",\"secondName\":\"Doe\",\"isMarried\":true},{\"firstName\":\"Bob\",\"secondName\":\"Green\",\"isMarried\":false}]}",
         rez);

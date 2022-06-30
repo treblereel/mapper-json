@@ -50,8 +50,6 @@ public class DataBeanTest {
 
     String json = mapper.toJSON(bean);
 
-    System.out.println("json: " + json);
-
     assertEquals("{\"holder\":{\"from\":\"POINT_1\",\"to\":\"POINT_2\"}}", json);
 
     assertEquals(bean, mapper.fromJSON(json));
