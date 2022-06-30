@@ -25,6 +25,7 @@ import com.google.auto.common.MoreTypes;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
+import org.treblereel.gwt.json.mapper.internal.serializer.collection.BoxedTypeCollectionJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.collection.CollectionJsonSerializer;
 
 public class CollectionsFieldDefinition extends FieldDefinition {
@@ -43,10 +44,15 @@ public class CollectionsFieldDefinition extends FieldDefinition {
     cu.addImport(deserializer.getQualifiedName().toString());
     TypeMirror typeMirror = MoreTypes.asDeclared(field.getType()).getTypeArguments().get(0);
 
-    String deser =
-        context
-            .getTypeUtils()
-            .getJsonDeserializerImplQualifiedName(MoreTypes.asTypeElement(typeMirror));
+    String deser;
+    if (context.getTypeRegistry().has(typeMirror)) {
+      deser = context.getTypeRegistry().getDeserializer(typeMirror).getQualifiedName().toString();
+    } else {
+      deser =
+          context
+              .getTypeUtils()
+              .getJsonDeserializerImplQualifiedName(MoreTypes.asTypeElement(typeMirror));
+    }
 
     ClassOrInterfaceType type = new ClassOrInterfaceType();
     type.setName(deserializer.getSimpleName().toString());
@@ -73,20 +79,30 @@ public class CollectionsFieldDefinition extends FieldDefinition {
 
     ObjectCreationExpr serializerCreationExpr = new ObjectCreationExpr();
     ClassOrInterfaceType type = new ClassOrInterfaceType();
-
     TypeMirror typeMirror = MoreTypes.asDeclared(field.getType()).getTypeArguments().get(0);
+    boolean isBoxedTypeOrString = context.getTypeUtils().isBoxedTypeOrString(typeMirror);
 
-    String ser =
-        context
-            .getTypeUtils()
-            .getJsonSerializerImplQualifiedName(MoreTypes.asTypeElement(typeMirror));
+    String ser;
+    if (context.getTypeRegistry().has(typeMirror)) {
+      ser = context.getTypeRegistry().getSerializer(typeMirror).getQualifiedName().toString();
+    } else {
+      ser =
+          context
+              .getTypeUtils()
+              .getJsonSerializerImplQualifiedName(MoreTypes.asTypeElement(typeMirror));
+    }
 
-    type.setName(CollectionJsonSerializer.class.getSimpleName());
+    if (isBoxedTypeOrString) {
+      cu.addImport(BoxedTypeCollectionJsonSerializer.class);
+      type.setName(BoxedTypeCollectionJsonSerializer.class.getSimpleName());
+    } else {
+      type.setName(CollectionJsonSerializer.class.getSimpleName());
+    }
+
     type.setTypeArguments(new ClassOrInterfaceType().setName(typeMirror.toString()));
     ObjectCreationExpr deserializerCreationExpr = new ObjectCreationExpr();
     deserializerCreationExpr.setType(type);
     type.setTypeArguments(new ClassOrInterfaceType().setName(typeMirror.toString()));
-
     serializerCreationExpr.setType(type);
 
     return new ExpressionStmt(
