@@ -18,6 +18,8 @@ package org.treblereel.gwt.json.mapper.apt.processor;
 
 import com.google.auto.common.MoreTypes;
 import jakarta.json.bind.annotation.JsonbTransient;
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
+import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import java.util.*;
 import javax.lang.model.element.*;
 import javax.lang.model.type.ArrayType;
@@ -42,12 +44,21 @@ public class BeanProcessor {
 
   private final MapperGenerator mapperGenerator;
 
+  private TypeMirror objectType;
+
   public BeanProcessor(GenerationContext context, TreeLogger logger, Set<TypeElement> beans) {
     this.context = context;
     this.logger = logger;
     this.annotatedBeans = beans;
     this.typeUtils = context.getTypeUtils();
     this.mapperGenerator = new MapperGenerator(context, logger);
+
+    this.objectType =
+        context
+            .getProcessingEnv()
+            .getElementUtils()
+            .getTypeElement(Object.class.getCanonicalName())
+            .asType();
   }
 
   public void process() {
@@ -108,6 +119,17 @@ public class BeanProcessor {
         || field.getModifiers().contains(Modifier.FINAL)) {
       return false;
     }
+
+    if (context.getProcessingEnv().getTypeUtils().isSameType(field.asType(), objectType)) {
+      if (field.getAnnotation(JsonbTypeSerializer.class) == null
+          || field.getAnnotation(JsonbTypeDeserializer.class) == null) {
+        throw new GenerationException(
+            String.format(
+                "Field %s.%s is of type Object and must be annotated with @JsonbTypeSerializer and @JsonbTypeDeserializer",
+                field.getEnclosingElement().getSimpleName(), field.getSimpleName().toString()));
+      }
+    }
+
     if (!field.getModifiers().contains(Modifier.PRIVATE)
         || typeUtils.hasGetter(field) && typeUtils.hasSetter(field)) {
       return true;

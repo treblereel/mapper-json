@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='App'>
+  <inherits name='com.google.gwt.user.User' />
+  <inherits name='jakarta.Common' />
+  <entry-point class='org.treblereel.gwt.json.mapper.client.App' />
+  <source path='client' />
+
+</module>
