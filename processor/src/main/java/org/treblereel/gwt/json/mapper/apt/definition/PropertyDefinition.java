@@ -51,4 +51,8 @@ public class PropertyDefinition {
   public ExecutableElement getSetter() {
     return context.getTypeUtils().getSetter(property);
   }
+
+  public VariableElement getVariableElement() {
+    return property;
+  }
 }

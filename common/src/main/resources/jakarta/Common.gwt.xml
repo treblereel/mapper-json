@@ -3,6 +3,7 @@
         "http://gwtproject.org/doctype/2.8.2/gwt-module.dtd">
 <module>
     <inherits name="elemental2.core.Core"/>
+    <inherits name='elemental2.dom.Dom' />
     <inherits name="jakarta.Api"/>
     <inherits name="org.treblereel.gwt.json.Internal"/>
     <source path="json" />

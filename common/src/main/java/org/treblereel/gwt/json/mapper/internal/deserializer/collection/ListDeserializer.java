@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package org.treblereel.gwt.json.mapper.internal.deserializer;
+package org.treblereel.gwt.json.mapper.internal.deserializer.collection;
 
-import jakarta.json.JsonValue;
-import jakarta.json.bind.serializer.DeserializationContext;
-import jakarta.json.bind.serializer.JsonbDeserializer;
-import jakarta.json.stream.JsonParser;
-import java.lang.reflect.Type;
+import java.util.List;
+import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
 
-public abstract class JsonDeserializer<T> implements JsonbDeserializer<T> {
+public class ListDeserializer<T> extends CollectionDeserializer<List<T>, T> {
 
-  public abstract T deserialize(JsonValue value, DeserializationContext ctx);
-
-  @Override
-  public T deserialize(JsonParser parser, DeserializationContext ctx, Type rtType) {
-    throw new UnsupportedOperationException();
+  public ListDeserializer(JsonbDeserializer<T> deserializer) {
+    super(deserializer);
   }
 }

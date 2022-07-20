@@ -18,8 +18,7 @@ package org.treblereel.gwt.json.mapper.apt.utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
@@ -39,11 +38,13 @@ import org.treblereel.gwt.json.mapper.internal.deserializer.BooleanJsonDeseriali
 import org.treblereel.gwt.json.mapper.internal.deserializer.CharacterJsonDeserializer;
 import org.treblereel.gwt.json.mapper.internal.deserializer.StringJsonDeserializer;
 import org.treblereel.gwt.json.mapper.internal.deserializer.array.*;
+import org.treblereel.gwt.json.mapper.internal.deserializer.collection.*;
 import org.treblereel.gwt.json.mapper.internal.serializer.BaseNumberJsonSerializer.*;
 import org.treblereel.gwt.json.mapper.internal.serializer.BooleanJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.CharacterJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.StringJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.array.*;
+import org.treblereel.gwt.json.mapper.internal.serializer.collection.CollectionJsonSerializer;
 
 public class TypeRegistry {
   private final ClassMapperFactory MAPPER = new ClassMapperFactory();
@@ -62,6 +63,7 @@ public class TypeRegistry {
     initCommonMappers();
     initNumberMappers();
     initPrimitiveArraysMappers();
+    initCollections();
   }
 
   public TypeElement getSerializer(TypeMirror typeMirror) {
@@ -282,6 +284,54 @@ public class TypeRegistry {
         .forType(String[].class)
         .serializer(PrimitiveShortArrayJsonSerializer.class)
         .deserializer(StringArrayJsonDeserializer.class)
+        .register(buildIn);
+  }
+
+  private void initCollections() {
+    MAPPER
+        .forType(List.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(ListDeserializer.class)
+        .register(buildIn);
+
+    MAPPER
+        .forType(ArrayList.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(ArrayListDeserializer.class)
+        .register(buildIn);
+
+    MAPPER
+        .forType(LinkedList.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(LinkedListDeserializer.class)
+        .register(buildIn);
+
+    MAPPER
+        .forType(Set.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(HashSetDeserializer.class)
+        .register(buildIn);
+    MAPPER
+        .forType(SortedSet.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(SortedSetDeserializer.class)
+        .register(buildIn);
+
+    MAPPER
+        .forType(HashSet.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(HashSetDeserializer.class)
+        .register(buildIn);
+
+    MAPPER
+        .forType(LinkedHashSet.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(LinkedHashSetDeserializer.class)
+        .register(buildIn);
+    MAPPER
+        .forType(TreeSet.class)
+        .serializer(CollectionJsonSerializer.class)
+        .deserializer(SortedSetDeserializer.class)
         .register(buildIn);
   }
 

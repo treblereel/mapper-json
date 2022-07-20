@@ -20,16 +20,15 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectDecorator;
 import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.DeserializationContext;
-import jakarta.json.bind.serializer.JsonbDeserializer;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import org.treblereel.gwt.json.mapper.internal.deserializer.JsonDeserializer;
+import java.util.HashMap;
+import java.util.Map;
+import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
 
-public abstract class AbstractBeanJsonDeserializer<T> extends JsonDeserializer<T>
-    implements JsonbDeserializer<T> {
+public abstract class AbstractBeanJsonDeserializer<T> extends JsonbDeserializer<T>
+    implements jakarta.json.bind.serializer.JsonbDeserializer<T> {
 
-  protected List<JsonbPropertyDeserializer<T>> properties = new ArrayList<>();
+  protected Map<String, JsonbPropertyDeserializer<T>> properties = new HashMap();
 
   @Override
   public T deserialize(JsonValue value, DeserializationContext ctx) {
@@ -52,7 +51,12 @@ public abstract class AbstractBeanJsonDeserializer<T> extends JsonDeserializer<T
     T instance = newInstance();
     if (!jsonObject.isEmpty()) {
       JsonObjectDecorator jsonObjectDecorator = new JsonObjectDecorator(jsonObject);
-      properties.forEach(p -> p.accept(instance, jsonObjectDecorator, ctx));
+      properties.forEach(
+          (key, value) -> {
+            if (jsonObjectDecorator.containsKey(key)) {
+              value.accept(instance, jsonObjectDecorator, ctx);
+            }
+          });
     }
     return instance;
   }

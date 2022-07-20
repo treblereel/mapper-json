@@ -33,6 +33,7 @@ import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.apt.definition.BeanDefinition;
 import org.treblereel.gwt.json.mapper.apt.definition.FieldDefinition;
 import org.treblereel.gwt.json.mapper.apt.definition.FieldDefinitionFactory;
+import org.treblereel.gwt.json.mapper.apt.definition.PropertyDefinition;
 import org.treblereel.gwt.json.mapper.apt.logger.TreeLogger;
 
 public class DeserializerGenerator extends AbstractGenerator {
@@ -81,7 +82,7 @@ public class DeserializerGenerator extends AbstractGenerator {
               FieldDefinition fieldDefinition =
                   fieldDefinitionFactory.getFieldDefinition(propertyDefinition);
               addGetter(
-                  type,
+                  propertyDefinition,
                   constructor.getBody(),
                   fieldDefinition.getFieldDeserializer(propertyDefinition, cu));
             });
@@ -100,7 +101,7 @@ public class DeserializerGenerator extends AbstractGenerator {
                 new ObjectCreationExpr().setType(type.getElement().getQualifiedName().toString())));
   }
 
-  private void addGetter(BeanDefinition type, BlockStmt body, Statement call) {
+  private void addGetter(PropertyDefinition propertyDefinition, BlockStmt body, Statement call) {
 
     LambdaExpr lambda = new LambdaExpr();
     lambda.setEnclosingParameters(true);
@@ -108,9 +109,9 @@ public class DeserializerGenerator extends AbstractGenerator {
     lambda.getParameters().add(new Parameter().setType(new UnknownType()).setName("jsonObject"));
     lambda.getParameters().add(new Parameter().setType(new UnknownType()).setName("ctx"));
     lambda.setBody(call);
-
-    new NameExpr(String.format("(bean, jsonObject, context) -> %s", call));
-
-    body.addStatement(new MethodCallExpr(new NameExpr("properties"), "add").addArgument(lambda));
+    body.addStatement(
+        new MethodCallExpr(new NameExpr("properties"), "put")
+            .addArgument(new StringLiteralExpr(propertyDefinition.getName()))
+            .addArgument(lambda));
   }
 }

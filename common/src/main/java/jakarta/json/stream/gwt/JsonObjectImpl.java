@@ -26,6 +26,7 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonString;
 import jakarta.json.JsonValue;
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import jsinterop.base.Js;
@@ -103,7 +104,27 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public ValueType getValueType() {
-    throw new UnsupportedOperationException();
+    String type = Js.typeof(holder).toLowerCase(Locale.ROOT);
+
+    if (type.equals("object")) {
+      return ValueType.OBJECT;
+    } else if (type.equals("array")) {
+      return ValueType.ARRAY;
+    } else if (type.equals("number")) {
+      return ValueType.NUMBER;
+    } else if (type.equals("string")) {
+      return ValueType.STRING;
+    } else if (type.equals("boolean")) {
+      if (holder.toString().toLowerCase(Locale.ROOT).equals("true")) {
+        return ValueType.TRUE;
+      } else {
+        return ValueType.FALSE;
+      }
+    } else if (type.equals("null")) {
+      return ValueType.NULL;
+    }
+
+    throw new IllegalStateException("Unknown type: " + type);
   }
 
   @Override

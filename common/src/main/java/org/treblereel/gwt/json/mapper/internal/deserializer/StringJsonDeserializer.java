@@ -21,7 +21,7 @@ import jakarta.json.JsonValue;
 import jakarta.json.JsonValueDecorator;
 import jakarta.json.bind.serializer.DeserializationContext;
 
-public class StringJsonDeserializer extends JsonDeserializer<String> {
+public class StringJsonDeserializer extends JsonbDeserializer<String> {
 
   @Override
   public String deserialize(JsonValue json, DeserializationContext ctx) throws JsonException {

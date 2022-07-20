@@ -16,6 +16,8 @@
 
 package org.treblereel.gwt.json.mapper.apt.definition;
 
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
+import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import java.util.HashMap;
 import java.util.Map;
 import javax.lang.model.type.TypeKind;
@@ -45,6 +47,8 @@ public class FieldDefinitionFactory {
       result = new BasicTypeFieldDefinition(property, context);
     } else if (type.getKind().equals(TypeKind.ARRAY)) {
       result = new ArrayBeanFieldDefinition(property, context);
+    } else if (context.getTypeUtils().isIterable(property)) {
+      result = new CollectionsFieldDefinition(property, context);
     } else {
       result = new DefaultBeanFieldDefinition(property, context);
     }
@@ -58,6 +62,17 @@ public class FieldDefinitionFactory {
   }
 
   public FieldDefinition getFieldDefinition(PropertyDefinition propertyDefinition) {
+    JsonbTypeSerializer jsonbTypeSerializer =
+        propertyDefinition.getVariableElement().getAnnotation(JsonbTypeSerializer.class);
+    JsonbTypeDeserializer jsonbTypeDeserializer =
+        propertyDefinition.getVariableElement().getAnnotation(JsonbTypeDeserializer.class);
+    if (jsonbTypeSerializer != null || jsonbTypeDeserializer != null) {
+      if (jsonbTypeSerializer == null || jsonbTypeDeserializer == null) {
+        throw new GenerationException(
+            "@JsonbTypeSerializer and @JsonbTypeDeserializer MUST be used together");
+      }
+      return new JsonbTypeSerFieldDefinition(propertyDefinition.getType(), context);
+    }
     return getFieldDefinition(propertyDefinition.getType());
   }
 }
