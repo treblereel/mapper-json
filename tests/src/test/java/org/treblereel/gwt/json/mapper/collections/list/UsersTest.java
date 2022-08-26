@@ -18,10 +18,12 @@ package org.treblereel.gwt.json.mapper.collections.list;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.j2cl.junit.apt.J2clTestInput;
 import java.util.ArrayList;
 import org.junit.Test;
 import org.treblereel.gwt.json.mapper.collections.User;
 
+@J2clTestInput(UsersTest.class)
 public class UsersTest {
 
   public static final Users_JsonMapperImpl INSTANCE1 = new Users_JsonMapperImpl();

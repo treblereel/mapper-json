@@ -18,10 +18,12 @@ package org.treblereel.gwt.json.mapper.collections.set;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.j2cl.junit.apt.J2clTestInput;
 import java.util.HashSet;
 import org.junit.Test;
 import org.treblereel.gwt.json.mapper.collections.User;
 
+@J2clTestInput(HashSetTest.class)
 public class HashSetTest {
 
   public static final UsersHashSet_JsonMapperImpl INSTANCE1 = new UsersHashSet_JsonMapperImpl();
@@ -75,10 +77,6 @@ public class HashSetTest {
     users.setUsers(usersSet);
 
     String rez = INSTANCE1.toJSON(users);
-
-    assertEquals(
-        "{\"users\":[{\"firstName\":\"Bob\",\"secondName\":\"Green\",\"isMarried\":false},{\"firstName\":\"John\",\"secondName\":\"Doe\",\"isMarried\":true}]}",
-        rez);
     assertEquals(users, INSTANCE1.fromJSON(rez));
   }
 }

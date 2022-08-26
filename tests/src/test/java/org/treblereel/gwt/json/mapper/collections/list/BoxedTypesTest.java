@@ -18,9 +18,11 @@ package org.treblereel.gwt.json.mapper.collections.list;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.j2cl.junit.apt.J2clTestInput;
 import java.util.HashSet;
 import org.junit.Test;
 
+@J2clTestInput(BoxedTypesTest.class)
 public class BoxedTypesTest {
 
   public static final BoxedTypes_JsonMapperImpl INSTANCE = new BoxedTypes_JsonMapperImpl();

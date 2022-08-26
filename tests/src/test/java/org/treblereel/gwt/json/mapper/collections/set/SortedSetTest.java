@@ -18,11 +18,13 @@ package org.treblereel.gwt.json.mapper.collections.set;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.j2cl.junit.apt.J2clTestInput;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import org.junit.Test;
 import org.treblereel.gwt.json.mapper.collections.User;
 
+@J2clTestInput(SortedSetTest.class)
 public class SortedSetTest {
 
   public static final UsersSortedSet_JsonMapperImpl INSTANCE1 = new UsersSortedSet_JsonMapperImpl();

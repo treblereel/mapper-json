@@ -18,10 +18,12 @@ package org.treblereel.gwt.json.mapper.annotations.jsonbproperty;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.j2cl.junit.apt.J2clTestInput;
 import java.util.Arrays;
 import java.util.HashSet;
 import org.junit.Test;
 
+@J2clTestInput(UserTest.class)
 public class UserTest {
 
   User_JsonMapperImpl mapper = User_JsonMapperImpl.INSTANCE;

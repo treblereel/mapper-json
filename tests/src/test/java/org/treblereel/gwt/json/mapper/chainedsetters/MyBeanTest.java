@@ -18,8 +18,10 @@ package org.treblereel.gwt.json.mapper.chainedsetters;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Test;
 
+@J2clTestInput(MyBeanTest.class)
 public class MyBeanTest {
 
   @Test

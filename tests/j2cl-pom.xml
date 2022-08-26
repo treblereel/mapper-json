@@ -38,7 +38,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
 
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-
+        <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
         <j2cl.maven.plugin.version>0.19</j2cl.maven.plugin.version>
         <elemental2.version>1.1.0</elemental2.version>
         <jsinterop.base.version>1.0.0</jsinterop.base.version>
@@ -46,12 +46,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-            <version>4.13.2</version>
-        </dependency>
         <dependency>
             <groupId>org.treblereel.gwt.json.mapper</groupId>
             <artifactId>common</artifactId>
@@ -69,20 +63,23 @@
             <version>${j2cl.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.vertispan.j2cl</groupId>
+            <artifactId>gwttestcase-emul</artifactId>
+            <version>${j2cl.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.vertispan.j2cl</groupId>
             <artifactId>junit-emul</artifactId>
             <version>${j2cl.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
-            <groupId>com.vertispan.j2cl</groupId>
-            <artifactId>junit-emul</artifactId>
-            <version>${j2cl.version}</version>
-            <classifier>sources</classifier>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
             <scope>test</scope>
+            <version>4.13.2</version>
         </dependency>
     </dependencies>
 
@@ -92,22 +89,25 @@
                 <groupId>com.vertispan.j2cl</groupId>
                 <artifactId>j2cl-maven-plugin</artifactId>
                 <version>${j2cl.maven.plugin.version}</version>
+                <configuration>
+                    <compilationLevel>ADVANCED</compilationLevel>
+                    <webdriver>chrome</webdriver>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>build</id>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>test</id>
+                        <id>j2cl-test</id>
                         <goals>
                             <goal>test</goal>
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surfire.plugin}</version>
                 <configuration>
-                    <compilationLevel>ADVANCED</compilationLevel>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
         </plugins>

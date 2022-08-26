@@ -18,8 +18,10 @@ package org.treblereel.gwt.json.mapper.cornercases;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Test;
 
+@J2clTestInput(UnexpectedJsonValueTest.class)
 public class UnexpectedJsonValueTest {
 
   Data_JsonMapperImpl mapper = Data_JsonMapperImpl.INSTANCE;
