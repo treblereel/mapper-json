@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package jakarta.json.stream;
+package org.treblereel.gwt.json.mapper.internal.serializer;
 
 import jakarta.json.bind.serializer.JsonbSerializer;
 import jakarta.json.bind.serializer.SerializationContext;
+import jakarta.json.stream.JsonGenerator;
+import jakarta.json.stream.JsonGeneratorDecorator;
+import jakarta.json.stream.JsonbPropertySerializer;
 import java.util.ArrayList;
 import java.util.List;
-import org.treblereel.gwt.json.mapper.internal.serializer.JsonSerializer;
 
 public class AbstractBeanJsonSerializer<T> extends JsonSerializer<T> implements JsonbSerializer<T> {
 

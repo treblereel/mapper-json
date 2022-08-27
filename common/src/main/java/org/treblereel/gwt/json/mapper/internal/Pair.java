@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package jakarta.json.bind;
+package org.treblereel.gwt.json.mapper.internal;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public class Pair<K, V> {
 
-@Retention(RetentionPolicy.CLASS)
-@Target({ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD})
-@Documented
-public @interface GwtIncompatible {
-  String value() default "";
+  public final K k;
+  public final V v;
+
+  public Pair(K k, V v) {
+    this.k = k;
+    this.v = v;
+  }
 }

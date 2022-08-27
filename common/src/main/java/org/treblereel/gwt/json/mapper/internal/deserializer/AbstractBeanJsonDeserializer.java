@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package jakarta.json.stream;
+package org.treblereel.gwt.json.mapper.internal.deserializer;
 
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectDecorator;
 import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.DeserializationContext;
+import jakarta.json.stream.JsonParser;
+import jakarta.json.stream.JsonbPropertyDeserializer;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
 
 public abstract class AbstractBeanJsonDeserializer<T> extends JsonbDeserializer<T>
     implements jakarta.json.bind.serializer.JsonbDeserializer<T> {

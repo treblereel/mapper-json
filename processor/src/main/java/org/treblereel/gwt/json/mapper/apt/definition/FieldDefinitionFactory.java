@@ -16,7 +16,9 @@
 
 package org.treblereel.gwt.json.mapper.apt.definition;
 
+import com.google.auto.common.MoreTypes;
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +39,7 @@ public class FieldDefinitionFactory {
     this.typeUtils = context.getTypeUtils();
   }
 
-  private FieldDefinition getFieldDefinition(TypeMirror type) {
+  public FieldDefinition getFieldDefinition(TypeMirror type) {
     TypeMirror property = context.getProcessingEnv().getTypeUtils().erasure(type);
     FieldDefinition result = null;
 
@@ -47,6 +49,8 @@ public class FieldDefinitionFactory {
       result = new BasicTypeFieldDefinition(property, context);
     } else if (type.getKind().equals(TypeKind.ARRAY)) {
       result = new ArrayBeanFieldDefinition(property, context);
+    } else if (MoreTypes.asTypeElement(type).getAnnotation(JsonbTypeInfo.class) != null) {
+      result = new JsonbTypeSerFieldDefinition(type, context);
     } else if (context.getTypeUtils().isIterable(property)) {
       result = new CollectionsFieldDefinition(property, context);
     } else {
@@ -73,6 +77,17 @@ public class FieldDefinitionFactory {
       }
       return new JsonbTypeSerFieldDefinition(propertyDefinition.getType(), context);
     }
+    TypeMirror type = propertyDefinition.getVariableElement().asType();
+    if (!(type.getKind().isPrimitive() || type.getKind().equals(TypeKind.ARRAY))) {
+      JsonbTypeInfo jsonbTypeInfo =
+          MoreTypes.asTypeElement(propertyDefinition.getVariableElement().asType())
+              .getAnnotation(JsonbTypeInfo.class);
+      if (jsonbTypeInfo != null) {
+        return new JsonbTypeInfoDefinition(
+            jsonbTypeInfo, propertyDefinition.getVariableElement().asType(), context);
+      }
+    }
+
     return getFieldDefinition(propertyDefinition.getType());
   }
 }
