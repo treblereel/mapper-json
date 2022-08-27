@@ -21,13 +21,16 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.expr.LambdaExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.UnknownType;
-import jakarta.json.stream.AbstractBeanJsonDeserializer;
 import javax.lang.model.element.TypeElement;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.apt.definition.BeanDefinition;
@@ -35,6 +38,7 @@ import org.treblereel.gwt.json.mapper.apt.definition.FieldDefinition;
 import org.treblereel.gwt.json.mapper.apt.definition.FieldDefinitionFactory;
 import org.treblereel.gwt.json.mapper.apt.definition.PropertyDefinition;
 import org.treblereel.gwt.json.mapper.apt.logger.TreeLogger;
+import org.treblereel.gwt.json.mapper.internal.deserializer.AbstractBeanJsonDeserializer;
 
 public class DeserializerGenerator extends AbstractGenerator {
 
@@ -44,7 +48,7 @@ public class DeserializerGenerator extends AbstractGenerator {
 
   public DeserializerGenerator(GenerationContext context, TreeLogger logger) {
     super(context, logger);
-    fieldDefinitionFactory = new FieldDefinitionFactory(context);
+    fieldDefinitionFactory = context.getFieldDefinitionFactory();
   }
 
   @Override

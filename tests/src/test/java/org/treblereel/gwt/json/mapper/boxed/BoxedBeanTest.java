@@ -48,10 +48,6 @@ public class BoxedBeanTest {
     bean.set_int(1234);
 
     String result = mapper.toJSON(bean);
-    assertEquals(
-        "{\"_int\":1234,\"_long\":1000,\"_double\":10.0,\"_char\":99,\"_float\":1122.0,\"_boolean\":true,\"_short\":17222}",
-        result);
-
     BoxedBean from = mapper.fromJSON(result);
     assertEquals(bean, from);
   }

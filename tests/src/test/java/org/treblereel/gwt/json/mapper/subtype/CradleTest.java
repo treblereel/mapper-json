@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package org.treblereel.gwt.json.mapper.chainedsetters;
+package org.treblereel.gwt.json.mapper.subtype;
 
 import static org.junit.Assert.assertEquals;
 
 import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Test;
 
-@J2clTestInput(MyBeanTest.class)
-public class MyBeanTest {
+@J2clTestInput(CradleTest.class)
+public class CradleTest {
+
+  private final Cradle_JsonMapperImpl mapper = Cradle_JsonMapperImpl.INSTANCE;
 
   @Test
   public void test() {
-    MyBean bean =
-        new MyBean()
-            .setName("name")
-            .setType(1)
-            .setDescription("description")
-            .setTags(new String[] {"tag1", "tag2"});
+    Cradle cradle = new Cradle();
+    Cat cat = new Cat();
+    cat.setIsCat(true);
+    cradle.setAnimal(cat);
+    assertEquals("{\"animal\":{\"isCat\":true,\"type\":\"cat\"}}", mapper.toJSON(cradle));
 
-    String json = MyBean_JsonMapperImpl.INSTANCE.toJSON(bean);
-    assertEquals(
-        "{\"name\":\"name\",\"type\":1,\"description\":\"description\",\"tags\":[\"tag1\",\"tag2\"]}",
-        json);
-    assertEquals(bean, MyBean_JsonMapperImpl.INSTANCE.fromJSON(json));
+    Cradle cradle1 = mapper.fromJSON(mapper.toJSON(cradle));
+    assertEquals(cradle, cradle1);
+    assertEquals(mapper.toJSON(cradle), mapper.toJSON(cradle1));
   }
 }

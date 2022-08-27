@@ -19,18 +19,20 @@ package org.treblereel.gwt.json.mapper.apt.generator;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.expr.LambdaExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.UnknownType;
-import jakarta.json.stream.AbstractBeanJsonSerializer;
 import javax.lang.model.element.TypeElement;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.apt.definition.BeanDefinition;
 import org.treblereel.gwt.json.mapper.apt.definition.FieldDefinition;
 import org.treblereel.gwt.json.mapper.apt.definition.FieldDefinitionFactory;
 import org.treblereel.gwt.json.mapper.apt.logger.TreeLogger;
+import org.treblereel.gwt.json.mapper.internal.serializer.AbstractBeanJsonSerializer;
 
 public class SerializerGenerator extends AbstractGenerator {
 
@@ -40,7 +42,7 @@ public class SerializerGenerator extends AbstractGenerator {
 
   public SerializerGenerator(GenerationContext context, TreeLogger logger) {
     super(context, logger);
-    fieldDefinitionFactory = new FieldDefinitionFactory(context);
+    fieldDefinitionFactory = context.getFieldDefinitionFactory();
   }
 
   @Override

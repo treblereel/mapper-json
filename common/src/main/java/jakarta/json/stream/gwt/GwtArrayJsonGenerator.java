@@ -18,7 +18,10 @@ package jakarta.json.stream.gwt;
 
 import elemental2.core.JsArray;
 import elemental2.core.JsNumber;
-import jakarta.json.*;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonGeneratorDecorator;

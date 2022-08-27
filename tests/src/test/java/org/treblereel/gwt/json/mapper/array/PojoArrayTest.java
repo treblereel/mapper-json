@@ -18,11 +18,13 @@ package org.treblereel.gwt.json.mapper.array;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Test;
 import org.treblereel.gwt.json.mapper.pojos.BeanOne;
 import org.treblereel.gwt.json.mapper.pojos.BeanThree;
 import org.treblereel.gwt.json.mapper.pojos.BeanTwo;
 
+@J2clTestInput(PojoArrayTest.class)
 public class PojoArrayTest {
 
   PojoArray_JsonMapperImpl mapper = PojoArray_JsonMapperImpl.INSTANCE;

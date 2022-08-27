@@ -30,9 +30,6 @@ public class BeanTest {
   public void testEmpty() {
     Bean bean = new Bean();
     Bean_JsonMapperImpl mapper = Bean_JsonMapperImpl.INSTANCE;
-    assertEquals(
-        "{\"_int\":0,\"_long\":0,\"_double\":0.0,\"_char\":0,\"_float\":0.0,\"_boolean\":false,\"_short\":0}",
-        mapper.toJSON(bean));
     assertEquals(bean, mapper.fromJSON(mapper.toJSON(bean)));
   }
 
@@ -49,12 +46,7 @@ public class BeanTest {
     bean.set_string("testValues");
 
     String result = mapper.toJSON(bean);
-    assertEquals(
-        "{\"name\":\"Bean\",\"_int\":3,\"_long\":10,\"_double\":10.0,\"_char\":97,\"_float\":10.0,\"_boolean\":true,\"_short\":0,\"_string\":\"testValues\"}",
-        result);
-
     Bean parsed = mapper.fromJSON(result);
-
     assertEquals(bean, parsed);
   }
 }

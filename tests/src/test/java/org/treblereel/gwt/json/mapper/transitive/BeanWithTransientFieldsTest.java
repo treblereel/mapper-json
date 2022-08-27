@@ -18,10 +18,12 @@ package org.treblereel.gwt.json.mapper.transitive;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.j2cl.junit.apt.J2clTestInput;
 import org.junit.Test;
 import org.treblereel.gwt.json.mapper.pojos.BeanOne;
 import org.treblereel.gwt.json.mapper.pojos.BeanTwo;
 
+@J2clTestInput(BeanWithTransientFieldsTest.class)
 public class BeanWithTransientFieldsTest {
 
   BeanWithTransientFields_JsonMapperImpl mapper = BeanWithTransientFields_JsonMapperImpl.INSTANCE;

@@ -17,7 +17,11 @@
 package org.treblereel.gwt.json.mapper.apt.definition;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import javax.lang.model.element.TypeElement;

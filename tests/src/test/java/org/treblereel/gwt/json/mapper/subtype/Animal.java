@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package jakarta.json.bind;
+package org.treblereel.gwt.json.mapper.subtype;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import jakarta.json.bind.annotation.JsonbSubtype;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
 
-@Retention(RetentionPolicy.CLASS)
-@Target({ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD})
-@Documented
-public @interface GwtIncompatible {
-  String value() default "";
-}
+@JsonbTypeInfo({
+  @JsonbSubtype(alias = "dog", type = Dog.class),
+  @JsonbSubtype(alias = "cat", type = Cat.class),
+  @JsonbSubtype(alias = "rat", type = Rat.class)
+})
+public interface Animal {}

@@ -17,12 +17,17 @@
 package org.treblereel.gwt.json.mapper.apt.definition;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.expr.*;
-import com.github.javaparser.ast.stmt.*;
+import com.github.javaparser.ast.expr.CastExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.google.auto.common.MoreTypes;
-import java.util.HashMap;
-import java.util.Map;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeMirror;
@@ -32,30 +37,6 @@ import org.treblereel.gwt.json.mapper.internal.serializer.array.ArrayBeanJsonSer
 import org.treblereel.gwt.json.mapper.internal.serializer.array.ArrayJsonSerializer;
 
 public class ArrayBeanFieldDefinition extends FieldDefinition {
-
-  private static Map<String, String> mapper =
-      new HashMap<String, String>() {
-        {
-          put(Integer.class.getCanonicalName(), "Integer");
-          put(Long.class.getCanonicalName(), "Long");
-          put(Byte.class.getCanonicalName(), "Byte");
-          put(Character.class.getCanonicalName(), "Character");
-          put(Float.class.getCanonicalName(), "Float");
-          put(Double.class.getCanonicalName(), "Double");
-          put(Short.class.getCanonicalName(), "Short");
-          put(String.class.getCanonicalName(), "String");
-          put(Boolean.class.getCanonicalName(), "Boolean");
-
-          put(int.class.getCanonicalName(), "Integer");
-          put(long.class.getCanonicalName(), "Long");
-          put(byte.class.getCanonicalName(), "Byte");
-          put(char.class.getCanonicalName(), "Character");
-          put(float.class.getCanonicalName(), "Float");
-          put(double.class.getCanonicalName(), "Double");
-          put(short.class.getCanonicalName(), "Short");
-          put(boolean.class.getCanonicalName(), "Boolean");
-        }
-      };
 
   public ArrayBeanFieldDefinition(TypeMirror property, GenerationContext context) {
     super(property, context);
@@ -72,20 +53,34 @@ public class ArrayBeanFieldDefinition extends FieldDefinition {
       return generatePrimitiveArrayDeserCall(field, arrayType);
     }
 
-    String deser;
+    Expression deser;
     if (context.getTypeRegistry().has(arrayType.getComponentType())) {
       deser =
-          context
-              .getTypeRegistry()
-              .getDeserializer(arrayType.getComponentType().toString())
-              .getQualifiedName()
-              .toString();
+          new ObjectCreationExpr()
+              .setType(
+                  context
+                      .getTypeRegistry()
+                      .getDeserializer(arrayType.getComponentType().toString())
+                      .getQualifiedName()
+                      .toString());
+    } else if (MoreTypes.asTypeElement(arrayType.getComponentType())
+            .getAnnotation(JsonbTypeInfo.class)
+        != null) {
+      deser =
+          new JsonbTypeInfoDefinition(
+                  MoreTypes.asTypeElement(arrayType.getComponentType())
+                      .getAnnotation(JsonbTypeInfo.class),
+                  arrayType.getComponentType(),
+                  context)
+              .getDeserializerCreationExpr(arrayType.getComponentType(), cu);
     } else {
       deser =
-          context
-              .getTypeUtils()
-              .getJsonDeserializerImplQualifiedName(
-                  MoreTypes.asTypeElement(arrayType.getComponentType()));
+          new ObjectCreationExpr()
+              .setType(
+                  context
+                      .getTypeUtils()
+                      .getJsonDeserializerImplQualifiedName(
+                          MoreTypes.asTypeElement(arrayType.getComponentType()), cu));
     }
 
     ObjectCreationExpr arrayJsonDeserializer = new ObjectCreationExpr();
@@ -100,7 +95,7 @@ public class ArrayBeanFieldDefinition extends FieldDefinition {
             .addArgument(
                 new MethodCallExpr(
                         arrayJsonDeserializer
-                            .addArgument(new ObjectCreationExpr().setType(deser))
+                            .addArgument(deser)
                             .addArgument(createArrayCreatorCall(arrayType.getComponentType())),
                         "deserialize")
                     .addArgument(
@@ -151,22 +146,37 @@ public class ArrayBeanFieldDefinition extends FieldDefinition {
     ObjectCreationExpr arrayJsonSerializer = new ObjectCreationExpr();
     ClassOrInterfaceType type = new ClassOrInterfaceType();
 
-    String ser;
+    Expression ser;
     if (context.getTypeRegistry().has(arrayType.getComponentType())) {
       type.setName(ArrayJsonSerializer.class.getSimpleName());
       ser =
-          context
-              .getTypeRegistry()
-              .getSerializer(arrayType.getComponentType().toString())
-              .getQualifiedName()
-              .toString();
+          new ObjectCreationExpr()
+              .setType(
+                  context
+                      .getTypeRegistry()
+                      .getSerializer(arrayType.getComponentType().toString())
+                      .getQualifiedName()
+                      .toString());
+    } else if (MoreTypes.asTypeElement(arrayType.getComponentType())
+            .getAnnotation(JsonbTypeInfo.class)
+        != null) {
+      type.setName(ArrayBeanJsonSerializer.class.getSimpleName());
+      ser =
+          new JsonbTypeInfoDefinition(
+                  MoreTypes.asTypeElement(arrayType.getComponentType())
+                      .getAnnotation(JsonbTypeInfo.class),
+                  arrayType.getComponentType(),
+                  context)
+              .getSerializerCreationExpr(cu);
     } else {
       type.setName(ArrayBeanJsonSerializer.class.getSimpleName());
       ser =
-          context
-              .getTypeUtils()
-              .getJsonSerializerImplQualifiedName(
-                  MoreTypes.asTypeElement(arrayType.getComponentType()));
+          new ObjectCreationExpr()
+              .setType(
+                  context
+                      .getTypeUtils()
+                      .getJsonSerializerImplQualifiedName(
+                          MoreTypes.asTypeElement(arrayType.getComponentType())));
     }
 
     type.setTypeArguments(
@@ -174,8 +184,7 @@ public class ArrayBeanFieldDefinition extends FieldDefinition {
     arrayJsonSerializer.setType(type);
 
     return new ExpressionStmt(
-        new MethodCallExpr(
-                arrayJsonSerializer.addArgument(new ObjectCreationExpr().setType(ser)), "serialize")
+        new MethodCallExpr(arrayJsonSerializer.addArgument(ser), "serialize")
             .addArgument(
                 new MethodCallExpr(
                     new NameExpr("bean"), field.getGetter().getSimpleName().toString()))

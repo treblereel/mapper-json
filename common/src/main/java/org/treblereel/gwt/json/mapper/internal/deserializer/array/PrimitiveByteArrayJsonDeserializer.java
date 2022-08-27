@@ -16,7 +16,7 @@
 
 package org.treblereel.gwt.json.mapper.internal.deserializer.array;
 
-import static org.treblereel.gwt.json.mapper.internal.deserializer.BaseNumberJsonDeserializer.*;
+import static org.treblereel.gwt.json.mapper.internal.deserializer.BaseNumberJsonDeserializer.ByteJsonDeserializer;
 
 import jakarta.json.JsonException;
 import jakarta.json.JsonValue;

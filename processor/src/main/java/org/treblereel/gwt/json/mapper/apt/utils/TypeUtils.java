@@ -16,10 +16,25 @@
 
 package org.treblereel.gwt.json.mapper.apt.utils;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.google.auto.common.MoreElements;
 import com.google.auto.common.MoreTypes;
-import java.util.*;
-import javax.lang.model.element.*;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
@@ -38,10 +53,13 @@ public class TypeUtils {
 
   private final BoxedTypes boxedTypes;
 
+  private final GenerationContext context;
+
   public TypeUtils(GenerationContext context) {
     this.types = context.getProcessingEnv().getTypeUtils();
     this.elements = context.getProcessingEnv().getElementUtils();
     this.boxedTypes = new BoxedTypes();
+    this.context = context;
   }
 
   public BoxedTypes getBoxedTypes() {
@@ -220,7 +238,7 @@ public class TypeUtils {
         + BEAN_JSON_SERIALIZER_IMPL;
   }
 
-  public String getJsonDeserializerImplQualifiedName(TypeElement type) {
+  public String getJsonDeserializerImplQualifiedName(TypeElement type, CompilationUnit cu) {
     return elements.getPackageOf(type) + "." + getJsonDeserializerImplName(type);
   }
 

@@ -19,9 +19,19 @@ package org.treblereel.gwt.json.mapper.apt.processor;
 import com.google.auto.common.MoreTypes;
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
-import java.util.*;
-import javax.lang.model.element.*;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
@@ -65,7 +75,9 @@ public class BeanProcessor {
     annotatedBeans.forEach(this::processBean);
     beans.forEach(context::addBeanDefinition);
 
-    context.getBeans().stream().forEach(mapperGenerator::generate);
+    context.getBeans().stream()
+        .filter(bean -> !bean.getElement().getModifiers().contains(Modifier.ABSTRACT))
+        .forEach(mapperGenerator::generate);
   }
 
   private void processBean(TypeElement bean) {
@@ -155,11 +167,12 @@ public class BeanProcessor {
   }
 
   private TypeElement checkBean(TypeElement type) {
-    if (!type.getKind().isClass()) {
+    if (!type.getKind().isClass() && type.getAnnotation(JsonbTypeInfo.class) == null) {
       throw new GenerationException("A @JSONMapper bean [" + type + "] must be class");
     }
 
-    if (type.getModifiers().contains(Modifier.ABSTRACT)) {
+    if (type.getModifiers().contains(Modifier.ABSTRACT)
+        && type.getAnnotation(JsonbTypeInfo.class) == null) {
       throw new GenerationException("A @JSONMapper bean [" + type + "] must be non abstract");
     }
 
