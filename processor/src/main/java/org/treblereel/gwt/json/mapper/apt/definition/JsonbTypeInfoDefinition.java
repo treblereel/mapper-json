@@ -42,9 +42,12 @@ public class JsonbTypeInfoDefinition extends FieldDefinition {
 
   private final Map<String, TypeMirror> types = new HashMap<>();
 
+  private final String typeFieldName;
+
   public JsonbTypeInfoDefinition(
       JsonbTypeInfo jsonbTypeInfo, TypeMirror property, GenerationContext context) {
     super(property, context);
+    this.typeFieldName = jsonbTypeInfo.key();
     for (JsonbSubtype jsonbSubtype : jsonbTypeInfo.value()) {
       getJsonbSubtype(jsonbSubtype);
     }
@@ -88,6 +91,8 @@ public class JsonbTypeInfoDefinition extends FieldDefinition {
     type.setTypeArguments(new UnknownType());
     serializerCreationExpr.setType(type);
 
+    serializerCreationExpr.addArgument(new StringLiteralExpr(typeFieldName));
+
     types.forEach(
         (alias, mirror) -> {
           ObjectCreationExpr info = new ObjectCreationExpr();
@@ -128,6 +133,8 @@ public class JsonbTypeInfoDefinition extends FieldDefinition {
     ObjectCreationExpr deserializerCreationExpr = new ObjectCreationExpr();
     type.setTypeArguments(new ClassOrInterfaceType().setName(fieldType.toString()));
     deserializerCreationExpr.setType(type);
+
+    deserializerCreationExpr.addArgument(new StringLiteralExpr(typeFieldName));
 
     types.forEach(
         (alias, ser) -> {

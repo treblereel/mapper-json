@@ -32,7 +32,7 @@ public class CradleTest {
     Cat cat = new Cat();
     cat.setIsCat(true);
     cradle.setAnimal(cat);
-    assertEquals("{\"animal\":{\"isCat\":true,\"type\":\"cat\"}}", mapper.toJSON(cradle));
+    assertEquals("{\"animal\":{\"isCat\":true,\"@type\":\"cat\"}}", mapper.toJSON(cradle));
 
     Cradle cradle1 = mapper.fromJSON(mapper.toJSON(cradle));
     assertEquals(cradle, cradle1);

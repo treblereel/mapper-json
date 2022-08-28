@@ -47,7 +47,7 @@ public class PetShopTest {
     shop.setAnimalList(animalList);
 
     assertEquals(
-        "{\"animalList\":[{\"isCat\":true,\"type\":\"cat\"},{\"isRat\":true,\"type\":\"rat\"},{\"isDog\":false,\"type\":\"dog\"}]}",
+        "{\"animalList\":[{\"isCat\":true,\"@type\":\"cat\"},{\"isRat\":true,\"@type\":\"rat\"},{\"isDog\":false,\"@type\":\"dog\"}]}",
         mapper.toJSON(shop));
 
     assertEquals(mapper.toJSON(shop), mapper.toJSON(mapper.fromJSON(mapper.toJSON(shop))));

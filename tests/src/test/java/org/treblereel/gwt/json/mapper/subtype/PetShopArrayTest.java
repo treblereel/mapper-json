@@ -49,7 +49,7 @@ public class PetShopArrayTest {
     shop.setAnimals(animalList.toArray(new Animal[animalList.size()]));
 
     assertEquals(
-        "{\"animals\":[{\"isCat\":true,\"type\":\"cat\"},{\"isRat\":true,\"type\":\"rat\"},{\"isDog\":false,\"type\":\"dog\"}],\"animal\":{\"isRat\":true,\"type\":\"rat\"}}",
+        "{\"animals\":[{\"isCat\":true,\"@type\":\"cat\"},{\"isRat\":true,\"@type\":\"rat\"},{\"isDog\":false,\"@type\":\"dog\"}],\"animal\":{\"isRat\":true,\"@type\":\"rat\"}}",
         mapper.toJSON(shop));
 
     assertEquals(mapper.toJSON(shop), mapper.toJSON(mapper.fromJSON(mapper.toJSON(shop))));
