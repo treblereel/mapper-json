@@ -19,7 +19,6 @@ package org.treblereel.gwt.json.mapper.apt.utils;
 import com.github.javaparser.ast.CompilationUnit;
 import com.google.auto.common.MoreElements;
 import com.google.auto.common.MoreTypes;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;

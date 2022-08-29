@@ -26,7 +26,9 @@ import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.google.auto.common.MoreTypes;
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
+import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
@@ -59,6 +61,12 @@ public class CollectionsFieldDefinition extends FieldDefinition {
                       .getDeserializer(typeMirror)
                       .getQualifiedName()
                       .toString());
+
+    } else if (field.getVariableElement().getAnnotation(JsonbTypeSerializer.class) != null
+        && field.getVariableElement().getAnnotation(JsonbTypeDeserializer.class) != null) {
+      deser =
+          new JsonbTypeSerFieldDefinition(typeMirror, context)
+              .getFieldDeserializerCreationExpr(field, cu);
     } else if (MoreTypes.asTypeElement(typeMirror).getAnnotation(JsonbTypeInfo.class) != null) {
       deser =
           new JsonbTypeInfoDefinition(
@@ -126,6 +134,12 @@ public class CollectionsFieldDefinition extends FieldDefinition {
                               .getSerializer(typeMirror)
                               .getQualifiedName()
                               .toString()));
+
+    } else if (field.getVariableElement().getAnnotation(JsonbTypeSerializer.class) != null
+        && field.getVariableElement().getAnnotation(JsonbTypeDeserializer.class) != null) {
+      ser =
+          new JsonbTypeSerFieldDefinition(typeMirror, context)
+              .getFieldSerializerCreationExpr(field, cu);
     } else if (MoreTypes.asTypeElement(typeMirror).getAnnotation(JsonbTypeInfo.class) != null) {
       ser =
           new JsonbTypeInfoDefinition(

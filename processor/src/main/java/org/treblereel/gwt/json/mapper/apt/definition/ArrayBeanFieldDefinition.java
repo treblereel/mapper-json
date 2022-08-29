@@ -27,7 +27,9 @@ import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.google.auto.common.MoreTypes;
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
+import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.TypeMirror;
@@ -63,6 +65,11 @@ public class ArrayBeanFieldDefinition extends FieldDefinition {
                       .getDeserializer(arrayType.getComponentType().toString())
                       .getQualifiedName()
                       .toString());
+    } else if (field.getVariableElement().getAnnotation(JsonbTypeSerializer.class) != null
+        && field.getVariableElement().getAnnotation(JsonbTypeDeserializer.class) != null) {
+      deser =
+          new JsonbTypeSerFieldDefinition(arrayType.getComponentType(), context)
+              .getFieldDeserializerCreationExpr(field, cu);
     } else if (MoreTypes.asTypeElement(arrayType.getComponentType())
             .getAnnotation(JsonbTypeInfo.class)
         != null) {
@@ -157,6 +164,12 @@ public class ArrayBeanFieldDefinition extends FieldDefinition {
                       .getSerializer(arrayType.getComponentType().toString())
                       .getQualifiedName()
                       .toString());
+    } else if (field.getVariableElement().getAnnotation(JsonbTypeSerializer.class) != null
+        && field.getVariableElement().getAnnotation(JsonbTypeDeserializer.class) != null) {
+      type.setName(ArrayBeanJsonSerializer.class.getSimpleName());
+      ser =
+          new JsonbTypeSerFieldDefinition(arrayType.getComponentType(), context)
+              .getFieldSerializerCreationExpr(field, cu);
     } else if (MoreTypes.asTypeElement(arrayType.getComponentType())
             .getAnnotation(JsonbTypeInfo.class)
         != null) {

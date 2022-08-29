@@ -17,11 +17,13 @@
 package org.treblereel.gwt.json.mapper.internal.serializer.collection;
 
 import jakarta.json.bind.serializer.JsonSerializationContext;
+import jakarta.json.bind.serializer.JsonbSerializer;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonGeneratorDecorator;
 import java.util.Collection;
 import org.treblereel.gwt.json.mapper.internal.serializer.JsonSerializer;
+import org.treblereel.gwt.json.mapper.internal.serializer.JsonSerializerAdapter;
 
 public class CollectionJsonSerializer<T> extends JsonSerializer<Collection<T>> {
 
@@ -29,6 +31,10 @@ public class CollectionJsonSerializer<T> extends JsonSerializer<Collection<T>> {
 
   public CollectionJsonSerializer(JsonSerializer<T> serializer) {
     this.serializer = serializer;
+  }
+
+  public CollectionJsonSerializer(JsonbSerializer<T> serializer) {
+    this(new JsonSerializerAdapter<>(serializer));
   }
 
   @Override

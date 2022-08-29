@@ -19,11 +19,9 @@ package org.treblereel.gwt.json.mapper.internal.deserializer.collection;
 import jakarta.json.JsonException;
 import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.DeserializationContext;
-
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
 
 public class LinkedHashSetDeserializer<T> extends CollectionDeserializer<Set<T>, T> {

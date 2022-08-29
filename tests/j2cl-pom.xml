@@ -90,7 +90,7 @@
                 <artifactId>j2cl-maven-plugin</artifactId>
                 <version>${j2cl.maven.plugin.version}</version>
                 <configuration>
-                    <compilationLevel>ADVANCED</compilationLevel>
+                    <compilationLevel>BUNDLE</compilationLevel>
                     <webdriver>chrome</webdriver>
                 </configuration>
                 <executions>

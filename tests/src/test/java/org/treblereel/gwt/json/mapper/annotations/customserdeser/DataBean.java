@@ -18,6 +18,8 @@ package org.treblereel.gwt.json.mapper.annotations.customserdeser;
 
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import org.treblereel.gwt.json.mapper.annotation.JSONMapper;
 
@@ -28,6 +30,14 @@ public class DataBean {
   @JsonbTypeDeserializer(ObjectJsonbTypeDeserializer.class)
   private Object holder;
 
+  @JsonbTypeSerializer(ObjectJsonbTypeSerializer.class)
+  @JsonbTypeDeserializer(ObjectJsonbTypeDeserializer.class)
+  private Object[] array;
+
+  @JsonbTypeSerializer(ObjectJsonbTypeSerializer.class)
+  @JsonbTypeDeserializer(ObjectJsonbTypeDeserializer.class)
+  private List<Object> list;
+
   public Object getHolder() {
     return holder;
   }
@@ -36,16 +46,36 @@ public class DataBean {
     this.holder = holder;
   }
 
+  public Object[] getArray() {
+    return array;
+  }
+
+  public void setArray(Object[] array) {
+    this.array = array;
+  }
+
+  public List<Object> getList() {
+    return list;
+  }
+
+  public void setList(List<Object> list) {
+    this.list = list;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     DataBean dataBean = (DataBean) o;
-    return Objects.equals(holder, dataBean.holder);
+    return Objects.equals(holder, dataBean.holder)
+        && Arrays.equals(array, dataBean.array)
+        && Objects.equals(list, dataBean.list);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(holder);
+    int result = Objects.hash(holder, list);
+    result = 31 * result + Arrays.hashCode(array);
+    return result;
   }
 }
