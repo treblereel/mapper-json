@@ -26,8 +26,10 @@ import org.treblereel.gwt.json.mapper.internal.Pair;
 public class JsonbSubtypeDeserializer<T> extends JsonbDeserializer<T> {
 
   private Map<String, JsonbDeserializer> types = new HashMap<>();
+  private final String typeFieldName;
 
-  public JsonbSubtypeDeserializer(Pair<String, JsonbDeserializer>... pairs) {
+  public JsonbSubtypeDeserializer(String typeFieldName, Pair<String, JsonbDeserializer>... pairs) {
+    this.typeFieldName = typeFieldName;
     for (Pair<String, JsonbDeserializer> pair : pairs) {
       types.put(pair.k, pair.v);
     }
@@ -37,9 +39,9 @@ public class JsonbSubtypeDeserializer<T> extends JsonbDeserializer<T> {
   public T deserialize(JsonValue value, DeserializationContext ctx) {
     JsonObject valueHolder =
         (value instanceof JsonObject) ? ((JsonObject) value) : value.asJsonObject();
-    if (valueHolder.containsKey("type")) {
-      if (types.containsKey(valueHolder.getString("type"))) {
-        return (T) types.get(valueHolder.getString("type")).deserialize(value, ctx);
+    if (valueHolder.containsKey(typeFieldName)) {
+      if (types.containsKey(valueHolder.getString(typeFieldName))) {
+        return (T) types.get(valueHolder.getString(typeFieldName)).deserialize(value, ctx);
       }
     }
     throw new Error("Unknown type " + value);

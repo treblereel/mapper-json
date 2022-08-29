@@ -17,15 +17,21 @@
 package org.treblereel.gwt.json.mapper.internal.serializer.array;
 
 import jakarta.json.bind.serializer.JsonSerializationContext;
+import jakarta.json.bind.serializer.JsonbSerializer;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonGeneratorDecorator;
 import org.treblereel.gwt.json.mapper.internal.serializer.JsonSerializer;
+import org.treblereel.gwt.json.mapper.internal.serializer.JsonSerializerAdapter;
 
 public class ArrayBeanJsonSerializer<T> extends ArrayJsonSerializer<T> {
 
   public ArrayBeanJsonSerializer(JsonSerializer<T> serializer) {
     super(serializer);
+  }
+
+  public ArrayBeanJsonSerializer(JsonbSerializer<T> serializer) {
+    this(new JsonSerializerAdapter<>(serializer));
   }
 
   @Override

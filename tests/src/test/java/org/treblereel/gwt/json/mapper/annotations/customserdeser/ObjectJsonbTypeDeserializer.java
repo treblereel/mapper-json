@@ -16,6 +16,7 @@
 
 package org.treblereel.gwt.json.mapper.annotations.customserdeser;
 
+import jakarta.json.JsonObject;
 import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.DeserializationContext;
 import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
@@ -37,6 +38,12 @@ public class ObjectJsonbTypeDeserializer extends JsonbDeserializer<Object> {
           return false;
         }
       } else if (value.getValueType() == JsonValue.ValueType.OBJECT) {
+        JsonObject jsonObject =
+            (value instanceof JsonObject) ? (JsonObject) value : value.asJsonObject();
+
+        if (jsonObject.containsKey("holder")) {
+          return translation_JsonDeserializerImpl.deserialize(jsonObject.get("holder"), ctx);
+        }
         return translation_JsonDeserializerImpl.deserialize(value, ctx);
       }
     }

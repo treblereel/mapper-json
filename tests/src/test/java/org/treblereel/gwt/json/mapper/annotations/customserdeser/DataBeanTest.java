@@ -19,6 +19,8 @@ package org.treblereel.gwt.json.mapper.annotations.customserdeser;
 import static org.junit.Assert.assertEquals;
 
 import com.google.j2cl.junit.apt.J2clTestInput;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Test;
 
 @J2clTestInput(DataBeanTest.class)
@@ -54,6 +56,35 @@ public class DataBeanTest {
 
     assertEquals("{\"holder\":{\"from\":\"POINT_1\",\"to\":\"POINT_2\"}}", json);
 
+    assertEquals(bean, mapper.fromJSON(json));
+  }
+
+  @Test
+  public void test3() {
+    DataBean bean = new DataBean();
+    bean.setHolder(new Translation("POINT_0", "POINT_0"));
+    Translation translation = new Translation("POINT_1", "POINT_2");
+    Translation translation2 = new Translation("POINT_3", "POINT_4");
+    bean.setHolder(new Translation("VALUE_0", "VALUE_1"));
+
+    Translation[] arr = new Translation[] {new Translation("ARRAY_1", "ARRAY_2")};
+    bean.setArray(arr);
+
+    List<Object> list = Arrays.asList(translation, translation2);
+    bean.setList(list);
+
+    String json = mapper.toJSON(bean);
+
+    // DomGlobal.console.log("json: " + json);
+
+    assertEquals(
+        "{\"holder\":{\"from\":\"VALUE_0\",\"to\":\"VALUE_1\"},\"array\":[{\"holder\":{\"from\":\"ARRAY_1\",\"to\":\"ARRAY_2\"}}],\"list\":[{\"holder\":{\"from\":\"POINT_1\",\"to\":\"POINT_2\"}},{\"holder\":{\"from\":\"POINT_3\",\"to\":\"POINT_4\"}}]}",
+        json);
+
+    assertEquals(new Translation("VALUE_0", "VALUE_1"), mapper.fromJSON(json).getHolder());
+    assertEquals(new Translation("ARRAY_1", "ARRAY_2"), mapper.fromJSON(json).getArray()[0]);
+    assertEquals(translation, mapper.fromJSON(json).getList().get(0));
+    assertEquals(mapper.toJSON(bean), mapper.toJSON(mapper.fromJSON(json)));
     assertEquals(bean, mapper.fromJSON(json));
   }
 }

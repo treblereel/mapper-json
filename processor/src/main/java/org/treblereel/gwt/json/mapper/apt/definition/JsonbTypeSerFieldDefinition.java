@@ -17,10 +17,7 @@
 package org.treblereel.gwt.json.mapper.apt.definition;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.expr.MethodCallExpr;
-import com.github.javaparser.ast.expr.NameExpr;
-import com.github.javaparser.ast.expr.ObjectCreationExpr;
-import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
@@ -32,19 +29,19 @@ import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 
 public class JsonbTypeSerFieldDefinition extends FieldDefinition {
 
-  private TypeMirror JsonbDeserializer;
+  private TypeMirror jsonbDeserializer;
 
   protected JsonbTypeSerFieldDefinition(TypeMirror property, GenerationContext context) {
     super(property, context);
-    TypeElement JsonbDeserializer =
+    TypeElement jsonbDeserializer =
         context
             .getProcessingEnv()
             .getElementUtils()
             .getTypeElement(
                 org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer.class
                     .getCanonicalName());
-    this.JsonbDeserializer =
-        context.getProcessingEnv().getTypeUtils().erasure(JsonbDeserializer.asType());
+    this.jsonbDeserializer =
+        context.getProcessingEnv().getTypeUtils().erasure(jsonbDeserializer.asType());
   }
 
   @Override
@@ -57,11 +54,11 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
       if (!context
           .getProcessingEnv()
           .getTypeUtils()
-          .isSubtype(e.getTypeMirror(), JsonbDeserializer)) {
+          .isSubtype(e.getTypeMirror(), jsonbDeserializer)) {
         throw new IllegalArgumentException(
             String.format(
                 "@JsonbTypeDeserializer value must be a subclass of %s at %s.%s",
-                JsonbDeserializer,
+                jsonbDeserializer,
                 field.getVariableElement().getEnclosingElement(),
                 field.getVariableElement().getSimpleName()));
       }
@@ -87,7 +84,6 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
     try {
       jsonbTypeSerializer.value();
     } catch (MirroredTypeException e) {
-
       return new ExpressionStmt(
           new MethodCallExpr(
                   new ObjectCreationExpr().setType(e.getTypeMirror().toString()), "serialize")
@@ -98,6 +94,39 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
               .addArgument(new NameExpr("ctx")));
     }
 
+    return null;
+  }
+
+  public Expression getFieldSerializerCreationExpr(PropertyDefinition field, CompilationUnit cu) {
+    JsonbTypeSerializer jsonbTypeSerializer =
+        field.getVariableElement().getAnnotation(JsonbTypeSerializer.class);
+    try {
+      jsonbTypeSerializer.value();
+    } catch (MirroredTypeException e) {
+      return new ObjectCreationExpr().setType(e.getTypeMirror().toString());
+    }
+    return null;
+  }
+
+  public Expression getFieldDeserializerCreationExpr(PropertyDefinition field, CompilationUnit cu) {
+    JsonbTypeDeserializer jsonbTypeDeserializer =
+        field.getVariableElement().getAnnotation(JsonbTypeDeserializer.class);
+    try {
+      jsonbTypeDeserializer.value();
+    } catch (MirroredTypeException e) {
+      if (!context
+          .getProcessingEnv()
+          .getTypeUtils()
+          .isSubtype(e.getTypeMirror(), jsonbDeserializer)) {
+        throw new IllegalArgumentException(
+            String.format(
+                "@JsonbTypeDeserializer value must be a subclass of %s at %s.%s",
+                jsonbDeserializer,
+                field.getVariableElement().getEnclosingElement(),
+                field.getVariableElement().getSimpleName()));
+      }
+      return new ObjectCreationExpr().setType(e.getTypeMirror().toString());
+    }
     return null;
   }
 }

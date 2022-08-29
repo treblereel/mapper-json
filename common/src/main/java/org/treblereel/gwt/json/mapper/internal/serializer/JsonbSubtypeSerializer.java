@@ -25,7 +25,10 @@ import java.util.Map;
 public class JsonbSubtypeSerializer<T> extends JsonSerializer<T> {
   private Map<Class, Info> types = new HashMap<>();
 
-  public JsonbSubtypeSerializer(Info... infos) {
+  private final String typeFieldName;
+
+  public JsonbSubtypeSerializer(String typeFieldName, Info... infos) {
+    this.typeFieldName = typeFieldName;
     for (Info info : infos) {
       types.put(info.clazz, info);
     }
@@ -41,7 +44,7 @@ public class JsonbSubtypeSerializer<T> extends JsonSerializer<T> {
           (AbstractBeanJsonSerializer) types.get(obj.getClass()).ser;
       serializer.properties.add(
           (JsonbPropertySerializer<?>)
-              (s, u, context) -> u.write("type", types.get(obj.getClass()).alias));
+              (s, u, context) -> u.write(typeFieldName, types.get(obj.getClass()).alias));
       serializer.serialize(obj, property, generator, ctx);
     } else {
       throw new Error("Unable to find ser for " + obj.getClass());
@@ -59,7 +62,7 @@ public class JsonbSubtypeSerializer<T> extends JsonSerializer<T> {
           (AbstractBeanJsonSerializer) types.get(obj.getClass()).ser;
       serializer.properties.add(
           (JsonbPropertySerializer<?>)
-              (s, u, context) -> u.write("type", types.get(obj.getClass()).alias));
+              (s, u, context) -> u.write(typeFieldName, types.get(obj.getClass()).alias));
       serializer.serialize(obj, generator, ctx);
     } else {
       throw new Error("Unable to find ser for " + obj.getClass());

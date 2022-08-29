@@ -21,7 +21,6 @@ import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;

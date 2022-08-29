@@ -60,4 +60,9 @@ public class Translation {
   public int hashCode() {
     return Objects.hash(from, to);
   }
+
+  @Override
+  public String toString() {
+    return "Translation{" + "from='" + from + '\'' + ", to='" + to + '\'' + '}';
+  }
 }
