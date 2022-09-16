@@ -19,12 +19,16 @@ package org.treblereel.gwt.json.mapper.enums;
 import static org.junit.Assert.assertEquals;
 
 import com.google.j2cl.junit.apt.J2clTestInput;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 
 @J2clTestInput(MyBeanWithEnumTest.class)
 public class MyBeanWithEnumTest {
 
   private static final MyBeanWithEnum_JsonMapperImpl mapper = new MyBeanWithEnum_JsonMapperImpl();
+  private static final MyBeanWithEnumCollections_JsonMapperImpl mapper2 =
+      new MyBeanWithEnumCollections_JsonMapperImpl();
 
   @Test
   public void test() {
@@ -37,5 +41,29 @@ public class MyBeanWithEnumTest {
     assertEquals(expected, mapper.toJSON(tested));
     assertEquals(tested, mapper.fromJSON(mapper.toJSON(tested)));
     assertEquals(expected, mapper.toJSON(mapper.fromJSON(mapper.toJSON(tested))));
+  }
+
+  @Test
+  public void test2() {
+    Set[] arr = new Set[] {Set.ONE, Set.TWO, Set.ONE};
+    MyBeanWithEnumCollections tested = new MyBeanWithEnumCollections();
+    assertEquals("{}", mapper2.toJSON(tested));
+    assertEquals(tested, mapper2.fromJSON("{}"));
+    tested.setArray(arr);
+    assertEquals("{\"array\":[\"ONE\",\"TWO\",\"ONE\"]}", mapper2.toJSON(tested));
+    assertEquals(tested, mapper2.fromJSON(mapper2.toJSON(tested)));
+
+    List<Type> typeList = new ArrayList<>();
+    typeList.add(Type.TYPE_ONE);
+    typeList.add(Type.TYPE_ONE);
+    typeList.add(Type.TYPE_TWO);
+    typeList.add(Type.TYPE_ONE);
+    typeList.add(Type.TYPE_ONE);
+    tested.setList(typeList);
+
+    assertEquals(
+        "{\"array\":[\"ONE\",\"TWO\",\"ONE\"],\"list\":[\"TYPE_ONE\",\"TYPE_ONE\",\"TYPE_TWO\",\"TYPE_ONE\",\"TYPE_ONE\"]}",
+        mapper2.toJSON(tested));
+    assertEquals(tested, mapper2.fromJSON(mapper2.toJSON(tested)));
   }
 }

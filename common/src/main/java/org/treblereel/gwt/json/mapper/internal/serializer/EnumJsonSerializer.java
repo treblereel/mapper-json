@@ -24,6 +24,8 @@ public class EnumJsonSerializer<E extends Enum<E>> extends JsonSerializer<E> {
 
   private final Function<E, String> typeStringFunction;
 
+  private static final StringJsonSerializer stringJsonSerializer = new StringJsonSerializer();
+
   public EnumJsonSerializer(Function<E, String> typeStringFunction) {
     this.typeStringFunction = typeStringFunction;
   }

@@ -22,6 +22,7 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.CastExpr;
+import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.NullLiteralExpr;
@@ -50,68 +51,13 @@ public class EnumBeanFieldDefinition extends FieldDefinition {
 
   @Override
   public Statement getFieldDeserializer(PropertyDefinition field, CompilationUnit cu) {
-    cu.addImport(EnumJsonDeserializer.class);
-    cu.addImport(Function.class);
-    cu.addImport(MoreTypes.asTypeElement(field.getType()).getQualifiedName().toString());
-
-    ObjectCreationExpr deser =
-        new ObjectCreationExpr()
-            .setType(new ClassOrInterfaceType().setName(EnumJsonDeserializer.class.getSimpleName()))
-            .addArgument(
-                MoreTypes.asTypeElement(field.getType()).getSimpleName().toString() + ".class");
-
-    NodeList<BodyDeclaration<?>> anonymousClassBody = new NodeList<>();
-    NodeList<Type> typeArguments = new NodeList<>();
-    typeArguments.add(new ClassOrInterfaceType().setName("String"));
-    typeArguments.add(new ClassOrInterfaceType().setName(field.getType().toString()));
-
-    ClassOrInterfaceType type = new ClassOrInterfaceType().setName("Function");
-    type.setTypeArguments(typeArguments);
-
-    ObjectCreationExpr function = new ObjectCreationExpr().setType(type);
-    function.setAnonymousClassBody(anonymousClassBody);
-
-    MethodDeclaration apply = new MethodDeclaration();
-    apply.setModifiers(Modifier.Keyword.PUBLIC);
-    apply.addAnnotation(Override.class);
-    apply.setName("apply");
-    apply.setType(field.getType().toString());
-    apply.addParameter("String", "value");
-
-    anonymousClassBody.add(apply);
-
-    for (Element enumConstant : MoreTypes.asTypeElement(field.getType()).getEnclosedElements()) {
-      if (enumConstant.getKind().equals(ElementKind.ENUM_CONSTANT)) {
-        apply
-            .getBody()
-            .ifPresent(
-                body ->
-                    body.addAndGetStatement(
-                            new IfStmt()
-                                .setCondition(
-                                    new MethodCallExpr(
-                                            new StringLiteralExpr(getEnumName(enumConstant)),
-                                            "equals")
-                                        .addArgument(new NameExpr("value"))))
-                        .setThenStmt(
-                            new ReturnStmt(
-                                new NameExpr(field.getType().toString() + "." + enumConstant))));
-      }
-    }
-
-    apply
-        .getBody()
-        .ifPresent(body -> body.addAndGetStatement(new ReturnStmt(new NullLiteralExpr())));
-
-    deser.addArgument(function);
-
     return new ExpressionStmt(
         new MethodCallExpr(new NameExpr("bean"), field.getSetter().getSimpleName().toString())
             .addArgument(
                 new CastExpr()
                     .setType(new ClassOrInterfaceType().setName(field.getType().toString()))
                     .setExpression(
-                        new MethodCallExpr(deser, "deserialize")
+                        new MethodCallExpr(this.getDeserializerCreationExpr(cu), "deserialize")
                             .addArgument(
                                 new MethodCallExpr(new NameExpr("jsonObject"), "getJsonString")
                                     .addArgument(new StringLiteralExpr(field.getName())))
@@ -120,12 +66,28 @@ public class EnumBeanFieldDefinition extends FieldDefinition {
 
   @Override
   public Statement getFieldSerializer(PropertyDefinition field, CompilationUnit cu) {
+    return new ExpressionStmt(
+        new MethodCallExpr(getSerializerCreationExpr(cu), "serialize")
+            .addArgument(
+                new MethodCallExpr(
+                    new NameExpr("bean"), field.getGetter().getSimpleName().toString()))
+            .addArgument(new StringLiteralExpr(field.getName()))
+            .addArgument(new NameExpr("generator"))
+            .addArgument(new NameExpr("ctx")));
+  }
+
+  private String getEnumName(Element enumConstant) {
+    String enumName = enumConstant.toString();
+    return enumName;
+  }
+
+  public Expression getSerializerCreationExpr(CompilationUnit cu) {
     cu.addImport(EnumJsonSerializer.class);
     cu.addImport(Function.class);
 
     NodeList<BodyDeclaration<?>> anonymousClassBody = new NodeList<>();
     NodeList<Type> typeArguments = new NodeList<>();
-    typeArguments.add(new ClassOrInterfaceType().setName(field.getType().toString()));
+    typeArguments.add(new ClassOrInterfaceType().setName(this.property.toString()));
     typeArguments.add(new ClassOrInterfaceType().setName("String"));
 
     ClassOrInterfaceType type = new ClassOrInterfaceType().setName("Function");
@@ -139,11 +101,11 @@ public class EnumBeanFieldDefinition extends FieldDefinition {
     apply.addAnnotation(Override.class);
     apply.setName("apply");
     apply.setType(new ClassOrInterfaceType().setName("String"));
-    apply.addParameter(field.getType().toString(), "value");
+    apply.addParameter(this.property.toString(), "value");
 
     anonymousClassBody.add(apply);
 
-    for (Element enumConstant : MoreTypes.asTypeElement(field.getType()).getEnclosedElements()) {
+    for (Element enumConstant : MoreTypes.asTypeElement(this.property).getEnclosedElements()) {
       if (enumConstant.getKind().equals(ElementKind.ENUM_CONSTANT)) {
         apply
             .getBody()
@@ -154,7 +116,7 @@ public class EnumBeanFieldDefinition extends FieldDefinition {
                                 .setCondition(
                                     new MethodCallExpr(
                                             new NameExpr(
-                                                field.getType().toString() + "." + enumConstant),
+                                                this.property.toString() + "." + enumConstant),
                                             "equals")
                                         .addArgument(new NameExpr("value"))))
                         .setThenStmt(
@@ -170,19 +132,64 @@ public class EnumBeanFieldDefinition extends FieldDefinition {
         new ObjectCreationExpr()
             .setType(new ClassOrInterfaceType().setName(EnumJsonSerializer.class.getSimpleName()))
             .addArgument(function);
-
-    return new ExpressionStmt(
-        new MethodCallExpr(ser, "serialize")
-            .addArgument(
-                new MethodCallExpr(
-                    new NameExpr("bean"), field.getGetter().getSimpleName().toString()))
-            .addArgument(new StringLiteralExpr(field.getName()))
-            .addArgument(new NameExpr("generator"))
-            .addArgument(new NameExpr("ctx")));
+    return ser;
   }
 
-  private String getEnumName(Element enumConstant) {
-    String enumName = enumConstant.toString();
-    return enumName;
+  public Expression getDeserializerCreationExpr(CompilationUnit cu) {
+    cu.addImport(EnumJsonDeserializer.class);
+    cu.addImport(Function.class);
+    cu.addImport(MoreTypes.asTypeElement(this.property).getQualifiedName().toString());
+
+    ObjectCreationExpr deser =
+        new ObjectCreationExpr()
+            .setType(new ClassOrInterfaceType().setName(EnumJsonDeserializer.class.getSimpleName()))
+            .addArgument(
+                MoreTypes.asTypeElement(this.property).getSimpleName().toString() + ".class");
+
+    NodeList<BodyDeclaration<?>> anonymousClassBody = new NodeList<>();
+    NodeList<Type> typeArguments = new NodeList<>();
+    typeArguments.add(new ClassOrInterfaceType().setName("String"));
+    typeArguments.add(new ClassOrInterfaceType().setName(this.property.toString()));
+
+    ClassOrInterfaceType type = new ClassOrInterfaceType().setName("Function");
+    type.setTypeArguments(typeArguments);
+
+    ObjectCreationExpr function = new ObjectCreationExpr().setType(type);
+    function.setAnonymousClassBody(anonymousClassBody);
+
+    MethodDeclaration apply = new MethodDeclaration();
+    apply.setModifiers(Modifier.Keyword.PUBLIC);
+    apply.addAnnotation(Override.class);
+    apply.setName("apply");
+    apply.setType(this.property.toString());
+    apply.addParameter("String", "value");
+
+    anonymousClassBody.add(apply);
+
+    for (Element enumConstant : MoreTypes.asTypeElement(this.property).getEnclosedElements()) {
+      if (enumConstant.getKind().equals(ElementKind.ENUM_CONSTANT)) {
+        apply
+            .getBody()
+            .ifPresent(
+                body ->
+                    body.addAndGetStatement(
+                            new IfStmt()
+                                .setCondition(
+                                    new MethodCallExpr(
+                                            new StringLiteralExpr(getEnumName(enumConstant)),
+                                            "equals")
+                                        .addArgument(new NameExpr("value"))))
+                        .setThenStmt(
+                            new ReturnStmt(
+                                new NameExpr(this.property.toString() + "." + enumConstant))));
+      }
+    }
+
+    apply
+        .getBody()
+        .ifPresent(body -> body.addAndGetStatement(new ReturnStmt(new NullLiteralExpr())));
+
+    deser.addArgument(function);
+    return deser;
   }
 }

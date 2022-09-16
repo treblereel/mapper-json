@@ -101,7 +101,9 @@ public class BeanProcessor {
     if (type.getKind().equals(TypeKind.ARRAY)) {
       ArrayType arrayType = (ArrayType) type;
       if (!context.getTypeUtils().isSimpleType(arrayType.getComponentType())) {
-        processBean(MoreTypes.asTypeElement(arrayType.getComponentType()));
+        if (!MoreTypes.asElement(arrayType.getComponentType()).getKind().equals(ElementKind.ENUM)) {
+          processBean(MoreTypes.asTypeElement(arrayType.getComponentType()));
+        }
       }
     } else if (MoreTypes.asElement(type).getKind().equals(ElementKind.ENUM)) {
       return;
