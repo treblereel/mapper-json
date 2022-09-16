@@ -22,6 +22,7 @@ import jakarta.json.bind.annotation.JsonbTypeInfo;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import java.util.HashMap;
 import java.util.Map;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
@@ -49,6 +50,8 @@ public class FieldDefinitionFactory {
       result = new BasicTypeFieldDefinition(property, context);
     } else if (type.getKind().equals(TypeKind.ARRAY)) {
       result = new ArrayBeanFieldDefinition(property, context);
+    } else if (MoreTypes.asElement(property).getKind().equals(ElementKind.ENUM)) {
+      result = new EnumBeanFieldDefinition(property, context);
     } else if (MoreTypes.asTypeElement(type).getAnnotation(JsonbTypeInfo.class) != null) {
       result = new JsonbTypeSerFieldDefinition(type, context);
     } else if (context.getTypeUtils().isIterable(property)) {

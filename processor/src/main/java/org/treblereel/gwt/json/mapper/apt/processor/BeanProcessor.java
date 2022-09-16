@@ -103,6 +103,8 @@ public class BeanProcessor {
       if (!context.getTypeUtils().isSimpleType(arrayType.getComponentType())) {
         processBean(MoreTypes.asTypeElement(arrayType.getComponentType()));
       }
+    } else if (MoreTypes.asElement(type).getKind().equals(ElementKind.ENUM)) {
+      return;
     } else if (context.getTypeUtils().isAssignableFrom(type, Map.class)) {
       DeclaredType collection = (DeclaredType) type;
       collection.getTypeArguments().forEach(this::checkTypeAndAdd);
