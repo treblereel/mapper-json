@@ -51,6 +51,9 @@ public abstract class AbstractGenerator {
   }
 
   public void generate(BeanDefinition type) {
+    if (type.getElement().getQualifiedName().toString().equals(Object.class.getCanonicalName())) {
+      return;
+    }
     cu = new CompilationUnit();
     cu.setPackageDeclaration(type.getPackageQualifiedName());
     declaration = cu.addClass(getMapperName(type.getElement()));
