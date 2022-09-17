@@ -17,11 +17,8 @@ package org.treblereel.gwt.json.mapper.apt.generator;
 
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.expr.CastExpr;
-import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.FieldAccessExpr;
 import com.github.javaparser.ast.expr.NameExpr;
-import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.SimpleName;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
@@ -69,7 +66,7 @@ public class MapperGenerator extends AbstractGenerator {
   }
 
   private String getTypeMapperName(BeanDefinition type) {
-    return type.getElement().getSimpleName().toString();
+    return type.getElement().getQualifiedName().toString();
   }
 
   @Override
@@ -127,14 +124,6 @@ public class MapperGenerator extends AbstractGenerator {
             : MoreElements.asType(type.getEnclosingElement()).getSimpleName().toString() + "_")
         + type.getSimpleName()
         + MAPPER_IMPL;
-  }
-
-  private Expression addObjectCreationExpr(
-      BeanDefinition type, ClassOrInterfaceType returnType, ObjectCreationExpr creationExpr) {
-    if (type.getElement().getKind().isClass()) {
-      return creationExpr;
-    }
-    return new CastExpr().setType(returnType).setExpression(creationExpr);
   }
 
   @Override

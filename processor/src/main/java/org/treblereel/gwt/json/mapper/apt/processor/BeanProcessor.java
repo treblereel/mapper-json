@@ -183,7 +183,8 @@ public class BeanProcessor {
       throw new GenerationException("A @JSONMapper bean [" + type + "] must be public");
     }
 
-    if (type.getModifiers().contains(Modifier.STATIC)) {
+    if (type.getModifiers().contains(Modifier.STATIC)
+        && type.getEnclosingElement().getKind().equals(ElementKind.PACKAGE)) {
       throw new GenerationException("A @JSONMapper bean [" + type + "] must not be static");
     }
 
