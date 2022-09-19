@@ -24,7 +24,9 @@ import jakarta.json.JsonNumber;
 import jakarta.json.JsonNumberImpl;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonString;
+import jakarta.json.JsonStringImpl;
 import jakarta.json.JsonValue;
+import jakarta.json.bind.JsonbException;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
@@ -64,7 +66,7 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public JsonString getJsonString(String name) {
-    throw new UnsupportedOperationException();
+    return new JsonStringImpl(Js.asPropertyMap(__holder__).get(name).toString());
   }
 
   @Override
@@ -104,13 +106,11 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public ValueType getValueType() {
-    String type = Js.typeof(__holder__).toLowerCase(Locale.ROOT);
-
-    if (type.equals("object")) {
-      return ValueType.OBJECT;
-    } else if (type.equals("array")) {
+    if (JsArray.isArray(__holder__)) {
       return ValueType.ARRAY;
-    } else if (type.equals("number")) {
+    }
+    String type = Js.typeof(__holder__).toLowerCase(Locale.ROOT);
+    if (type.equals("number")) {
       return ValueType.NUMBER;
     } else if (type.equals("string")) {
       return ValueType.STRING;
@@ -122,6 +122,8 @@ public class JsonObjectImpl implements JsonObject {
       }
     } else if (type.equals("null")) {
       return ValueType.NULL;
+    } else if (type.equals("object")) {
+      return ValueType.OBJECT;
     }
 
     throw new IllegalStateException("Unknown type: " + type);
@@ -191,8 +193,17 @@ public class JsonObjectImpl implements JsonObject {
     return Js.uncheckedCast(__holder__);
   }
 
+  @Override
   public JsonObject asJsonObject() {
-    return Js.uncheckedCast(__holder__);
+    return Js.uncheckedCast(__holder__); // TODO wrong impl
+  }
+
+  @Override
+  public JsonArray asJsonArray() {
+    if (getValueType() == ValueType.ARRAY) {
+      return new JsonArrayImpl(Js.uncheckedCast(__holder__));
+    }
+    throw new JsonbException("JsonValue is not an array");
   }
 
   @Override
