@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import jsinterop.base.Js;
 
 public class JsonObjectImpl implements JsonObject {
@@ -176,7 +177,9 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public Set<String> keySet() {
-    throw new UnsupportedOperationException();
+    return Reflect.ownKeys(__holder__).asList().stream()
+        .map(Reflect.OwnKeysArrayUnionType::asString)
+        .collect(Collectors.toSet());
   }
 
   @Override
