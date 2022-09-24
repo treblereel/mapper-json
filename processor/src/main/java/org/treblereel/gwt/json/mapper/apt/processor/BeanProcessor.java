@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
@@ -36,6 +37,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
+import org.treblereel.gwt.json.mapper.annotation.JSONMapper;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.apt.exception.GenerationException;
 import org.treblereel.gwt.json.mapper.apt.generator.MapperGenerator;
@@ -82,14 +84,18 @@ public class BeanProcessor {
   private void processBean(TypeElement bean) {
     if (!beans.contains(bean)) {
       beans.add(checkBean(bean));
-      context.getTypeUtils().getAllFieldsIn(bean).forEach(this::processField);
+      if (!hasJsonbTypeSerializerAnnotation(bean)) {
+        context.getTypeUtils().getAllFieldsIn(bean).forEach(this::processField);
+      }
     }
   }
 
   private void processField(VariableElement field) {
     if (checkField(field)) {
       TypeMirror typeMirror = field.asType();
-      checkTypeAndAdd(typeMirror);
+      if (!hasJsonbTypeSerializerAnnotation(field)) {
+        checkTypeAndAdd(typeMirror);
+      }
     }
   }
 
@@ -101,7 +107,9 @@ public class BeanProcessor {
     if (type.getKind().equals(TypeKind.ARRAY)) {
       ArrayType arrayType = (ArrayType) type;
       if (!context.getTypeUtils().isSimpleType(arrayType.getComponentType())) {
-        if (!MoreTypes.asElement(arrayType.getComponentType()).getKind().equals(ElementKind.ENUM)) {
+        if (!MoreTypes.asElement(arrayType.getComponentType()).getKind().equals(ElementKind.ENUM)
+            && !hasJsonbTypeSerializerAnnotation(
+                MoreTypes.asElement(arrayType.getComponentType()))) {
           processBean(MoreTypes.asTypeElement(arrayType.getComponentType()));
         }
       }
@@ -112,19 +120,36 @@ public class BeanProcessor {
       collection.getTypeArguments().forEach(this::checkTypeAndAdd);
     } else if (context.getTypeUtils().isAssignableFrom(type, Collection.class)) {
       DeclaredType collection = (DeclaredType) type;
-      collection.getTypeArguments().forEach(this::checkTypeAndAdd);
+      collection.getTypeArguments().stream()
+          .filter(e -> !hasJsonbTypeSerializerAnnotation(e))
+          .forEach(this::checkTypeAndAdd);
     } else if (context.getTypeUtils().isAssignableFrom(type, Iterable.class)) {
       DeclaredType collection = (DeclaredType) type;
-      collection.getTypeArguments().forEach(this::checkTypeAndAdd);
+      collection.getTypeArguments().stream()
+          .filter(e -> !hasJsonbTypeSerializerAnnotation(e))
+          .forEach(this::checkTypeAndAdd);
     } else if (!beans.contains(context.getProcessingEnv().getTypeUtils().erasure(type))) {
       processBean(MoreTypes.asTypeElement(context.getProcessingEnv().getTypeUtils().erasure(type)));
     } else if (type.getKind().equals(TypeKind.ARRAY)) {
       ArrayType arrayType = (ArrayType) type;
-      processBean(MoreTypes.asTypeElement(arrayType.getComponentType()));
+      TypeElement typeElement = MoreTypes.asTypeElement(arrayType.getComponentType());
+      if (!hasJsonbTypeSerializerAnnotation(typeElement)) {
+        processBean(typeElement);
+      }
     } else if (MoreTypes.isType(type)
-        && !MoreTypes.asElement(type).getKind().equals(ElementKind.ENUM)) {
+        && !MoreTypes.asElement(type).getKind().equals(ElementKind.ENUM)
+        && !hasJsonbTypeSerializerAnnotation(MoreTypes.asElement(type))) {
       processBean(MoreTypes.asTypeElement(type));
     }
+  }
+
+  private boolean hasJsonbTypeSerializerAnnotation(Element componentType) {
+    return componentType.getAnnotation(JsonbTypeSerializer.class) != null
+        && componentType.getAnnotation(JsonbTypeDeserializer.class) != null;
+  }
+
+  private boolean hasJsonbTypeSerializerAnnotation(TypeMirror componentType) {
+    return hasJsonbTypeSerializerAnnotation(MoreTypes.asElement(componentType));
   }
 
   private boolean checkField(VariableElement field) {
@@ -186,6 +211,15 @@ public class BeanProcessor {
     if (type.getModifiers().contains(Modifier.STATIC)
         && type.getEnclosingElement().getKind().equals(ElementKind.PACKAGE)) {
       throw new GenerationException("A @JSONMapper bean [" + type + "] must not be static");
+    }
+
+    if ((type.getAnnotation(JsonbTypeSerializer.class) != null
+            || type.getAnnotation(JsonbTypeDeserializer.class) != null)
+        && type.getAnnotation(JSONMapper.class) != null) {
+      throw new GenerationException(
+          "A @JSONMapper bean ["
+              + type
+              + "] must not be annotated with JsonbTypeSerializer or JsonbTypeDeserializer");
     }
 
     List<ExecutableElement> constructors = ElementFilter.constructorsIn(type.getEnclosedElements());

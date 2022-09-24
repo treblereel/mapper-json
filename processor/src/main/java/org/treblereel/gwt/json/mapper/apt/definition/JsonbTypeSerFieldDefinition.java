@@ -20,6 +20,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
+import com.google.auto.common.MoreTypes;
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import javax.lang.model.element.TypeElement;
@@ -47,7 +48,9 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
   @Override
   public Statement getFieldDeserializer(PropertyDefinition field, CompilationUnit cu) {
     JsonbTypeDeserializer jsonbTypeDeserializer =
-        field.getVariableElement().getAnnotation(JsonbTypeDeserializer.class);
+        field.getVariableElement().getAnnotation(JsonbTypeDeserializer.class) != null
+            ? field.getVariableElement().getAnnotation(JsonbTypeDeserializer.class)
+            : MoreTypes.asTypeElement(property).getAnnotation(JsonbTypeDeserializer.class);
     try {
       jsonbTypeDeserializer.value();
     } catch (MirroredTypeException e) {
@@ -80,7 +83,9 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
   @Override
   public Statement getFieldSerializer(PropertyDefinition field, CompilationUnit cu) {
     JsonbTypeSerializer jsonbTypeSerializer =
-        field.getVariableElement().getAnnotation(JsonbTypeSerializer.class);
+        field.getVariableElement().getAnnotation(JsonbTypeSerializer.class) != null
+            ? field.getVariableElement().getAnnotation(JsonbTypeSerializer.class)
+            : MoreTypes.asTypeElement(property).getAnnotation(JsonbTypeSerializer.class);
     try {
       jsonbTypeSerializer.value();
     } catch (MirroredTypeException e) {
@@ -99,7 +104,9 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
 
   public Expression getFieldSerializerCreationExpr(PropertyDefinition field, CompilationUnit cu) {
     JsonbTypeSerializer jsonbTypeSerializer =
-        field.getVariableElement().getAnnotation(JsonbTypeSerializer.class);
+        field.getVariableElement().getAnnotation(JsonbTypeSerializer.class) != null
+            ? field.getVariableElement().getAnnotation(JsonbTypeSerializer.class)
+            : MoreTypes.asTypeElement(property).getAnnotation(JsonbTypeSerializer.class);
     try {
       jsonbTypeSerializer.value();
     } catch (MirroredTypeException e) {
@@ -110,7 +117,9 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
 
   public Expression getFieldDeserializerCreationExpr(PropertyDefinition field, CompilationUnit cu) {
     JsonbTypeDeserializer jsonbTypeDeserializer =
-        field.getVariableElement().getAnnotation(JsonbTypeDeserializer.class);
+        field.getVariableElement().getAnnotation(JsonbTypeDeserializer.class) != null
+            ? field.getVariableElement().getAnnotation(JsonbTypeDeserializer.class)
+            : MoreTypes.asTypeElement(property).getAnnotation(JsonbTypeDeserializer.class);
     try {
       jsonbTypeDeserializer.value();
     } catch (MirroredTypeException e) {
