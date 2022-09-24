@@ -17,14 +17,15 @@
 package jakarta.json.stream;
 
 import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 import java.math.BigDecimal;
 import jsinterop.base.Js;
 
 public class JsonParserImpl implements JsonParser {
 
-  private JsonObject holder;
+  private JsonValue holder;
 
-  public JsonParserImpl(JsonObject holder) {
+  public JsonParserImpl(JsonValue holder) {
     this.holder = holder;
   }
 
@@ -42,6 +43,10 @@ public class JsonParserImpl implements JsonParser {
   }
 
   public JsonObject getObject() {
+    return (JsonObject) holder;
+  }
+
+  public JsonValue getValue() {
     return holder;
   }
 
