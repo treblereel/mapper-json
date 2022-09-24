@@ -25,9 +25,8 @@ public class BeanWithTypeSerializerJsonbTypeSerializer
   @Override
   public void serialize(
       BeanWithTypeSerializer obj, JsonGenerator generator, SerializationContext ctx) {
-    JsonGenerator jsonGenerator = generator.writeStartObject("holder");
+    JsonGenerator jsonGenerator = generator.writeStartObject();
     jsonGenerator.write("__value__", (String) obj.getValue());
-
     jsonGenerator.writeEnd();
   }
 }

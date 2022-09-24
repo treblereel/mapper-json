@@ -14,19 +14,25 @@
  * limitations under the License.
  */
 
-package org.treblereel.gwt.json.mapper.annotations.customserdeser;
+package org.treblereel.gwt.json.mapper.internal.serializer;
 
 import jakarta.json.bind.serializer.JsonbSerializer;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
 
-public class BeanWithTypeSerializerJsonbTypeSerializer2
-    implements JsonbSerializer<BeanWithTypeSerializer> {
+public class SerializerJsonbTypeSerializerWrapper<T> implements JsonbSerializer<T> {
+
+  private final JsonbSerializer<T> serializer;
+  private final String property;
+
+  public SerializerJsonbTypeSerializerWrapper(JsonbSerializer<T> serializer, String property) {
+    this.serializer = serializer;
+    this.property = property;
+  }
+
   @Override
-  public void serialize(
-      BeanWithTypeSerializer obj, JsonGenerator generator, SerializationContext ctx) {
-    JsonGenerator jsonGenerator = generator.writeStartObject();
-    jsonGenerator.write("__value2__", (String) obj.getValue());
-    jsonGenerator.writeEnd();
+  public void serialize(T obj, JsonGenerator generator, SerializationContext ctx) {
+    JsonGenerator gen = generator.writeKey(property);
+    serializer.serialize(obj, gen, ctx);
   }
 }

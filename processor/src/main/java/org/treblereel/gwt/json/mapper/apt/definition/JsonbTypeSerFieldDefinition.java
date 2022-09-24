@@ -27,6 +27,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
+import org.treblereel.gwt.json.mapper.internal.serializer.SerializerJsonbTypeSerializerWrapper;
 
 public class JsonbTypeSerFieldDefinition extends FieldDefinition {
 
@@ -91,7 +92,11 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
     } catch (MirroredTypeException e) {
       return new ExpressionStmt(
           new MethodCallExpr(
-                  new ObjectCreationExpr().setType(e.getTypeMirror().toString()), "serialize")
+                  new ObjectCreationExpr()
+                      .setType(SerializerJsonbTypeSerializerWrapper.class.getCanonicalName())
+                      .addArgument(new ObjectCreationExpr().setType(e.getTypeMirror().toString()))
+                      .addArgument(new StringLiteralExpr(field.getName())),
+                  "serialize")
               .addArgument(
                   new MethodCallExpr(
                       new NameExpr("bean"), field.getGetter().getSimpleName().toString()))
