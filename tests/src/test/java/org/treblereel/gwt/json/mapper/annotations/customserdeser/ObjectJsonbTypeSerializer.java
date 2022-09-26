@@ -18,6 +18,7 @@ package org.treblereel.gwt.json.mapper.annotations.customserdeser;
 
 import jakarta.json.bind.serializer.JsonbSerializer;
 import jakarta.json.bind.serializer.SerializationContext;
+import jakarta.json.stream.ContextedJsonGenerator;
 import jakarta.json.stream.JsonGenerator;
 
 public class ObjectJsonbTypeSerializer implements JsonbSerializer<Object> {
@@ -28,9 +29,15 @@ public class ObjectJsonbTypeSerializer implements JsonbSerializer<Object> {
   @Override
   public void serialize(Object obj, JsonGenerator generator, SerializationContext ctx) {
     if (obj instanceof Boolean) {
-      generator.write("holder", ((Boolean) obj));
+      generator.write(((Boolean) obj));
     } else if (obj instanceof Translation) {
-      translation_JsonSerializerImpl.serialize((Translation) obj, "holder", generator, ctx);
+      if (generator instanceof ContextedJsonGenerator) { // TODO well, this is a hack
+        JsonGenerator gen = generator.writeStartObject();
+        translation_JsonSerializerImpl.serialize((Translation) obj, gen, ctx);
+        gen.writeEnd();
+      } else {
+        translation_JsonSerializerImpl.serialize((Translation) obj, generator, ctx);
+      }
     }
   }
 }

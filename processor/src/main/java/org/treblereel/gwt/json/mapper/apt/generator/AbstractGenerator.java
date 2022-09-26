@@ -24,6 +24,8 @@ import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.google.auto.common.MoreElements;
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
+import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.annotation.processing.FilerException;
@@ -51,6 +53,14 @@ public abstract class AbstractGenerator {
   }
 
   public void generate(BeanDefinition type) {
+    if (type.getElement().getQualifiedName().toString().equals(Object.class.getCanonicalName())) {
+      return;
+    }
+    if (type.getElement().getAnnotation(JsonbTypeSerializer.class) != null
+        && type.getElement().getAnnotation(JsonbTypeDeserializer.class) != null) {
+      return;
+    }
+
     cu = new CompilationUnit();
     cu.setPackageDeclaration(type.getPackageQualifiedName());
     declaration = cu.addClass(getMapperName(type.getElement()));

@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package org.treblereel.gwt.json.mapper.internal.deserializer;
+package org.treblereel.gwt.json.mapper.annotations.customserdeser;
 
-import jakarta.json.JsonException;
-import jakarta.json.JsonString;
-import jakarta.json.JsonValue;
-import jakarta.json.JsonValueDecorator;
-import jakarta.json.bind.serializer.DeserializationContext;
+import jakarta.json.bind.serializer.JsonbSerializer;
+import jakarta.json.bind.serializer.SerializationContext;
+import jakarta.json.stream.JsonGenerator;
 
-public class StringJsonDeserializer extends JsonbDeserializer<String> {
-
+public class BeanWithTypeSerializerJsonbTypeSerializer2
+    implements JsonbSerializer<BeanWithTypeSerializer> {
   @Override
-  public String deserialize(JsonValue json, DeserializationContext ctx) throws JsonException {
-    if (json instanceof JsonString) {
-      return ((JsonString) json).getString();
-    }
-    return new JsonValueDecorator(json).asString();
+  public void serialize(
+      BeanWithTypeSerializer obj, JsonGenerator generator, SerializationContext ctx) {
+    JsonGenerator jsonGenerator = generator.writeStartObject();
+    jsonGenerator.write("__value2__", (String) obj.getValue());
+    jsonGenerator.writeEnd();
   }
 }

@@ -61,7 +61,7 @@ public class SerializerGenerator extends AbstractGenerator {
                 .setName(AbstractBeanJsonSerializer.class.getSimpleName())
                 .setTypeArguments(
                     new ClassOrInterfaceType()
-                        .setName(type.getElement().getSimpleName().toString())));
+                        .setName(type.getElement().getQualifiedName().toString())));
     constructor = declaration.addConstructor(Modifier.Keyword.PUBLIC);
   }
 

@@ -17,14 +17,16 @@
 package jakarta.json.stream;
 
 import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
+import jakarta.json.JsonValueDecorator;
 import java.math.BigDecimal;
 import jsinterop.base.Js;
 
 public class JsonParserImpl implements JsonParser {
 
-  private JsonObject holder;
+  private JsonValue holder;
 
-  public JsonParserImpl(JsonObject holder) {
+  public JsonParserImpl(JsonValue holder) {
     this.holder = holder;
   }
 
@@ -42,12 +44,25 @@ public class JsonParserImpl implements JsonParser {
   }
 
   public JsonObject getObject() {
+    if (holder.getValueType() == JsonValue.ValueType.OBJECT) {
+      if (holder instanceof JsonObject) {
+        return (JsonObject) holder;
+      }
+      return holder.asJsonObject();
+    }
+    throw new IllegalStateException("Not an object");
+  }
+
+  public JsonValue getValue() {
     return holder;
   }
 
   @Override
   public String getString() {
-    throw new UnsupportedOperationException();
+    if (holder.getValueType().equals(JsonValue.ValueType.STRING)) {
+      return new JsonValueDecorator(holder).asString();
+    }
+    throw new IllegalStateException("Not a string");
   }
 
   @Override
@@ -57,12 +72,18 @@ public class JsonParserImpl implements JsonParser {
 
   @Override
   public int getInt() {
-    throw new UnsupportedOperationException();
+    if (holder.getValueType().equals(JsonValue.ValueType.NUMBER)) {
+      return new JsonValueDecorator(holder).asInteger();
+    }
+    throw new IllegalStateException("Not a int");
   }
 
   @Override
   public long getLong() {
-    throw new UnsupportedOperationException();
+    if (holder.getValueType().equals(JsonValue.ValueType.NUMBER)) {
+      return new JsonValueDecorator(holder).asLong();
+    }
+    throw new IllegalStateException("Not a long");
   }
 
   @Override

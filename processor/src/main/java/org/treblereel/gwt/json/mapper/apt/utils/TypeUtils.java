@@ -19,6 +19,8 @@ package org.treblereel.gwt.json.mapper.apt.utils;
 import com.github.javaparser.ast.CompilationUnit;
 import com.google.auto.common.MoreElements;
 import com.google.auto.common.MoreTypes;
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
+import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,11 +31,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
@@ -251,6 +255,57 @@ public class TypeUtils {
 
   public boolean isIterable(TypeMirror property) {
     return !property.getKind().isPrimitive() && isAssignableFrom(property, Iterable.class);
+  }
+
+  public boolean isJsonbTypeSerializer(VariableElement type) {
+    boolean isFieldAnnotated =
+        type.getAnnotation(JsonbTypeSerializer.class) != null
+            && type.getAnnotation(JsonbTypeDeserializer.class) != null;
+    if (isFieldAnnotated) {
+      return true;
+    }
+
+    return isJsonbTypeSerializer(type.asType());
+  }
+
+  public boolean isJsonbTypeSerializer(Element type) {
+    if (type.getKind().isField()) {
+      VariableElement field = MoreElements.asVariable(type);
+      TypeMirror typeMirror = field.asType();
+      if (typeMirror.getKind().isPrimitive()) {
+        return false;
+      }
+      if (!typeMirror.getKind().equals(TypeKind.ARRAY)) {
+        boolean hasJsonbTypeSerializer = isJsonbTypeSerializer(typeMirror);
+        if (hasJsonbTypeSerializer) {
+          return true;
+        }
+      }
+    }
+    return type.getAnnotation(JsonbTypeSerializer.class) != null
+        && type.getAnnotation(JsonbTypeDeserializer.class) != null;
+  }
+
+  public boolean isJsonbTypeSerializer(TypeMirror mirror) {
+    if (mirror.getKind().isPrimitive()) {
+      return false;
+    } else if (mirror.getKind().equals(TypeKind.ARRAY)) {
+      ArrayType arrayType = (ArrayType) mirror;
+      if (arrayType.getComponentType().getKind().isPrimitive()) {
+        return false;
+      }
+      if (MoreTypes.asElement(arrayType.getComponentType()).getKind().equals(ElementKind.ENUM)) {
+        return false;
+      }
+      return isJsonbTypeSerializer(arrayType.getComponentType());
+    } else if (isIterable(mirror)) {
+      boolean hasJsonbTypeSerializer =
+          isJsonbTypeSerializer(MoreTypes.asDeclared(mirror).getTypeArguments().get(0));
+      if (hasJsonbTypeSerializer) {
+        return true;
+      }
+    }
+    return isJsonbTypeSerializer(MoreTypes.asElement(mirror));
   }
 
   public class BoxedTypes {

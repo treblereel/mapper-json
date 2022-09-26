@@ -49,7 +49,7 @@ public class JsonGeneratorDecorator implements JsonGenerator {
 
   @Override
   public JsonGenerator writeKey(String name) {
-    throw new UnsupportedOperationException();
+    return new ContextedJsonGenerator(name, this);
   }
 
   @Override

@@ -45,6 +45,7 @@ import org.treblereel.gwt.json.mapper.internal.deserializer.BaseNumberJsonDeseri
 import org.treblereel.gwt.json.mapper.internal.deserializer.BaseNumberJsonDeserializer.ShortJsonDeserializer;
 import org.treblereel.gwt.json.mapper.internal.deserializer.BooleanJsonDeserializer;
 import org.treblereel.gwt.json.mapper.internal.deserializer.CharacterJsonDeserializer;
+import org.treblereel.gwt.json.mapper.internal.deserializer.EnumJsonDeserializer;
 import org.treblereel.gwt.json.mapper.internal.deserializer.StringJsonDeserializer;
 import org.treblereel.gwt.json.mapper.internal.deserializer.array.PrimitiveBooleanArrayJsonDeserializer;
 import org.treblereel.gwt.json.mapper.internal.deserializer.array.PrimitiveByteArrayJsonDeserializer;
@@ -71,6 +72,7 @@ import org.treblereel.gwt.json.mapper.internal.serializer.BaseNumberJsonSerializ
 import org.treblereel.gwt.json.mapper.internal.serializer.BaseNumberJsonSerializer.ShortJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.BooleanJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.CharacterJsonSerializer;
+import org.treblereel.gwt.json.mapper.internal.serializer.EnumJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.StringJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.array.PrimitiveBooleanArrayJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.array.PrimitiveByteArrayJsonSerializer;
@@ -209,12 +211,12 @@ public class TypeRegistry {
             .serializer(UUIDJsonSerializer.class)
             .deserializer(UUIDJsonDeserializer.class)
             .register(buildIn);
-
+    */
     MAPPER
-            .forType(Enum.class)
-            .serializer(EnumJsonSerializer.class)
-            .deserializer(EnumJsonDeserializer.class)
-            .register(buildIn);*/
+        .forType(Enum.class)
+        .serializer(EnumJsonSerializer.class)
+        .deserializer(EnumJsonDeserializer.class)
+        .register(buildIn);
   }
 
   private void initNumberMappers() {

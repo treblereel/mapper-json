@@ -16,19 +16,23 @@
 
 package org.treblereel.gwt.json.mapper.internal.deserializer;
 
-import jakarta.json.JsonException;
-import jakarta.json.JsonString;
 import jakarta.json.JsonValue;
-import jakarta.json.JsonValueDecorator;
 import jakarta.json.bind.serializer.DeserializationContext;
+import jakarta.json.stream.JsonParserImpl;
 
-public class StringJsonDeserializer extends JsonbDeserializer<String> {
+public class DeserializerJsonbTypeSerializerWrapper<T> extends JsonbDeserializer<T> {
+
+  private final jakarta.json.bind.serializer.JsonbDeserializer<T> deserializer;
+  private final Class clazz;
+
+  public DeserializerJsonbTypeSerializerWrapper(
+      jakarta.json.bind.serializer.JsonbDeserializer<T> deserializer, Class clazz) {
+    this.deserializer = deserializer;
+    this.clazz = clazz;
+  }
 
   @Override
-  public String deserialize(JsonValue json, DeserializationContext ctx) throws JsonException {
-    if (json instanceof JsonString) {
-      return ((JsonString) json).getString();
-    }
-    return new JsonValueDecorator(json).asString();
+  public T deserialize(JsonValue value, DeserializationContext ctx) {
+    return deserializer.deserialize(new JsonParserImpl(value), ctx, clazz);
   }
 }

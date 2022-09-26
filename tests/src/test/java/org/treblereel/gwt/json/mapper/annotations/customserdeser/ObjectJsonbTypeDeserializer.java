@@ -19,16 +19,18 @@ package org.treblereel.gwt.json.mapper.annotations.customserdeser;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonValue;
 import jakarta.json.bind.serializer.DeserializationContext;
-import org.treblereel.gwt.json.mapper.internal.deserializer.JsonbDeserializer;
+import jakarta.json.bind.serializer.JsonbDeserializer;
+import jakarta.json.stream.JsonParser;
+import java.lang.reflect.Type;
 
-public class ObjectJsonbTypeDeserializer extends JsonbDeserializer<Object> {
+public class ObjectJsonbTypeDeserializer implements JsonbDeserializer<Object> {
 
   Translation_JsonDeserializerImpl translation_JsonDeserializerImpl =
       new Translation_JsonDeserializerImpl();
 
   @Override
-  public Object deserialize(JsonValue value, DeserializationContext ctx) {
-
+  public Object deserialize(JsonParser parser, DeserializationContext ctx, Type rtType) {
+    JsonValue value = parser.getValue();
     if (value.getValueType() != JsonValue.ValueType.NULL) {
       if (value.getValueType() == JsonValue.ValueType.TRUE
           || value.getValueType() == JsonValue.ValueType.FALSE) {

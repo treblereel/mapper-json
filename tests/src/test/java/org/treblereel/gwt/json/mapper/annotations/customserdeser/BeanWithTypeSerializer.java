@@ -14,38 +14,28 @@
  * limitations under the License.
  */
 
-package jakarta.json;
+package org.treblereel.gwt.json.mapper.annotations.customserdeser;
 
-import elemental2.core.JsString;
+import jakarta.json.bind.annotation.JsonbTypeDeserializer;
+import jakarta.json.bind.annotation.JsonbTypeSerializer;
 
-public class JsonStringImpl implements JsonString {
+@JsonbTypeSerializer(BeanWithTypeSerializerJsonbTypeSerializer2.class)
+@JsonbTypeDeserializer(BeanWithTypeSerializerJsonbTypeDeserializer2.class)
+public class BeanWithTypeSerializer {
 
-  private JsString holder;
+  private Object value;
 
-  public JsonStringImpl(Object holder) {
-    this(new JsString(holder));
+  public BeanWithTypeSerializer() {}
+
+  public BeanWithTypeSerializer(Object value) {
+    this.value = value;
   }
 
-  public JsonStringImpl(String holder) {
-    this(new JsString(holder));
+  public Object getValue() {
+    return value;
   }
 
-  public JsonStringImpl(JsString holder) {
-    this.holder = holder;
-  }
-
-  @Override
-  public String getString() {
-    return holder.toString_();
-  }
-
-  @Override
-  public CharSequence getChars() {
-    return holder.toString_();
-  }
-
-  @Override
-  public ValueType getValueType() {
-    return ValueType.STRING;
+  public void setValue(Object value) {
+    this.value = value;
   }
 }

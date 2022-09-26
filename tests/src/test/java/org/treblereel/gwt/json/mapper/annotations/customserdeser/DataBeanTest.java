@@ -55,8 +55,15 @@ public class DataBeanTest {
     String json = mapper.toJSON(bean);
 
     assertEquals("{\"holder\":{\"from\":\"POINT_1\",\"to\":\"POINT_2\"}}", json);
-
     assertEquals(bean, mapper.fromJSON(json));
+
+    Translation translation2 = new Translation("POINT_11", "POINT_22");
+    bean.setHolder2(translation2);
+
+    assertEquals(
+        "{\"holder\":{\"from\":\"POINT_1\",\"to\":\"POINT_2\"},\"holder2_qwerty\":{\"from\":\"POINT_11\",\"to\":\"POINT_22\"}}",
+        mapper.toJSON(bean));
+    assertEquals(bean, mapper.fromJSON(mapper.toJSON(bean)));
   }
 
   @Test
@@ -78,7 +85,7 @@ public class DataBeanTest {
     // DomGlobal.console.log("json: " + json);
 
     assertEquals(
-        "{\"holder\":{\"from\":\"VALUE_0\",\"to\":\"VALUE_1\"},\"array\":[{\"holder\":{\"from\":\"ARRAY_1\",\"to\":\"ARRAY_2\"}}],\"list\":[{\"holder\":{\"from\":\"POINT_1\",\"to\":\"POINT_2\"}},{\"holder\":{\"from\":\"POINT_3\",\"to\":\"POINT_4\"}}]}",
+        "{\"holder\":{\"from\":\"VALUE_0\",\"to\":\"VALUE_1\"},\"array\":[{\"from\":\"ARRAY_1\",\"to\":\"ARRAY_2\"}],\"list\":[{\"from\":\"POINT_1\",\"to\":\"POINT_2\"},{\"from\":\"POINT_3\",\"to\":\"POINT_4\"}]}",
         json);
 
     assertEquals(new Translation("VALUE_0", "VALUE_1"), mapper.fromJSON(json).getHolder());

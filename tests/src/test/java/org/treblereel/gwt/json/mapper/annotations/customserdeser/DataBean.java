@@ -16,6 +16,7 @@
 
 package org.treblereel.gwt.json.mapper.annotations.customserdeser;
 
+import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbTypeDeserializer;
 import jakarta.json.bind.annotation.JsonbTypeSerializer;
 import java.util.Arrays;
@@ -29,6 +30,11 @@ public class DataBean {
   @JsonbTypeSerializer(ObjectJsonbTypeSerializer.class)
   @JsonbTypeDeserializer(ObjectJsonbTypeDeserializer.class)
   private Object holder;
+
+  @JsonbTypeSerializer(ObjectJsonbTypeSerializer.class)
+  @JsonbTypeDeserializer(ObjectJsonbTypeDeserializer.class)
+  @JsonbProperty("holder2_qwerty")
+  private Object holder2;
 
   @JsonbTypeSerializer(ObjectJsonbTypeSerializer.class)
   @JsonbTypeDeserializer(ObjectJsonbTypeDeserializer.class)
@@ -62,19 +68,28 @@ public class DataBean {
     this.list = list;
   }
 
+  public Object getHolder2() {
+    return holder2;
+  }
+
+  public void setHolder2(Object holder2) {
+    this.holder2 = holder2;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     DataBean dataBean = (DataBean) o;
     return Objects.equals(holder, dataBean.holder)
+        && Objects.equals(holder2, dataBean.holder2)
         && Arrays.equals(array, dataBean.array)
         && Objects.equals(list, dataBean.list);
   }
 
   @Override
   public int hashCode() {
-    int result = Objects.hash(holder, list);
+    int result = Objects.hash(holder, holder2, list);
     result = 31 * result + Arrays.hashCode(array);
     return result;
   }

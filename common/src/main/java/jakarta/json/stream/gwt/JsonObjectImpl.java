@@ -24,11 +24,14 @@ import jakarta.json.JsonNumber;
 import jakarta.json.JsonNumberImpl;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonString;
+import jakarta.json.JsonStringImpl;
 import jakarta.json.JsonValue;
+import jakarta.json.bind.JsonbException;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import jsinterop.base.Js;
 
 public class JsonObjectImpl implements JsonObject {
@@ -45,8 +48,11 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public JsonArray getJsonArray(String name) {
-    JsArray array = Js.uncheckedCast(Reflect.get(__holder__, name));
-    return new JsonArrayImpl(array);
+    if (Reflect.has(__holder__, name)) {
+      JsArray array = Js.uncheckedCast(Reflect.get(__holder__, name));
+      return new JsonArrayImpl(array);
+    }
+    return null;
   }
 
   @Override
@@ -59,22 +65,34 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public JsonNumber getJsonNumber(String name) {
-    return new JsonNumberImpl(Js.asPropertyMap(__holder__).get(name));
+    if (Reflect.has(__holder__, name)) {
+      return new JsonNumberImpl(Js.asPropertyMap(__holder__).get(name));
+    }
+    return null;
   }
 
   @Override
   public JsonString getJsonString(String name) {
-    throw new UnsupportedOperationException();
+    if (Reflect.has(__holder__, name)) {
+      return new JsonStringImpl(Js.asPropertyMap(__holder__).get(name).toString());
+    }
+    return null;
   }
 
   @Override
   public String getString(String name) {
-    return Js.asPropertyMap(__holder__).get(name).toString();
+    if (Reflect.has(__holder__, name)) {
+      return Js.asPropertyMap(__holder__).get(name).toString();
+    }
+    return null;
   }
 
   @Override
   public String getString(String name, String defaultValue) {
-    throw new UnsupportedOperationException();
+    if (Reflect.has(__holder__, name)) {
+      return Js.asPropertyMap(__holder__).get(name).toString();
+    }
+    return defaultValue;
   }
 
   @Override
@@ -104,13 +122,11 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public ValueType getValueType() {
-    String type = Js.typeof(__holder__).toLowerCase(Locale.ROOT);
-
-    if (type.equals("object")) {
-      return ValueType.OBJECT;
-    } else if (type.equals("array")) {
+    if (JsArray.isArray(__holder__)) {
       return ValueType.ARRAY;
-    } else if (type.equals("number")) {
+    }
+    String type = Js.typeof(__holder__).toLowerCase(Locale.ROOT);
+    if (type.equals("number")) {
       return ValueType.NUMBER;
     } else if (type.equals("string")) {
       return ValueType.STRING;
@@ -122,6 +138,8 @@ public class JsonObjectImpl implements JsonObject {
       }
     } else if (type.equals("null")) {
       return ValueType.NULL;
+    } else if (type.equals("object")) {
+      return ValueType.OBJECT;
     }
 
     throw new IllegalStateException("Unknown type: " + type);
@@ -174,7 +192,9 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public Set<String> keySet() {
-    throw new UnsupportedOperationException();
+    return Reflect.ownKeys(__holder__).asList().stream()
+        .map(Reflect.OwnKeysArrayUnionType::asString)
+        .collect(Collectors.toSet());
   }
 
   @Override
@@ -191,8 +211,17 @@ public class JsonObjectImpl implements JsonObject {
     return Js.uncheckedCast(__holder__);
   }
 
+  @Override
   public JsonObject asJsonObject() {
-    return Js.uncheckedCast(__holder__);
+    return Js.uncheckedCast(__holder__); // TODO wrong impl
+  }
+
+  @Override
+  public JsonArray asJsonArray() {
+    if (getValueType() == ValueType.ARRAY) {
+      return new JsonArrayImpl(Js.uncheckedCast(__holder__));
+    }
+    throw new JsonbException("JsonValue is not an array");
   }
 
   @Override

@@ -14,21 +14,34 @@
  * limitations under the License.
  */
 
-package org.treblereel.gwt.json.mapper.internal.deserializer;
+package org.treblereel.gwt.json.mapper.enums;
 
-import jakarta.json.JsonException;
-import jakarta.json.JsonString;
-import jakarta.json.JsonValue;
-import jakarta.json.JsonValueDecorator;
-import jakarta.json.bind.serializer.DeserializationContext;
+import java.util.Objects;
+import org.treblereel.gwt.json.mapper.annotation.JSONMapper;
 
-public class StringJsonDeserializer extends JsonbDeserializer<String> {
+@JSONMapper
+public class MyBeanWithEnum {
+
+  private Type type;
+
+  public Type getType() {
+    return type;
+  }
+
+  public void setType(Type type) {
+    this.type = type;
+  }
 
   @Override
-  public String deserialize(JsonValue json, DeserializationContext ctx) throws JsonException {
-    if (json instanceof JsonString) {
-      return ((JsonString) json).getString();
-    }
-    return new JsonValueDecorator(json).asString();
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    MyBeanWithEnum that = (MyBeanWithEnum) o;
+    return type == that.type;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(type);
   }
 }
