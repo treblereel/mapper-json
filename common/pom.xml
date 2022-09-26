@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mapper-parent</artifactId>
         <groupId>org.treblereel.gwt.json.mapper</groupId>
-        <version>0.3-SNAPSHOT</version>
+        <version>0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>org.treblereel.gwt.json.mapper</groupId>
             <artifactId>api</artifactId>
-            <version>0.3-SNAPSHOT</version>
+            <version>0.3</version>
         </dependency>
         <dependency>
             <groupId>com.google.elemental2</groupId>
