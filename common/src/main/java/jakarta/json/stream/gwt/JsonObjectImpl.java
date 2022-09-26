@@ -48,8 +48,11 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public JsonArray getJsonArray(String name) {
-    JsArray array = Js.uncheckedCast(Reflect.get(__holder__, name));
-    return new JsonArrayImpl(array);
+    if (Reflect.has(__holder__, name)) {
+      JsArray array = Js.uncheckedCast(Reflect.get(__holder__, name));
+      return new JsonArrayImpl(array);
+    }
+    return null;
   }
 
   @Override
@@ -62,22 +65,34 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public JsonNumber getJsonNumber(String name) {
-    return new JsonNumberImpl(Js.asPropertyMap(__holder__).get(name));
+    if (Reflect.has(__holder__, name)) {
+      return new JsonNumberImpl(Js.asPropertyMap(__holder__).get(name));
+    }
+    return null;
   }
 
   @Override
   public JsonString getJsonString(String name) {
-    return new JsonStringImpl(Js.asPropertyMap(__holder__).get(name).toString());
+    if (Reflect.has(__holder__, name)) {
+      return new JsonStringImpl(Js.asPropertyMap(__holder__).get(name).toString());
+    }
+    return null;
   }
 
   @Override
   public String getString(String name) {
-    return Js.asPropertyMap(__holder__).get(name).toString();
+    if (Reflect.has(__holder__, name)) {
+      return Js.asPropertyMap(__holder__).get(name).toString();
+    }
+    return null;
   }
 
   @Override
   public String getString(String name, String defaultValue) {
-    throw new UnsupportedOperationException();
+    if (Reflect.has(__holder__, name)) {
+      return Js.asPropertyMap(__holder__).get(name).toString();
+    }
+    return defaultValue;
   }
 
   @Override

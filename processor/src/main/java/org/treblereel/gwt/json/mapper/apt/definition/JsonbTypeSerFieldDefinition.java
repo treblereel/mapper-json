@@ -120,9 +120,6 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
       jsonbTypeDeserializer.value();
     } catch (MirroredTypeException e) {
 
-      System.out.println(
-          "?? " + field.getVariableElement().getEnclosingElement() + " " + field.getName());
-
       TypeMirror typeMirror = field.getType();
       if (context.getTypeUtils().isIterable(typeMirror)) {
         typeMirror = MoreTypes.asDeclared(field.getType()).getTypeArguments().get(0);
@@ -130,11 +127,9 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
         typeMirror = MoreTypes.asArray(typeMirror).getComponentType();
       }
 
-      System.out.println("                " + typeMirror.toString());
       ClassOrInterfaceType type = new ClassOrInterfaceType();
       type.setName(DeserializerJsonbTypeSerializerWrapper.class.getCanonicalName());
       type.setTypeArguments(new UnknownType());
-      // type.setTypeArguments(new ClassOrInterfaceType().setName(typeMirror.toString()));
 
       return new ObjectCreationExpr()
           .setType(type)
