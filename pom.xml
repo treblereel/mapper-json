@@ -85,6 +85,7 @@
 
         <!-- J2CL deps -->
         <jakarta.json.version>2.0.1</jakarta.json.version>
+        <jsonb.api.version>0.1</jsonb.api.version>
 
         <!-- J2CL deps -->
         <com.google.jsinterop.base.version>1.0.0</com.google.jsinterop.base.version>
@@ -126,6 +127,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${apache.commons.lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.treblereel.gwt.jakarta.jsonb</groupId>
+                <artifactId>api</artifactId>
+                <version>${jsonb.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.javaparser</groupId>
