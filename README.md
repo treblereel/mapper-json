@@ -28,7 +28,7 @@ mapper-json is an annotation-processor-based JSON-B (JSON Binding) like mapper t
 2. In case you use GWT2, add the `inherits` directive to your `gwt.xml` file:
 
 ```xml
-<inherits name='jakarta.Common' />
+<inherits name='org.treblereel.gwt.json.Mapper' />
 ```
 
 3. Annotate POJOs with the @JSONMapper annotation:

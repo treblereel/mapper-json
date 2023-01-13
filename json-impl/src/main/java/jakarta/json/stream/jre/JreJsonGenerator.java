@@ -22,7 +22,7 @@ import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonArrayGenerator;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonGeneratorDecorator;
-import org.treblereel.gwt.jakarta.utils.GwtIncompatible;
+import org.treblereel.gwt.utils.GwtIncompatible;
 
 public class JreJsonGenerator extends JsonGeneratorDecorator {
 

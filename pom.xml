@@ -7,7 +7,7 @@
     <groupId>org.treblereel.gwt.json.mapper</groupId>
     <artifactId>mapper-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.4</version>
+    <version>0.4.1</version>
     <modules>
         <module>json-impl</module>
         <module>common</module>
@@ -84,8 +84,7 @@
         <auto.service.version>1.0-rc6</auto.service.version>
 
         <!-- J2CL deps -->
-        <jakarta.json.version>2.0.1</jakarta.json.version>
-        <jsonb.api.version>0.1</jsonb.api.version>
+        <gwt.jakarta.version>0.2</gwt.jakarta.version>
 
         <!-- J2CL deps -->
         <com.google.jsinterop.base.version>1.0.0</com.google.jsinterop.base.version>
@@ -98,6 +97,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.treblereel.gwt.jakarta</groupId>
+                <artifactId>bom</artifactId>
+                <version>${gwt.jakarta.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>com.google.elemental2</groupId>
                 <artifactId>elemental2-core</artifactId>
@@ -127,11 +133,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${apache.commons.lang3.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.treblereel.gwt.jakarta.jsonb</groupId>
-                <artifactId>api</artifactId>
-                <version>${jsonb.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.javaparser</groupId>

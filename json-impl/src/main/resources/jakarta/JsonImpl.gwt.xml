@@ -4,6 +4,6 @@
 <module>
     <inherits name="elemental2.core.Core"/>
     <inherits name='elemental2.dom.Dom' />
-    <inherits name="jakarta.JSONB"/>
+    <inherits name='jakarta.JSONB' />
     <source path="json" />
 </module>

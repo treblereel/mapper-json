@@ -22,7 +22,7 @@ import jakarta.json.stream.JsonParserImpl;
 import jakarta.json.stream.gwt.JsonObjectImpl;
 import java.io.StringReader;
 import java.lang.reflect.Type;
-import org.treblereel.gwt.jakarta.utils.GwtIncompatible;
+import org.treblereel.gwt.utils.GwtIncompatible;
 
 public class JsonDeserializationContext implements DeserializationContext {
 
