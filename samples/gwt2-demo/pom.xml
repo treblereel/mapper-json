@@ -13,7 +13,7 @@
 
   <properties>
     <!-- Convenience property to set the GWT version -->
-    <gwt.version>2.9.0</gwt.version>
+    <gwt.version>2.10.0</gwt.version>
 
     <!-- GWT 2.9 support 8, 9 and 11 -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -54,12 +54,12 @@
     <dependency>
       <groupId>org.treblereel.gwt.json.mapper</groupId>
       <artifactId>common</artifactId>
-      <version>0.3-SNAPSHOT</version>
+      <version>0.4.1</version>
     </dependency>
     <dependency>
       <groupId>org.treblereel.gwt.json.mapper</groupId>
       <artifactId>processor</artifactId>
-      <version>0.3-SNAPSHOT</version>
+      <version>0.4.1</version>
     </dependency>
 
     <dependency>
