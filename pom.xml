@@ -89,7 +89,7 @@
         <!-- J2CL deps -->
         <com.google.jsinterop.base.version>1.0.0</com.google.jsinterop.base.version>
         <elemental2.version>1.1.0</elemental2.version>
-        <j2cl.version>0.10</j2cl.version>
+        <j2cl.version>0.10.0-3c97afeac</j2cl.version>
 
         <!-- Testing -->
         <junit.version>4.13.1</junit.version>
@@ -242,6 +242,7 @@
                         <exclude>**/*.html</exclude>
                         <exclude>**/*.css</exclude>
                         <exclude>**/*.xml</exclude>
+                        <exclude>samples/</exclude>
                     </excludes>
                     <properties>
                         <year>${project.inceptionYear}</year>
