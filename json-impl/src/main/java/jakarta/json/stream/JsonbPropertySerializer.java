@@ -17,9 +17,7 @@
 package jakarta.json.stream;
 
 import jakarta.json.bind.serializer.SerializationContext;
-import jsinterop.annotations.JsFunction;
 
-@JsFunction
 @FunctionalInterface
 public interface JsonbPropertySerializer<T> {
 
