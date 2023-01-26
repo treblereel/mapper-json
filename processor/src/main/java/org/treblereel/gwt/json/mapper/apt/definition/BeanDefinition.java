@@ -17,10 +17,15 @@
 package org.treblereel.gwt.json.mapper.apt.definition;
 
 import com.google.auto.common.MoreElements;
+import jakarta.json.bind.annotation.JsonbPropertyOrder;
 import jakarta.json.bind.annotation.JsonbTransient;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 
 public class BeanDefinition {
@@ -34,24 +39,34 @@ public class BeanDefinition {
   }
 
   public Stream<PropertyDefinition> getPropertyDefinitionsAsStream() {
-    return context.getTypeUtils().getAllFieldsIn(element).stream()
-        .filter(field -> !field.getModifiers().contains(Modifier.STATIC))
-        .filter(field -> !field.getModifiers().contains(Modifier.FINAL))
-        .filter(field -> !field.getModifiers().contains(Modifier.TRANSIENT))
-        .filter(field -> field.getAnnotation(JsonbTransient.class) == null)
-        .map(
-            field -> {
-              PropertyDefinition propertyDefinition = new PropertyDefinition(field, context);
-              /*                      if (TypeUtils.hasTypeParameter(field.asType())) {
-                TypeMirror typeMirror =
-                        context
-                                .getProcessingEnv()
-                                .getTypeUtils()
-                                .asMemberOf((DeclaredType) element.asType(), field);
-                propertyDefinition.setBean(typeMirror);
-              }*/
-              return propertyDefinition;
-            });
+    Stream<VariableElement> asStream =
+        context.getTypeUtils().getAllFieldsIn(element).stream()
+            .filter(field -> !field.getModifiers().contains(Modifier.STATIC))
+            .filter(field -> !field.getModifiers().contains(Modifier.FINAL))
+            .filter(field -> !field.getModifiers().contains(Modifier.TRANSIENT))
+            .filter(field -> field.getAnnotation(JsonbTransient.class) == null);
+
+    if (element.getAnnotation(JsonbPropertyOrder.class) != null
+        && element.getAnnotation(JsonbPropertyOrder.class).value() != null) {
+      LinkedHashSet properties = new LinkedHashSet<>();
+      String[] order = element.getAnnotation(JsonbPropertyOrder.class).value();
+      Map<String, PropertyDefinition> asMap =
+          asStream.collect(
+              Collectors.toMap(
+                  variableElement -> variableElement.getSimpleName().toString(),
+                  variableElement -> new PropertyDefinition(variableElement, context),
+                  (o1, o2) -> o1,
+                  java.util.LinkedHashMap::new));
+
+      for (String s : order) {
+        if (asMap.containsKey(s)) {
+          properties.add(asMap.remove(s));
+        }
+      }
+      properties.addAll(asMap.values());
+      return properties.stream();
+    }
+    return asStream.map(field -> new PropertyDefinition(field, context));
   }
 
   public String getPackageQualifiedName() {

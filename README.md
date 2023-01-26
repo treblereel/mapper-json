@@ -95,6 +95,7 @@ Supported `JSON-B` annotations:
 * [@JsonbTypeSerializer](###@JsonbTypeSerializer)
 * [@JsonbTypeDeserializer](###@JsonbTypeDeserializer)
 * [@JsonbTransient](###@JsonbTransient)
+* [@JsonbPropertyOrder](###@JsonbPropertyOrder)
 
 ### @JsonbProperty
 Allows customization of field (or JavaBean property) name.This name is used either in serialization or in deserialization.
@@ -182,5 +183,21 @@ public class Person {
     private String lastName;
 }
 //{"lastName":"Doe"}
+```
+
+### @JsonbPropertyOrder
+JsonbPropertyOrder allows us to specify the order of properties in the JSON representation of the class, which can be useful when working with systems that have strict ordering requirements.
+
+* type
+```java
+@JSONMapper
+@JsonbPropertyOrder({"property3", "property2", "property1"})
+public class MyClass {
+    private String property1;
+    private String property2;
+    private String property3;
+    // getters and setters
+}
+//{"property3":"value3","property2":"value2","property1":"value1"}
 ```
 
