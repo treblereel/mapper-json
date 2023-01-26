@@ -73,7 +73,7 @@ public class JsonArrayImpl implements JsonArray {
 
   @Override
   public String getString(int index) {
-    return array.getAt(index).toString();
+    return new JsonStringImpl(array.getAt(index)).getString();
   }
 
   @Override

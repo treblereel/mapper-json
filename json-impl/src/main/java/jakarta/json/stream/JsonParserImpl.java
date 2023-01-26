@@ -16,11 +16,11 @@
 
 package jakarta.json.stream;
 
+import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonValue;
 import jakarta.json.JsonValueDecorator;
 import java.math.BigDecimal;
-import jsinterop.base.Js;
 
 public class JsonParserImpl implements JsonParser {
 
@@ -37,10 +37,18 @@ public class JsonParserImpl implements JsonParser {
 
   @Override
   public Event next() {
-    if (holder != null && Js.typeof(holder).equals("object")) {
+    if (holder != null
+        && (holder.getValueType() != null && holder.getValueType() == JsonValue.ValueType.OBJECT)) {
       return Event.START_OBJECT;
     }
     return null;
+  }
+
+  public JsonArray getArray() {
+    if (holder.getValueType() == JsonValue.ValueType.ARRAY) {
+      return holder.asJsonArray();
+    }
+    throw new IllegalStateException("Not an array");
   }
 
   public JsonObject getObject() {

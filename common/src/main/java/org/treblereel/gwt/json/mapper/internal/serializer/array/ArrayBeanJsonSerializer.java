@@ -48,4 +48,16 @@ public class ArrayBeanJsonSerializer<T> extends ArrayJsonSerializer<T> {
       builder.writeEnd();
     }
   }
+
+  @Override
+  public void serialize(T[] obj, JsonGenerator generator, SerializationContext ctx) {
+    if (obj != null) {
+      JsonSerializationContext jsonSerializationContext = (JsonSerializationContext) ctx;
+      for (int i = 0; i < obj.length; i++) {
+        JsonGeneratorDecorator arrayElmBuilder = jsonSerializationContext.createGenerator();
+        serializer.serialize(obj[i], arrayElmBuilder, ctx);
+        generator.write(arrayElmBuilder.builder().build());
+      }
+    }
+  }
 }

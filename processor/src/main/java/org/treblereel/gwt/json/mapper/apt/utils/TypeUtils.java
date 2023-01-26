@@ -45,7 +45,6 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import org.apache.commons.lang3.StringUtils;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.apt.exception.GenerationException;
 
@@ -139,7 +138,7 @@ public class TypeUtils {
     List<String> method = compileGetterMethodName(variable);
     return MoreElements.asType(variable.getEnclosingElement()).getEnclosedElements().stream()
         .filter(e -> e.getKind().equals(ElementKind.METHOD))
-        .filter(e -> method.contains(e.toString()))
+        .filter(e -> method.contains(e.getSimpleName().toString()))
         .filter(e -> !e.getModifiers().contains(Modifier.PRIVATE))
         .filter(e -> !e.getModifiers().contains(Modifier.STATIC))
         .map(MoreElements::asExecutable)
@@ -158,9 +157,9 @@ public class TypeUtils {
     String varName = variable.getSimpleName().toString();
     boolean isBoolean = isBoolean(variable);
     List<String> result = new ArrayList<>();
-    result.add("get" + StringUtils.capitalize(varName) + "()");
+    result.add("get" + capitalize(varName));
     if (isBoolean) {
-      result.add("is" + StringUtils.capitalize(varName) + "()");
+      result.add("is" + capitalize(varName));
     }
     return result;
   }
@@ -192,7 +191,7 @@ public class TypeUtils {
     String varName = variable.getSimpleName().toString();
     StringBuffer sb = new StringBuffer();
     sb.append("set");
-    sb.append(StringUtils.capitalize(varName));
+    sb.append(capitalize(varName));
     sb.append("(");
     sb.append(variable.asType());
     sb.append(")");
@@ -393,5 +392,9 @@ public class TypeUtils {
       PrimitiveType primitive = types.getPrimitiveType(type);
       return types.boxedClass(primitive).asType();
     }
+  }
+
+  private String capitalize(String name) {
+    return name.substring(0, 1).toUpperCase() + name.substring(1);
   }
 }

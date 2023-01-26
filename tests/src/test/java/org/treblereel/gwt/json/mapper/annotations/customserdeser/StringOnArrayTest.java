@@ -102,10 +102,10 @@ public class StringOnArrayTest {
     @Override
     public void serialize(Object obj, JsonGenerator generator, SerializationContext ctx) {
       if (obj instanceof String) {
-        stringJsonSerializer.serialize((String) obj, "field", generator, ctx);
+        stringJsonSerializer.serialize((String) obj, generator, ctx);
       } else if (obj instanceof Holder[]) {
         new ArrayBeanJsonSerializer<>(holderJsonSerializer)
-            .serialize((Holder[]) obj, "field", generator, ctx);
+            .serialize((Holder[]) obj, generator, ctx);
       }
     }
   }
