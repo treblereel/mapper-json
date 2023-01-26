@@ -78,7 +78,6 @@
 
         <!-- generation related deps -->
         <javaparser.core.version>3.13.1</javaparser.core.version>
-        <apache.commons.lang3.version>3.9</apache.commons.lang3.version>
 
         <auto.common.version>0.11</auto.common.version>
         <auto.service.version>1.0-rc6</auto.service.version>
@@ -128,11 +127,6 @@
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
                 <version>${auto.service.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${apache.commons.lang3.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.javaparser</groupId>
