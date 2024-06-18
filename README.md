@@ -117,6 +117,7 @@ public class Person {
 ### @JsonbTypeDeserializer
 Annotation provides way how to set custom JsonbSerializer/JsonbDeserializer to field or JavaBean property.
 * field
+* type
 
 ```java
   @JsonbTypeSerializer(ObjectJsonbTypeSerializer.class)
