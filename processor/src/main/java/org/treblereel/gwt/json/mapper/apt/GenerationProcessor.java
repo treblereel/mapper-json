@@ -43,7 +43,7 @@ import org.treblereel.gwt.json.mapper.apt.logger.TreeLogger;
 import org.treblereel.gwt.json.mapper.apt.processor.BeanProcessor;
 
 @AutoService(Processor.class)
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class GenerationProcessor extends AbstractProcessor {
 
   private final Set<TypeElement> beans = new HashSet<>();

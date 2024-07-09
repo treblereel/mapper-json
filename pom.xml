@@ -7,7 +7,7 @@
     <groupId>org.treblereel.gwt.json.mapper</groupId>
     <artifactId>mapper-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.4.1</version>
+    <version>0.5</version>
     <modules>
         <module>json-impl</module>
         <module>common</module>
@@ -70,7 +70,7 @@
         <maven.gpg.plugin>1.6</maven.gpg.plugin>
         <maven.javadoc.plugin>3.2.0</maven.javadoc.plugin>
         <maven.source.plugin>3.2.1</maven.source.plugin>
-        <maven.j2cl.plugin>0.19</maven.j2cl.plugin>
+        <maven.j2cl.plugin>0.23.1</maven.j2cl.plugin>
         <maven.release.plugin>2.5.3</maven.release.plugin>
         <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
         <maven.nexus.staging.plugin>1.6.8</maven.nexus.staging.plugin>
@@ -78,18 +78,17 @@
 
         <!-- generation related deps -->
         <javaparser.core.version>3.13.1</javaparser.core.version>
-        <apache.commons.lang3.version>3.9</apache.commons.lang3.version>
 
         <auto.common.version>0.11</auto.common.version>
         <auto.service.version>1.0-rc6</auto.service.version>
 
         <!-- J2CL deps -->
-        <gwt.jakarta.version>0.2</gwt.jakarta.version>
+        <gwt.jakarta.version>0.4</gwt.jakarta.version>
 
         <!-- J2CL deps -->
         <com.google.jsinterop.base.version>1.0.0</com.google.jsinterop.base.version>
-        <elemental2.version>1.1.0</elemental2.version>
-        <j2cl.version>0.10.0-3c97afeac</j2cl.version>
+        <elemental2.version>1.2.1</elemental2.version>
+        <j2cl.version>v20240622-2</j2cl.version>
 
         <!-- Testing -->
         <junit.version>4.13.1</junit.version>
@@ -128,11 +127,6 @@
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
                 <version>${auto.service.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${apache.commons.lang3.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.javaparser</groupId>

@@ -207,6 +207,11 @@ public class BeanProcessor {
         && type.getEnclosingElement().getKind().equals(ElementKind.PACKAGE)) {
       throw new GenerationException("A @JSONMapper bean [" + type + "] must not be static");
     }
+    if (!type.getModifiers().contains(Modifier.STATIC)
+        && !type.getEnclosingElement().getKind().equals(ElementKind.PACKAGE)) {
+      throw new GenerationException(
+          "If @JSONMapper bean [" + type + "] is a inner class, it must be static");
+    }
 
     if (context.getTypeUtils().isJsonbTypeSerializer(type)
         && type.getAnnotation(JSONMapper.class) != null) {

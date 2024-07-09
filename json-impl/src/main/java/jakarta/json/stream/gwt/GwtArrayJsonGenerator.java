@@ -39,7 +39,14 @@ public class GwtArrayJsonGenerator extends JsonGeneratorDecorator implements Jso
 
   @Override
   public JsonGenerator writeStartObject() {
-    throw new UnsupportedOperationException();
+    JsonObjectBuilderImpl builder = new JsonObjectBuilderImpl();
+    return new JsonGeneratorDecorator(builder, ctx) {
+      @Override
+      public JsonGenerator writeEnd() {
+        array.push(builder.build().asJsonObject());
+        return this;
+      }
+    };
   }
 
   @Override

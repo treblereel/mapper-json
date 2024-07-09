@@ -32,7 +32,13 @@ public class SerializerJsonbTypeSerializerWrapper<T> implements JsonbSerializer<
 
   @Override
   public void serialize(T obj, JsonGenerator generator, SerializationContext ctx) {
-    JsonGenerator gen = generator.writeKey(property);
-    serializer.serialize(obj, gen, ctx);
+    if (obj instanceof Object[]) {
+      JsonGenerator builder = generator.writeStartArray(property);
+      serializer.serialize(obj, builder, ctx);
+      builder.writeEnd();
+    } else {
+      JsonGenerator gen = generator.writeKey(property);
+      serializer.serialize(obj, gen, ctx);
+    }
   }
 }
