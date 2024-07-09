@@ -12,14 +12,14 @@
     <webappdir>${project.build.directory}/webapp</webappdir>
     <webapp.libdir>${webappdir}/WEB-INF/lib</webapp.libdir>
 
-    <j2cl.maven.plugin.version>0.22.0</j2cl.maven.plugin.version>
-    <elemental2.version>1.0.0</elemental2.version>
+    <j2cl.maven.plugin.version>0.23.1</j2cl.maven.plugin.version>
+    <elemental2.version>1.2.1</elemental2.version>
 
     <google.jsinterop.version>1.0.0</google.jsinterop.version>
-    <j2cl.version>v20230718-1</j2cl.version>
+    <j2cl.version>v20240622-2</j2cl.version>
 
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
 
     <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
     <maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
@@ -34,12 +34,12 @@
     <dependency>
       <groupId>org.treblereel.gwt.json.mapper</groupId>
       <artifactId>common</artifactId>
-      <version>0.4.2-SNAPSHOT</version>
+      <version>0.5</version>
     </dependency>
     <dependency>
       <groupId>org.treblereel.gwt.json.mapper</groupId>
       <artifactId>processor</artifactId>
-      <version>0.4.2-SNAPSHOT</version>
+      <version>0.5</version>
     </dependency>
 
     <dependency>
@@ -55,21 +55,21 @@
     </dependency>
 
     <dependency>
-      <groupId>com.vertispan.j2cl</groupId>
+      <groupId>org.kie.j2cl.tools</groupId>
       <artifactId>junit-annotations</artifactId>
       <version>${j2cl.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>com.vertispan.j2cl</groupId>
+      <groupId>org.kie.j2cl.tools</groupId>
       <artifactId>gwttestcase-emul</artifactId>
       <version>${j2cl.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>com.vertispan.j2cl</groupId>
+      <groupId>org.kie.j2cl.tools</groupId>
       <artifactId>gwttestcase-emul</artifactId>
       <version>${j2cl.version}</version>
       <classifier>sources</classifier>
@@ -77,14 +77,14 @@
     </dependency>
 
     <dependency>
-      <groupId>com.vertispan.j2cl</groupId>
+      <groupId>org.kie.j2cl.tools</groupId>
       <artifactId>junit-emul</artifactId>
       <version>${j2cl.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>com.vertispan.j2cl</groupId>
+      <groupId>org.kie.j2cl.tools</groupId>
       <artifactId>junit-emul</artifactId>
       <version>${j2cl.version}</version>
       <classifier>sources</classifier>
@@ -100,7 +100,7 @@
     </resources>
     <plugins>
       <plugin>
-        <groupId>com.vertispan.j2cl</groupId>
+        <groupId>org.kie.j2cl.tools</groupId>
         <artifactId>j2cl-maven-plugin</artifactId>
         <version>${j2cl.maven.plugin.version}</version>
         <executions>

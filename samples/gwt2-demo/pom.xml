@@ -16,8 +16,8 @@
     <gwt.version>2.10.0</gwt.version>
 
     <!-- GWT 2.9 support 8, 9 and 11 -->
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -54,12 +54,12 @@
     <dependency>
       <groupId>org.treblereel.gwt.json.mapper</groupId>
       <artifactId>common</artifactId>
-      <version>0.4.2-SNAPSHOT</version>
+      <version>0.5</version>
     </dependency>
     <dependency>
       <groupId>org.treblereel.gwt.json.mapper</groupId>
       <artifactId>processor</artifactId>
-      <version>0.4.2-SNAPSHOT</version>
+      <version>0.5</version>
     </dependency>
 
     <dependency>
@@ -79,8 +79,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
       <!-- Mojo's Maven Plugin for GWT -->
