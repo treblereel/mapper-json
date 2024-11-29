@@ -13,7 +13,7 @@
 
   <properties>
     <!-- Convenience property to set the GWT version -->
-    <gwt.version>2.10.0</gwt.version>
+    <gwt.version>2.12.1</gwt.version>
 
     <!-- GWT 2.9 support 8, 9 and 11 -->
     <maven.compiler.source>11</maven.compiler.source>
@@ -25,7 +25,7 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.google.gwt</groupId>
+        <groupId>org.gwtproject</groupId>
         <artifactId>gwt</artifactId>
         <version>${gwt.version}</version>
         <type>pom</type>
@@ -36,17 +36,12 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-servlet</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
+      <groupId>org.gwtproject</groupId>
       <artifactId>gwt-user</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.google.gwt</groupId>
+      <groupId>org.gwtproject</groupId>
       <artifactId>gwt-dev</artifactId>
       <scope>provided</scope>
     </dependency>
@@ -54,18 +49,18 @@
     <dependency>
       <groupId>org.treblereel.gwt.json.mapper</groupId>
       <artifactId>common</artifactId>
-      <version>0.5</version>
+      <version>0.6</version>
     </dependency>
     <dependency>
       <groupId>org.treblereel.gwt.json.mapper</groupId>
       <artifactId>processor</artifactId>
-      <version>0.5</version>
+      <version>0.6</version>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
+      <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -87,7 +82,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
-        <version>2.9.0</version>
+        <version>2.10.0</version>
         <executions>
           <execution>
             <goals>

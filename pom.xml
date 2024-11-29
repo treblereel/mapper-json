@@ -7,7 +7,7 @@
     <groupId>org.treblereel.gwt.json.mapper</groupId>
     <artifactId>mapper-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.5</version>
+    <version>0.6</version>
     <modules>
         <module>json-impl</module>
         <module>common</module>
@@ -70,7 +70,7 @@
         <maven.gpg.plugin>1.6</maven.gpg.plugin>
         <maven.javadoc.plugin>3.2.0</maven.javadoc.plugin>
         <maven.source.plugin>3.2.1</maven.source.plugin>
-        <maven.j2cl.plugin>0.23.1</maven.j2cl.plugin>
+        <maven.j2cl.plugin>0.23.2</maven.j2cl.plugin>
         <maven.release.plugin>2.5.3</maven.release.plugin>
         <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
         <maven.nexus.staging.plugin>1.6.8</maven.nexus.staging.plugin>
@@ -79,16 +79,15 @@
         <!-- generation related deps -->
         <javaparser.core.version>3.13.1</javaparser.core.version>
 
-        <auto.common.version>0.11</auto.common.version>
-        <auto.service.version>1.0-rc6</auto.service.version>
+        <auto.common.version>1.2.2</auto.common.version>
+        <auto.service.version>1.1.1</auto.service.version>
 
         <!-- J2CL deps -->
-        <gwt.jakarta.version>0.4</gwt.jakarta.version>
+        <gwt.jakarta.version>0.5</gwt.jakarta.version>
 
         <!-- J2CL deps -->
-        <com.google.jsinterop.base.version>1.0.0</com.google.jsinterop.base.version>
-        <elemental2.version>1.2.1</elemental2.version>
-        <j2cl.version>v20240622-2</j2cl.version>
+        <elemental2.version>1.2.3</elemental2.version>
+        <j2cl.version>v20241110-1</j2cl.version>
 
         <!-- Testing -->
         <junit.version>4.13.1</junit.version>
@@ -112,11 +111,6 @@
                 <groupId>com.google.elemental2</groupId>
                 <artifactId>elemental2-dom</artifactId>
                 <version>${elemental2.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.jsinterop</groupId>
-                <artifactId>base</artifactId>
-                <version>${com.google.jsinterop.base.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.auto</groupId>
