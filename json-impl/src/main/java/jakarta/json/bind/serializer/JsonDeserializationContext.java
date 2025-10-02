@@ -16,13 +16,13 @@
 
 package jakarta.json.bind.serializer;
 
+import jakarta.json.GwtIncompatible;
 import jakarta.json.Json;
 import jakarta.json.stream.JsonParser;
 import jakarta.json.stream.JsonParserImpl;
 import jakarta.json.stream.gwt.JsonObjectImpl;
 import java.io.StringReader;
 import java.lang.reflect.Type;
-import org.treblereel.gwt.utils.GwtIncompatible;
 
 public class JsonDeserializationContext implements DeserializationContext {
 

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mapper-parent</artifactId>
         <groupId>org.treblereel.gwt.json.mapper</groupId>
-        <version>0.6</version>
+        <version>0.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -36,10 +36,17 @@
     </organization>
 
     <properties>
-        <j2cl.version>0.10.0-3c97afeac</j2cl.version>
+        <j2cl.platform.version>20251001-1</j2cl.platform.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.treblereel.j2cl.platform</groupId>
+            <artifactId>bom</artifactId>
+            <version>${j2cl.platform.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -51,21 +58,20 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.vertispan.j2cl</groupId>
+            <groupId>org.kie.j2cl.tools</groupId>
             <artifactId>junit-annotations</artifactId>
-            <version>${j2cl.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.treblereel.gwt.json.mapper</groupId>
             <artifactId>common</artifactId>
-            <version>0.6</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.treblereel.gwt.json.mapper</groupId>
             <artifactId>processor</artifactId>
-            <version>0.6</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

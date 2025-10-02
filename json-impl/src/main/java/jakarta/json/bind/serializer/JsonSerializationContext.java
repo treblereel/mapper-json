@@ -16,6 +16,7 @@
 
 package jakarta.json.bind.serializer;
 
+import jakarta.json.GwtIncompatible;
 import jakarta.json.Json;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.stream.JsonGenerator;
@@ -23,7 +24,6 @@ import jakarta.json.stream.JsonGeneratorDecorator;
 import jakarta.json.stream.gwt.GWTJsonGenerator;
 import jakarta.json.stream.gwt.JsonObjectBuilderImpl;
 import jakarta.json.stream.jre.JreJsonGenerator;
-import org.treblereel.gwt.utils.GwtIncompatible;
 
 public class JsonSerializationContext implements SerializationContext {
 

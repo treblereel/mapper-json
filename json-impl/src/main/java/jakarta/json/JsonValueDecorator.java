@@ -23,7 +23,6 @@ import jakarta.json.stream.gwt.JsonValueImpl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import jsinterop.base.Js;
-import org.treblereel.gwt.utils.GwtIncompatible;
 
 public class JsonValueDecorator {
 
