@@ -66,14 +66,13 @@
         <maven.fmt.plugin>2.9</maven.fmt.plugin>
         <maven.license.plugin>3.0</maven.license.plugin>
         <maven.shade.plugin>3.2.4</maven.shade.plugin>
-        <maven.deploy.plugin>2.8.2</maven.deploy.plugin>
         <maven.gpg.plugin>1.6</maven.gpg.plugin>
         <maven.javadoc.plugin>3.2.0</maven.javadoc.plugin>
         <maven.source.plugin>3.2.1</maven.source.plugin>
         <maven.release.plugin>2.5.3</maven.release.plugin>
         <maven.surfire.plugin>3.0.0-M1</maven.surfire.plugin>
-        <maven.nexus.staging.plugin>1.6.8</maven.nexus.staging.plugin>
-        <maven.scm.provider.gitexe>1.9.5</maven.scm.provider.gitexe>
+        <maven.flatten.plugin>1.5.0</maven.flatten.plugin>
+        <maven.central.publishing.plugin>0.9.0</maven.central.publishing.plugin>
 
         <!-- generation related deps -->
         <javaparser.core.version>3.13.1</javaparser.core.version>
@@ -141,11 +140,6 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>${maven.deploy.plugin}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>${maven.source.version}</version>
                 </plugin>
@@ -156,11 +150,6 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>${maven.release.plugin}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven.javadoc.plugin}</version>
                 </plugin>
@@ -168,11 +157,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>${maven.gpg.plugin}</version>
-                </plugin>
-                <plugin>
-                    <groupId>com.vertispan.j2cl</groupId>
-                    <artifactId>j2cl-maven-plugin</artifactId>
-                    <version>${maven.j2cl.plugin}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -243,38 +227,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>${maven.deploy.plugin}</version>
-                <executions>
-                    <execution>
-                        <id>default-deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>${maven.release.plugin}</version>
-                <configuration>
-                    <localCheckout>true</localCheckout>
-                    <pushChanges>false</pushChanges>
-                    <mavenExecutorId>forked-path</mavenExecutorId>
-                    <arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.scm</groupId>
-                        <artifactId>maven-scm-provider-gitexe</artifactId>
-                        <version>${maven.scm.provider.gitexe}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven.javadoc.plugin}</version>
                 <configuration>
@@ -285,7 +237,6 @@
     </build>
 
     <profiles>
-        <!-- release profile to create sources, javadoc, and sign all artifacts before uploading -->
         <profile>
             <id>release</id>
             <build>
@@ -305,7 +256,6 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- see http://central.sonatype.org/pages/working-with-pgp-signatures.html for more detail -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -319,20 +269,43 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${maven.central.publishing.plugin}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>sonatype</publishingServerId>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>flatten-maven-plugin</artifactId>
+                        <version>${maven.flatten.plugin}</version>
+                        <configuration>
+                            <flattenMode>oss</flattenMode>
+                            <updatePomFile>true</updatePomFile>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>flatten</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>flatten</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>flatten.clean</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
 
 </project>
