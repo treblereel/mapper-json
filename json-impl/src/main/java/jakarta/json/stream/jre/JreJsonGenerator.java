@@ -16,13 +16,13 @@
 
 package jakarta.json.stream.jre;
 
+import jakarta.json.GwtIncompatible;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObjectBuilder;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonArrayGenerator;
 import jakarta.json.stream.JsonGenerator;
 import jakarta.json.stream.JsonGeneratorDecorator;
-import org.treblereel.gwt.utils.GwtIncompatible;
 
 public class JreJsonGenerator extends JsonGeneratorDecorator {
 
