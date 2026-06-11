@@ -6,7 +6,7 @@
 
     <artifactId>j2cl-tests</artifactId>
     <groupId>org.treblereel.gwt.json.mapper</groupId>
-    <version>0.7</version>
+    <version>0.8</version>
 
     <name>J2CL tests</name>
     <description>JSON marshallers</description>
