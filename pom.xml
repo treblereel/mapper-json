@@ -7,7 +7,7 @@
     <groupId>org.treblereel.gwt.json.mapper</groupId>
     <artifactId>mapper-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.7</version>
+    <version>0.8</version>
     <modules>
         <module>json-impl</module>
         <module>common</module>
@@ -47,13 +47,6 @@
         <tag>HEAD</tag>
     </scm>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-    </dependencies>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -82,7 +75,7 @@
 
         <!-- J2CL deps -->
         <jakarta4g.version>0.7</jakarta4g.version>
-        <j2cl.platform.version>20251001-1</j2cl.platform.version>
+        <j2cl.platform.version>20260527-1</j2cl.platform.version>
 
     </properties>
 
@@ -275,7 +268,7 @@
                         <version>${maven.central.publishing.plugin}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <publishingServerId>sonatype</publishingServerId>
+                            <publishingServerId>central</publishingServerId>
                         </configuration>
                     </plugin>
                     <plugin>

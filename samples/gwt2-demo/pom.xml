@@ -8,15 +8,15 @@
   <groupId>org.treblereel.gwt.json.mapper</groupId>
   <artifactId>gwt2-demo</artifactId>
   <packaging>war</packaging>
-  <version>0.7</version>
+  <version>0.8</version>
   <name>Maven Archetype for GWT</name>
 
   <properties>
     <!-- Convenience property to set the GWT version -->
-    <gwt.version>2.12.2</gwt.version>
+    <gwt.version>2.13.0</gwt.version>
 
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -73,8 +73,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
         <configuration>
-          <source>11</source>
-          <target>11</target>
+          <source>17</source>
+          <target>17</target>
         </configuration>
       </plugin>
       <!-- Mojo's Maven Plugin for GWT -->
@@ -94,7 +94,7 @@
         <!-- Plugin configuration. There are many available options, see
           gwt-maven-plugin documentation at codehaus.org -->
         <configuration>
-          <sourceLevel>11</sourceLevel>
+          <sourceLevel>17</sourceLevel>
           <runTarget>App.html</runTarget>
           <modules>
             <module>org.treblereel.gwt.json.mapper.App</module>
