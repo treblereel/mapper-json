@@ -36,7 +36,9 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.MirroredTypesException;
 import org.treblereel.gwt.json.mapper.annotation.JSONMapper;
+import org.treblereel.gwt.json.mapper.annotation.JSONMappers;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.apt.logger.PrintWriterTreeLogger;
 import org.treblereel.gwt.json.mapper.apt.logger.TreeLogger;
@@ -63,7 +65,10 @@ public class GenerationProcessor extends AbstractProcessor {
                   .map(type -> type.getAnnotation(JsonbTypeInfo.class))
                   .map(JsonbTypeInfo::value)
                   .flatMap(Arrays::stream)
-                  .map(this::get));
+                  .map(this::get),
+              roundEnvironment.getElementsAnnotatedWith(JSONMappers.class).stream()
+                  .map(element -> element.getAnnotation(JSONMappers.class))
+                  .flatMap(this::getTypes));
       processJsonMapper(stream);
       new BeanProcessor(context, logger, beans).process();
     }
@@ -81,7 +86,7 @@ public class GenerationProcessor extends AbstractProcessor {
   }
 
   private List<Class<?>> supportedAnnotations() {
-    return Arrays.asList(JSONMapper.class);
+    return Arrays.asList(JSONMapper.class, JSONMappers.class);
   }
 
   private TypeElement get(JsonbSubtype jsonbSubtype) {
@@ -91,5 +96,14 @@ public class GenerationProcessor extends AbstractProcessor {
       return MoreTypes.asTypeElement(e.getTypeMirror());
     }
     return null;
+  }
+
+  private Stream<TypeElement> getTypes(JSONMappers annotation) {
+    try {
+      annotation.value();
+    } catch (MirroredTypesException e) {
+      return e.getTypeMirrors().stream().map(MoreTypes::asTypeElement);
+    }
+    return Stream.empty();
   }
 }
