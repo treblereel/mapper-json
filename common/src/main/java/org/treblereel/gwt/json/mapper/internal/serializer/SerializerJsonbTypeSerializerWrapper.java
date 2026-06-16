@@ -36,6 +36,8 @@ public class SerializerJsonbTypeSerializerWrapper<T> implements JsonbSerializer<
       JsonGenerator builder = generator.writeStartArray(property);
       serializer.serialize(obj, builder, ctx);
       builder.writeEnd();
+    } else if (serializer instanceof JsonSerializer) {
+      ((JsonSerializer<T>) serializer).serialize(obj, property, generator, ctx);
     } else {
       JsonGenerator gen = generator.writeKey(property);
       serializer.serialize(obj, gen, ctx);
