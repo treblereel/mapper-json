@@ -16,8 +16,11 @@
 
 package org.treblereel.gwt.json.mapper.apt.definition;
 
+import jakarta.json.bind.annotation.JsonbNillable;
 import jakarta.json.bind.annotation.JsonbProperty;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
@@ -54,5 +57,26 @@ public class PropertyDefinition {
 
   public VariableElement getVariableElement() {
     return property;
+  }
+
+  public boolean isNillable() {
+    JsonbNillable fieldAnnotation = property.getAnnotation(JsonbNillable.class);
+    if (fieldAnnotation != null) {
+      return fieldAnnotation.value();
+    }
+
+    Element enclosing = property.getEnclosingElement();
+    JsonbNillable classAnnotation = enclosing.getAnnotation(JsonbNillable.class);
+    if (classAnnotation != null) {
+      return classAnnotation.value();
+    }
+
+    PackageElement pkg = context.getProcessingEnv().getElementUtils().getPackageOf(enclosing);
+    JsonbNillable packageAnnotation = pkg.getAnnotation(JsonbNillable.class);
+    if (packageAnnotation != null) {
+      return packageAnnotation.value();
+    }
+
+    return false;
   }
 }
