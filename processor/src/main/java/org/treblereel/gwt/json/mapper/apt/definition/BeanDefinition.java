@@ -17,15 +17,22 @@
 package org.treblereel.gwt.json.mapper.apt.definition;
 
 import com.google.auto.common.MoreElements;
+import jakarta.json.bind.annotation.JsonbCreator;
+import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbPropertyOrder;
 import jakarta.json.bind.annotation.JsonbTransient;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.util.ElementFilter;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 
 public class BeanDefinition {
@@ -39,10 +46,11 @@ public class BeanDefinition {
   }
 
   public Stream<PropertyDefinition> getPropertyDefinitionsAsStream() {
+    boolean hasCreator = hasJsonbCreator();
     Stream<VariableElement> asStream =
         context.getTypeUtils().getAllFieldsIn(element).stream()
             .filter(field -> !field.getModifiers().contains(Modifier.STATIC))
-            .filter(field -> !field.getModifiers().contains(Modifier.FINAL))
+            .filter(field -> hasCreator || !field.getModifiers().contains(Modifier.FINAL))
             .filter(field -> !field.getModifiers().contains(Modifier.TRANSIENT))
             .filter(field -> field.getAnnotation(JsonbTransient.class) == null);
 
@@ -75,5 +83,41 @@ public class BeanDefinition {
 
   public TypeElement getElement() {
     return element;
+  }
+
+  public boolean hasJsonbCreator() {
+    return getJsonbCreator() != null;
+  }
+
+  public ExecutableElement getJsonbCreator() {
+    for (ExecutableElement constructor :
+        ElementFilter.constructorsIn(element.getEnclosedElements())) {
+      if (constructor.getAnnotation(JsonbCreator.class) != null) {
+        return constructor;
+      }
+    }
+    for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())) {
+      if (method.getAnnotation(JsonbCreator.class) != null) {
+        return method;
+      }
+    }
+    return null;
+  }
+
+  public Set<String> getCreatorParameterNames() {
+    ExecutableElement creator = getJsonbCreator();
+    if (creator == null) {
+      return Collections.emptySet();
+    }
+    Set<String> names = new HashSet<>();
+    for (VariableElement param : creator.getParameters()) {
+      JsonbProperty prop = param.getAnnotation(JsonbProperty.class);
+      if (prop != null && !prop.value().isEmpty()) {
+        names.add(prop.value());
+      } else {
+        names.add(param.getSimpleName().toString());
+      }
+    }
+    return names;
   }
 }
