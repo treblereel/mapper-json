@@ -28,7 +28,9 @@ import org.treblereel.gwt.json.mapper.apt.definition.FieldDefinitionFactory;
 import org.treblereel.gwt.json.mapper.apt.utils.TypeRegistry;
 import org.treblereel.gwt.json.mapper.apt.utils.TypeUtils;
 
-/** @author Dmitrii Tikhomirov Created by treblereel 3/11/20 */
+/**
+ * @author Dmitrii Tikhomirov Created by treblereel 3/11/20
+ */
 public class GenerationContext {
 
   private final RoundEnvironment roundEnvironment;

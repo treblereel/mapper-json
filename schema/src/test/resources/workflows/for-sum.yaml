@@ -1,0 +1,19 @@
+document:
+  dsl: '1.0.0-alpha5'
+  namespace: test
+  name: for-sum-example
+  version: '0.1.0'
+do:
+  - sumAll:
+      for:
+        each: number
+        in: .input
+      do:
+        - accumulate:
+            set:
+              counter: ${.counter+$number}
+            export: 
+             as: if .incr==null then {incr:[$number+1]} else .incr+=[$number+1] end 
+      output:
+        as: .counter
+     

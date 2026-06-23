@@ -1,0 +1,20 @@
+$defs:
+  Address:
+    type: object
+    properties:
+      street:
+        type: string
+      city:
+        type: string
+    required:
+      - street
+      - city
+
+type: object
+properties:
+  name:
+    type: string
+  address:
+    $ref: '#/$defs/Address'
+required:
+  - name

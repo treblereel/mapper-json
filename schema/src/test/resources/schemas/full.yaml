@@ -1,0 +1,123 @@
+$id: https://example.com/schemas/user-simple.yaml
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Test User Schema
+type: object
+unevaluatedProperties: false
+
+required: [id, name, role]
+
+oneOf:
+  - required: [email]
+  - required: [phone]
+
+anyOf:
+  - required: [email]
+  - required: [phone]
+
+allOf:
+  - required: [email]
+  - required: [phone]
+
+not:
+  allOf:
+    - required: [email]
+    - required: [phone]
+
+properties:
+  id:
+    type: string
+    title: UserId
+    description: UUID v4 строкой (упрощённый паттерн).
+    pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+
+  name:
+    type: string
+    minLength: 1
+
+  email:
+    type: string
+    format: email
+
+  phone:
+    type: string
+    description: Номер телефона в международном формате.
+    pattern: '^\+[0-9]{7,15}$'
+
+  role:
+    type: string
+    enum: [user, manager, admin]
+
+  age:
+    type: integer
+    minimum: 0
+    maximum: 150
+
+  salary:
+    type: number
+    minimum: 0
+
+  tags:
+    type: array
+    items:
+      type: string
+      minLength: 1
+    uniqueItems: true
+    maxItems: 10
+
+  settings:
+    type: object
+    allOf:
+      - $ref: '#/$defs/baseSettings'
+      - properties:
+          theme:
+            type: string
+            enum: [light, dark]
+        unevaluatedProperties: false
+  manager:
+    allOf:
+      - $ref: '#/$defs/UserRef'
+      - description: Manager of the user
+  userId:
+    $ref: '#/$defs/UserId'
+  payment:
+    oneOf:
+      - $ref: '#/$defs/CreditCard'
+      - $ref: '#/$defs/BankTransfer'
+
+$defs:
+  baseSettings:
+    type: object
+    properties:
+      language:
+        type: string
+        pattern: '^[a-z]{2}(-[A-Z]{2})?$'
+      notifications:
+        type: boolean
+        default: true
+    additionalProperties: false
+  UserRef:
+    type: object
+    required: [ id ]
+    properties:
+      id:
+        type: string
+        pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+    additionalProperties: false
+  UserId:
+    type: string
+    description: User UUID
+    pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+  CreditCard:
+    type: object
+    properties:
+      cardNumber:
+        type: string
+      expiry:
+        type: string
+  BankTransfer:
+    type: object
+    properties:
+      iban:
+        type: string
+      bic:
+        type: string
