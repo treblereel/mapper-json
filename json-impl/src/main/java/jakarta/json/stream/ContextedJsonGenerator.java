@@ -48,7 +48,7 @@ public class ContextedJsonGenerator extends JsonGeneratorDecorator {
 
   @Override
   public JsonGenerator writeStartArray() {
-    return generator.writeStartObject(name);
+    return generator.writeStartArray(name);
   }
 
   @Override

@@ -59,7 +59,7 @@ public class Main {
       new JavaEmitter(outPath).emit(model);
       return 0;
     } catch (Exception e) {
-      System.err.println(e.getMessage());
+      e.printStackTrace(System.err);
       return 1;
     }
   }

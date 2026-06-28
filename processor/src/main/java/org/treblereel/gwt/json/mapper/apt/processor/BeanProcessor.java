@@ -21,7 +21,7 @@ import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,7 +47,7 @@ public class BeanProcessor {
   private final GenerationContext context;
   private final TreeLogger logger;
   private final Set<TypeElement> annotatedBeans;
-  private final Set<TypeElement> beans = new HashSet<>();
+  private final Set<TypeElement> beans = new LinkedHashSet<>();
 
   private final TypeUtils typeUtils;
 

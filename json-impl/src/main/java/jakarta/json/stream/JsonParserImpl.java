@@ -20,6 +20,7 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonValue;
 import jakarta.json.JsonValueDecorator;
+import jakarta.json.bind.JsonbException;
 import java.math.BigDecimal;
 
 public class JsonParserImpl implements JsonParser {
@@ -41,7 +42,7 @@ public class JsonParserImpl implements JsonParser {
         && (holder.getValueType() != null && holder.getValueType() == JsonValue.ValueType.OBJECT)) {
       return Event.START_OBJECT;
     }
-    return null;
+    throw new JsonbException("Unexpected value type");
   }
 
   public JsonArray getArray() {

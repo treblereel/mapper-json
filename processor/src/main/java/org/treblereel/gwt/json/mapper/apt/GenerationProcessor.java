@@ -23,7 +23,7 @@ import com.google.common.collect.Streams;
 import jakarta.json.bind.annotation.JsonbSubtype;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,7 +48,7 @@ import org.treblereel.gwt.json.mapper.apt.processor.BeanProcessor;
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class GenerationProcessor extends AbstractProcessor {
 
-  private final Set<TypeElement> beans = new HashSet<>();
+  private final Set<TypeElement> beans = new LinkedHashSet<>();
 
   private final TreeLogger logger = new PrintWriterTreeLogger();
 
@@ -95,7 +95,7 @@ public class GenerationProcessor extends AbstractProcessor {
     } catch (MirroredTypeException e) {
       return MoreTypes.asTypeElement(e.getTypeMirror());
     }
-    return null;
+    throw new IllegalStateException("Expected MirroredTypeException");
   }
 
   private Stream<TypeElement> getTypes(JSONMappers annotation) {

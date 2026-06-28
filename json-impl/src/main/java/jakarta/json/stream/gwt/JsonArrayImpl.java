@@ -192,13 +192,22 @@ public class JsonArrayImpl implements JsonArray {
   @Override
   public JsonValue set(int index, JsonValue element) {
     JsonValue old = new JsonValueImpl(array.getAt(index));
-    array.setAt(index, ((JsonValueImpl) element).__holder__);
+    array.setAt(index, extractHolder(element));
     return old;
   }
 
   @Override
   public void add(int index, JsonValue element) {
-    array.setAt(index, ((JsonValueImpl) element).__holder__);
+    array.setAt(index, extractHolder(element));
+  }
+
+  private Object extractHolder(JsonValue value) {
+    if (value instanceof JsonValueImpl) {
+      return ((JsonValueImpl) value).__holder__;
+    } else if (value instanceof JsonObjectImpl) {
+      return ((JsonObjectImpl) value).__holder__;
+    }
+    return new JsonValueImpl(value).__holder__;
   }
 
   @Override

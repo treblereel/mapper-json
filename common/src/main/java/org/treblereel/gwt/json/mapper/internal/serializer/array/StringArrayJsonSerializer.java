@@ -18,21 +18,17 @@ package org.treblereel.gwt.json.mapper.internal.serializer.array;
 
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
-import org.treblereel.gwt.json.mapper.internal.serializer.JsonSerializer;
+import org.treblereel.gwt.json.mapper.internal.serializer.StringJsonSerializer;
 
-public class ArrayJsonSerializer<T> extends BasicArrayJsonSerializer<T[]> {
+public class StringArrayJsonSerializer extends BasicArrayJsonSerializer<String[]> {
 
-  protected final JsonSerializer<T> serializer;
-
-  public ArrayJsonSerializer(JsonSerializer<T> serializer) {
-    this.serializer = serializer;
-  }
+  private final StringJsonSerializer serializer = new StringJsonSerializer();
 
   @Override
   public void serialize(
-      T[] obj, String property, JsonGenerator generator, SerializationContext ctx) {
+      String[] obj, String property, JsonGenerator generator, SerializationContext ctx) {
     if (obj != null) {
-      JsonGenerator builder = generator.writeStartArray(property);
+      jakarta.json.stream.JsonGenerator builder = generator.writeStartArray(property);
       for (int i = 0; i < obj.length; i++) {
         serializer.serialize(obj[i], builder, ctx);
       }
@@ -41,7 +37,7 @@ public class ArrayJsonSerializer<T> extends BasicArrayJsonSerializer<T[]> {
   }
 
   @Override
-  public void serialize(T[] obj, JsonGenerator generator, SerializationContext ctx) {
+  public void serialize(String[] obj, JsonGenerator generator, SerializationContext ctx) {
     if (obj != null) {
       for (int i = 0; i < obj.length; i++) {
         serializer.serialize(obj[i], generator, ctx);

@@ -30,6 +30,9 @@ public class PrimitiveBooleanArrayJsonDeserializer
   @Override
   public boolean[] deserialize(JsonValue json, DeserializationContext ctx) throws JsonException {
     List<Boolean> list = deserializeIntoList(json, deser, ctx);
+    if (list == null) {
+      return null;
+    }
 
     boolean[] result = new boolean[list.size()];
     int i = 0;

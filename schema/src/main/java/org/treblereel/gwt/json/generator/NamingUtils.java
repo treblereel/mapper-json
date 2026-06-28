@@ -15,6 +15,7 @@
  */
 package org.treblereel.gwt.json.generator;
 
+import java.util.Objects;
 import java.util.Set;
 
 public final class NamingUtils {
@@ -75,6 +76,7 @@ public final class NamingUtils {
   private NamingUtils() {}
 
   public static String toCamelCase(String input) {
+    Objects.requireNonNull(input, "input must not be null");
     StringBuilder sb = new StringBuilder();
     boolean capitalizeNext = false;
     for (int i = 0; i < input.length(); i++) {
@@ -98,6 +100,7 @@ public final class NamingUtils {
   }
 
   public static String toUpperSnakeCase(String input) {
+    Objects.requireNonNull(input, "input must not be null");
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < input.length(); i++) {
       char c = input.charAt(i);
@@ -132,10 +135,13 @@ public final class NamingUtils {
   }
 
   public static boolean needsJsonbProperty(String schemaName, String fieldName) {
+    Objects.requireNonNull(schemaName, "schemaName must not be null");
+    Objects.requireNonNull(fieldName, "fieldName must not be null");
     return !schemaName.equals(fieldName);
   }
 
   public static String extractRefName(String ref) {
+    Objects.requireNonNull(ref, "ref must not be null");
     return ref.substring(ref.lastIndexOf('/') + 1);
   }
 }

@@ -140,6 +140,7 @@ public class SchemaCollector {
     List<JavaField> fields = new ArrayList<>();
     List<JavaEnum> inlineEnums = new ArrayList<>();
     Set<String> requiredNames = new HashSet<>();
+    Set<String> seen = new HashSet<>();
 
     if (container != null) {
       container.required().ifPresent(requiredNames::addAll);
@@ -157,6 +158,7 @@ public class SchemaCollector {
         resolved.required().ifPresent(requiredNames::addAll);
         for (Map.Entry<String, HasType> prop : resolved.properties().entrySet()) {
           String schemaName = prop.getKey();
+          if (!seen.add(schemaName)) continue;
           HasType propType = prop.getValue();
           String fieldName = NamingUtils.sanitizeFieldName(schemaName);
           boolean isRequired = requiredNames.contains(schemaName);
@@ -209,15 +211,21 @@ public class SchemaCollector {
       return resolveUnionType(ut, contextName, inlineEnums);
     } else if (type instanceof AllOfType at) {
       String className = NamingUtils.toPascalCase(contextName);
-      classes.add(collectAllOfType(contextName, at.getAllOf(), null));
+      if (collectedClassNames.add(className)) {
+        classes.add(collectAllOfType(contextName, at.getAllOf(), null));
+      }
       return new TypeResult(className, false);
     } else if (type instanceof ObjectType ot && ot.allOf().isPresent()) {
       String className = NamingUtils.toPascalCase(contextName);
-      classes.add(collectAllOfType(contextName, ot.allOf().get(), ot));
+      if (collectedClassNames.add(className)) {
+        classes.add(collectAllOfType(contextName, ot.allOf().get(), ot));
+      }
       return new TypeResult(className, false);
     } else if (type instanceof ObjectType ot && !ot.properties().isEmpty()) {
       String className = NamingUtils.toPascalCase(contextName);
-      classes.add(collectObjectType(contextName, ot));
+      if (collectedClassNames.add(className)) {
+        classes.add(collectObjectType(contextName, ot));
+      }
       return new TypeResult(className, false);
     } else if (type instanceof ObjectType ot
         && (ot.oneOf().isPresent() || ot.anyOf().isPresent())) {

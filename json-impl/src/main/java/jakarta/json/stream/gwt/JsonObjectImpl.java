@@ -97,7 +97,10 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public int getInt(String name) {
-    return Integer.valueOf(Js.asPropertyMap(__holder__).get(name).toString());
+    if (Reflect.has(__holder__, name)) {
+      return Integer.valueOf(Js.asPropertyMap(__holder__).get(name).toString());
+    }
+    return 0;
   }
 
   @Override
@@ -107,7 +110,10 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public boolean getBoolean(String name) {
-    return Boolean.valueOf(Js.asPropertyMap(__holder__).get(name).toString());
+    if (Reflect.has(__holder__, name)) {
+      return Boolean.valueOf(Js.asPropertyMap(__holder__).get(name).toString());
+    }
+    return false;
   }
 
   @Override
@@ -213,7 +219,7 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public JsonObject asJsonObject() {
-    return Js.uncheckedCast(__holder__); // TODO wrong impl
+    return this;
   }
 
   @Override

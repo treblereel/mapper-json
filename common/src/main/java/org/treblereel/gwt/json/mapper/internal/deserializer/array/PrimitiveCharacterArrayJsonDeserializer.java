@@ -29,6 +29,9 @@ public class PrimitiveCharacterArrayJsonDeserializer extends AbstractArrayJsonDe
   @Override
   public char[] deserialize(JsonValue json, DeserializationContext ctx) throws JsonException {
     List<Character> list = deserializeIntoList(json, deser, ctx);
+    if (list == null) {
+      return null;
+    }
 
     char[] result = new char[list.size()];
     int i = 0;

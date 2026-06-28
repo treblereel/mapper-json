@@ -18,7 +18,6 @@ package org.treblereel.gwt.json.mapper.internal.serializer;
 
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
-import jakarta.json.stream.JsonbPropertySerializer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,33 +38,28 @@ public class JsonbSubtypeSerializer<T> extends JsonSerializer<T> {
     if (obj == null) {
       return;
     }
-    if (types.containsKey(obj.getClass())) {
-      AbstractBeanJsonSerializer serializer =
-          (AbstractBeanJsonSerializer) types.get(obj.getClass()).ser;
-      serializer.properties.add(
-          (JsonbPropertySerializer<?>)
-              (s, u, context) -> u.write(typeFieldName, types.get(obj.getClass()).alias));
-      serializer.serialize(obj, property, generator, ctx);
+    Info info = types.get(obj.getClass());
+    if (info != null) {
+      JsonGenerator objBuilder = generator.writeStartObject(property);
+      objBuilder.write(typeFieldName, info.alias);
+      info.ser.serialize(obj, objBuilder, ctx);
+      objBuilder.writeEnd();
     } else {
-      throw new Error("Unable to find ser for " + obj.getClass());
+      throw new IllegalArgumentException("Unable to find ser for " + obj.getClass());
     }
   }
 
-  // TODO remove code dups
   @Override
   public void serialize(T obj, JsonGenerator generator, SerializationContext ctx) {
     if (obj == null) {
       return;
     }
-    if (types.containsKey(obj.getClass())) {
-      AbstractBeanJsonSerializer serializer =
-          (AbstractBeanJsonSerializer) types.get(obj.getClass()).ser;
-      serializer.properties.add(
-          (JsonbPropertySerializer<?>)
-              (s, u, context) -> u.write(typeFieldName, types.get(obj.getClass()).alias));
-      serializer.serialize(obj, generator, ctx);
+    Info info = types.get(obj.getClass());
+    if (info != null) {
+      generator.write(typeFieldName, info.alias);
+      info.ser.serialize(obj, generator, ctx);
     } else {
-      throw new Error("Unable to find ser for " + obj.getClass());
+      throw new IllegalArgumentException("Unable to find ser for " + obj.getClass());
     }
   }
 

@@ -29,6 +29,9 @@ public class StringArrayJsonDeserializer extends AbstractArrayJsonDeserializer<S
   @Override
   public String[] deserialize(JsonValue json, DeserializationContext ctx) throws JsonException {
     List<String> list = deserializeIntoList(json, deser, ctx);
+    if (list == null) {
+      return null;
+    }
 
     String[] result = new String[list.size()];
     int i = 0;
