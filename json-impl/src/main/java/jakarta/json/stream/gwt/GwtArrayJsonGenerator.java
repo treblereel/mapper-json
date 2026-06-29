@@ -169,7 +169,8 @@ public class GwtArrayJsonGenerator extends JsonGeneratorDecorator implements Jso
 
   @Override
   public JsonGenerator writeNull() {
-    return null;
+    array.push(null);
+    return this;
   }
 
   @Override
@@ -228,7 +229,8 @@ public class GwtArrayJsonGenerator extends JsonGeneratorDecorator implements Jso
 
   @Override
   public JsonArrayBuilder addNull() {
-    return null;
+    array.push(null);
+    return this;
   }
 
   @Override

@@ -42,8 +42,10 @@ public class ArrayJsonSerializer<T> extends BasicArrayJsonSerializer<T[]> {
 
   @Override
   public void serialize(T[] obj, JsonGenerator generator, SerializationContext ctx) {
-    for (int i = 0; i < obj.length; i++) {
-      serializer.serialize(obj[i], generator, ctx);
+    if (obj != null) {
+      for (int i = 0; i < obj.length; i++) {
+        serializer.serialize(obj[i], generator, ctx);
+      }
     }
   }
 }

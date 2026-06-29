@@ -1,0 +1,18 @@
+document:
+  dsl: 1.0.0-alpha2
+  namespace: test
+  name: http-query-params-schema
+  version: 1.0.0-alpha2
+input:
+  schema:
+    resource:
+      endpoint: schema/searchquery.yaml
+do:
+  - searchStarTrekMovies:
+      call: http
+      with:
+        method: get
+        endpoint: https://stapi.co/api/v1/rest/movie
+        query:
+          uid: ${.uid}
+      

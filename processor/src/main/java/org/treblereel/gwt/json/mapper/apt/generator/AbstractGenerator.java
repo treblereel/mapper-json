@@ -37,7 +37,9 @@ import org.treblereel.gwt.json.mapper.apt.exception.GenerationException;
 import org.treblereel.gwt.json.mapper.apt.logger.TreeLogger;
 import org.treblereel.gwt.json.mapper.apt.utils.TypeUtils;
 
-/** @author Dmitrii Tikhomirov Created by treblereel 3/19/20 */
+/**
+ * @author Dmitrii Tikhomirov Created by treblereel 3/19/20
+ */
 public abstract class AbstractGenerator {
 
   protected final GenerationContext context;

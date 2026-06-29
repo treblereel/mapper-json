@@ -57,7 +57,7 @@ public abstract class AbstractBeanJsonDeserializer<T> extends JsonbDeserializer<
       JsonObjectDecorator jsonObjectDecorator = new JsonObjectDecorator(jsonObject);
       properties.forEach(
           (key, value) -> {
-            if (jsonObjectDecorator.containsKey(key)) {
+            if (jsonObjectDecorator.containsKey(key) && !jsonObjectDecorator.isNull(key)) {
               value.accept(instance, jsonObjectDecorator, ctx);
             }
           });

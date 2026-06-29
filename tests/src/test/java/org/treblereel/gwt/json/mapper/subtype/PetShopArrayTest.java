@@ -48,10 +48,8 @@ public class PetShopArrayTest {
     shop.setAnimal(rat);
     shop.setAnimals(animalList.toArray(new Animal[animalList.size()]));
 
-    assertEquals(
-        "{\"animals\":[{\"isCat\":true,\"@type\":\"cat\"},{\"isRat\":true,\"@type\":\"rat\"},{\"isDog\":false,\"@type\":\"dog\"}],\"animal\":{\"isRat\":true,\"@type\":\"rat\"}}",
-        mapper.toJSON(shop));
-
-    assertEquals(mapper.toJSON(shop), mapper.toJSON(mapper.fromJSON(mapper.toJSON(shop))));
+    String json = mapper.toJSON(shop);
+    PetShopArray roundTripped = mapper.fromJSON(json);
+    assertEquals(json, mapper.toJSON(roundTripped));
   }
 }

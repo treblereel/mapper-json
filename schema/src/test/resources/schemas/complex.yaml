@@ -1,0 +1,40 @@
+$defs:
+  Address:
+    type: object
+    properties:
+      street:
+        type: string
+      zip-code:
+        type: string
+      city:
+        type: string
+    required:
+      - street
+      - city
+
+  Status:
+    type: string
+    enum:
+      - active
+      - inactive
+      - pending
+
+type: object
+properties:
+  name:
+    type: string
+  age:
+    type:
+      - integer
+      - "null"
+  address:
+    $ref: '#/$defs/Address'
+  status:
+    $ref: '#/$defs/Status'
+  tags:
+    type: array
+    items:
+      type: string
+required:
+  - name
+  - status

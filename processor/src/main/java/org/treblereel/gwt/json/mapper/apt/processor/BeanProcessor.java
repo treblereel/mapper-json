@@ -17,10 +17,11 @@
 package org.treblereel.gwt.json.mapper.apt.processor;
 
 import com.google.auto.common.MoreTypes;
+import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class BeanProcessor {
   private final GenerationContext context;
   private final TreeLogger logger;
   private final Set<TypeElement> annotatedBeans;
-  private final Set<TypeElement> beans = new HashSet<>();
+  private final Set<TypeElement> beans = new LinkedHashSet<>();
 
   private final TypeUtils typeUtils;
 
@@ -82,13 +83,17 @@ public class BeanProcessor {
     if (!beans.contains(bean)) {
       beans.add(checkBean(bean));
       if (!context.getTypeUtils().isJsonbTypeSerializer(bean)) {
-        context.getTypeUtils().getAllFieldsIn(bean).forEach(this::processField);
+        boolean hasCreator = hasJsonbCreator(bean);
+        context
+            .getTypeUtils()
+            .getAllFieldsIn(bean)
+            .forEach(field -> processField(field, hasCreator));
       }
     }
   }
 
-  private void processField(VariableElement field) {
-    if (checkField(field)) {
+  private void processField(VariableElement field, boolean hasCreator) {
+    if (checkField(field, hasCreator)) {
       if (!context.getTypeUtils().isJsonbTypeSerializer(field)) {
         TypeMirror typeMirror = field.asType();
         checkTypeAndAdd(typeMirror);
@@ -139,11 +144,14 @@ public class BeanProcessor {
     }
   }
 
-  private boolean checkField(VariableElement field) {
+  private boolean checkField(VariableElement field, boolean hasCreator) {
     if (field.getModifiers().contains(Modifier.STATIC)
         || field.getModifiers().contains(Modifier.TRANSIENT)
-        || field.getAnnotation(JsonbTransient.class) != null
-        || field.getModifiers().contains(Modifier.FINAL)) {
+        || field.getAnnotation(JsonbTransient.class) != null) {
+      return false;
+    }
+
+    if (!hasCreator && field.getModifiers().contains(Modifier.FINAL)) {
       return false;
     }
 
@@ -154,6 +162,10 @@ public class BeanProcessor {
                 "Field %s.%s is of type Object and must be annotated with @JsonbTypeSerializer and @JsonbTypeDeserializer",
                 field.getEnclosingElement().getSimpleName(), field.getSimpleName().toString()));
       }
+    }
+
+    if (hasCreator && typeUtils.hasGetter(field)) {
+      return true;
     }
 
     if (!field.getModifiers().contains(Modifier.PRIVATE)
@@ -221,18 +233,35 @@ public class BeanProcessor {
               + "] must not be annotated with JsonbTypeSerializer or JsonbTypeDeserializer");
     }
 
-    List<ExecutableElement> constructors = ElementFilter.constructorsIn(type.getEnclosedElements());
-    if (!constructors.isEmpty()) {
-      long nonArgConstructorCount =
-          constructors.stream()
-              .filter(constr -> !constr.getModifiers().contains(Modifier.PRIVATE))
-              .filter(constr -> constr.getParameters().isEmpty())
-              .count();
-      if (nonArgConstructorCount != 1) {
-        throw new GenerationException(
-            "A @JSONMapper bean [" + type + "] must have a non-private non-arg constructor");
+    if (!hasJsonbCreator(type)) {
+      List<ExecutableElement> constructors =
+          ElementFilter.constructorsIn(type.getEnclosedElements());
+      if (!constructors.isEmpty()) {
+        long nonArgConstructorCount =
+            constructors.stream()
+                .filter(constr -> !constr.getModifiers().contains(Modifier.PRIVATE))
+                .filter(constr -> constr.getParameters().isEmpty())
+                .count();
+        if (nonArgConstructorCount != 1) {
+          throw new GenerationException(
+              "A @JSONMapper bean [" + type + "] must have a non-private non-arg constructor");
+        }
       }
     }
     return type;
+  }
+
+  private boolean hasJsonbCreator(TypeElement type) {
+    for (ExecutableElement constructor : ElementFilter.constructorsIn(type.getEnclosedElements())) {
+      if (constructor.getAnnotation(JsonbCreator.class) != null) {
+        return true;
+      }
+    }
+    for (ExecutableElement method : ElementFilter.methodsIn(type.getEnclosedElements())) {
+      if (method.getAnnotation(JsonbCreator.class) != null) {
+        return true;
+      }
+    }
+    return false;
   }
 }

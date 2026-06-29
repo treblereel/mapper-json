@@ -82,6 +82,7 @@ import org.treblereel.gwt.json.mapper.internal.serializer.array.PrimitiveFloatAr
 import org.treblereel.gwt.json.mapper.internal.serializer.array.PrimitiveIntegerArrayJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.array.PrimitiveLongArrayLongSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.array.PrimitiveShortArrayJsonSerializer;
+import org.treblereel.gwt.json.mapper.internal.serializer.array.StringArrayJsonSerializer;
 import org.treblereel.gwt.json.mapper.internal.serializer.collection.CollectionJsonSerializer;
 
 public class TypeRegistry {
@@ -320,7 +321,7 @@ public class TypeRegistry {
 
     MAPPER
         .forType(String[].class)
-        .serializer(PrimitiveShortArrayJsonSerializer.class)
+        .serializer(StringArrayJsonSerializer.class)
         .deserializer(StringArrayJsonDeserializer.class)
         .register(buildIn);
   }

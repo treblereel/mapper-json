@@ -29,6 +29,9 @@ public class PrimitiveIntegerArrayJsonDeserializer extends AbstractArrayJsonDese
   @Override
   public int[] deserialize(JsonValue json, DeserializationContext ctx) throws JsonException {
     List<Integer> list = deserializeIntoList(json, deser, ctx);
+    if (list == null) {
+      return null;
+    }
 
     int[] result = new int[list.size()];
     int i = 0;

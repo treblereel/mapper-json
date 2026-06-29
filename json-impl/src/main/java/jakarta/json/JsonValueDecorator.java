@@ -87,7 +87,8 @@ public class JsonValueDecorator {
         this.delegate = (JsonObjectImpl) delegate;
       }
       return this;
-    };
+    }
+    ;
 
     public Integer getInteger() {
       return Double.valueOf(Js.<JsNumber>uncheckedCast(delegate).valueOf()).intValue();
@@ -146,7 +147,8 @@ public class JsonValueDecorator {
     public GWTDecorator setDelegate(Object delegate) {
       this.delegate = (JsonValue) delegate;
       return this;
-    };
+    }
+    ;
 
     @Override
     @GwtIncompatible

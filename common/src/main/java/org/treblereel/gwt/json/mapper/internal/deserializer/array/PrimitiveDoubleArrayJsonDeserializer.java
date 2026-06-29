@@ -29,6 +29,9 @@ public class PrimitiveDoubleArrayJsonDeserializer extends AbstractArrayJsonDeser
   @Override
   public double[] deserialize(JsonValue json, DeserializationContext ctx) throws JsonException {
     List<Double> list = deserializeIntoList(json, deser, ctx);
+    if (list == null) {
+      return null;
+    }
 
     double[] result = new double[list.size()];
     int i = 0;

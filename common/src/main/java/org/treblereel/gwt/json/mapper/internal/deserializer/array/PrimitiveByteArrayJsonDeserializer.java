@@ -30,6 +30,9 @@ public class PrimitiveByteArrayJsonDeserializer extends AbstractArrayJsonDeseria
   @Override
   public byte[] deserialize(JsonValue json, DeserializationContext ctx) throws JsonException {
     List<Byte> list = deserializeIntoList(json, deser, ctx);
+    if (list == null) {
+      return null;
+    }
 
     byte[] result = new byte[list.size()];
     int i = 0;

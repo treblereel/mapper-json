@@ -17,7 +17,12 @@
 package org.treblereel.gwt.json.mapper.apt.definition;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.FieldAccessExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
@@ -30,6 +35,7 @@ import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
+import org.treblereel.gwt.json.mapper.apt.exception.GenerationException;
 import org.treblereel.gwt.json.mapper.internal.deserializer.DeserializerJsonbTypeSerializerWrapper;
 import org.treblereel.gwt.json.mapper.internal.serializer.SerializerJsonbTypeSerializerWrapper;
 
@@ -69,7 +75,7 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
                               .addArgument(new StringLiteralExpr(field.getName())))
                       .addArgument(new NameExpr("ctx"))));
     }
-    return null;
+    throw new GenerationException("Expected MirroredTypeException for @JsonbTypeDeserializer");
   }
 
   @Override
@@ -94,8 +100,7 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
               .addArgument(new NameExpr("generator"))
               .addArgument(new NameExpr("ctx")));
     }
-
-    return null;
+    throw new GenerationException("Expected MirroredTypeException for @JsonbTypeSerializer");
   }
 
   public Expression getFieldSerializerCreationExpr(PropertyDefinition field, CompilationUnit cu) {
@@ -108,7 +113,7 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
     } catch (MirroredTypeException e) {
       return new ObjectCreationExpr().setType(e.getTypeMirror().toString());
     }
-    return null;
+    throw new GenerationException("Expected MirroredTypeException for @JsonbTypeSerializer");
   }
 
   public Expression getFieldDeserializerCreationExpr(PropertyDefinition field, CompilationUnit cu) {
@@ -136,6 +141,6 @@ public class JsonbTypeSerFieldDefinition extends FieldDefinition {
           .addArgument(new ObjectCreationExpr().setType(e.getTypeMirror().toString()))
           .addArgument(new FieldAccessExpr(new NameExpr(typeMirror.toString()), "class"));
     }
-    return null;
+    throw new GenerationException("Expected MirroredTypeException for @JsonbTypeDeserializer");
   }
 }

@@ -7,12 +7,13 @@
     <groupId>org.treblereel.gwt.json.mapper</groupId>
     <artifactId>mapper-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.8</version>
+    <version>0.9</version>
     <modules>
         <module>json-impl</module>
         <module>common</module>
         <module>processor</module>
         <module>tests</module>
+        <module>schema</module>
     </modules>
 
     <name>GWT/J2CL Jakarta JSON Binding parent</name>
@@ -51,12 +52,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
 
-        <maven.compiler.version>3.8.0</maven.compiler.version>
+        <maven.compiler.version>3.15.0</maven.compiler.version>
         <maven.source.version>3.2.1</maven.source.version>
-        <maven.fmt.plugin>2.9</maven.fmt.plugin>
+        <maven.fmt.plugin>2.29</maven.fmt.plugin>
         <maven.license.plugin>3.0</maven.license.plugin>
         <maven.shade.plugin>3.2.4</maven.shade.plugin>
         <maven.gpg.plugin>1.6</maven.gpg.plugin>
@@ -127,7 +128,7 @@
                     <version>${maven.license.plugin}</version>
                 </plugin>
                 <plugin>
-                    <groupId>com.coveo</groupId>
+                    <groupId>com.spotify.fmt</groupId>
                     <artifactId>fmt-maven-plugin</artifactId>
                     <version>${maven.fmt.plugin}</version>
                 </plugin>
@@ -207,7 +208,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.coveo</groupId>
+                <groupId>com.spotify.fmt</groupId>
                 <artifactId>fmt-maven-plugin</artifactId>
                 <version>${maven.fmt.plugin}</version>
                 <executions>
@@ -232,6 +233,12 @@
     <profiles>
         <profile>
             <id>release</id>
+            <modules>
+                <module>json-impl</module>
+                <module>common</module>
+                <module>processor</module>
+                <module>schema</module>
+            </modules>
             <build>
                 <plugins>
                     <plugin>

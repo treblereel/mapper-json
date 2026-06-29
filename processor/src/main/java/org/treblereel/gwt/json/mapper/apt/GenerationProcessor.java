@@ -23,7 +23,7 @@ import com.google.common.collect.Streams;
 import jakarta.json.bind.annotation.JsonbSubtype;
 import jakarta.json.bind.annotation.JsonbTypeInfo;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,7 +36,9 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.MirroredTypesException;
 import org.treblereel.gwt.json.mapper.annotation.JSONMapper;
+import org.treblereel.gwt.json.mapper.annotation.JSONMappers;
 import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.apt.logger.PrintWriterTreeLogger;
 import org.treblereel.gwt.json.mapper.apt.logger.TreeLogger;
@@ -46,7 +48,7 @@ import org.treblereel.gwt.json.mapper.apt.processor.BeanProcessor;
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class GenerationProcessor extends AbstractProcessor {
 
-  private final Set<TypeElement> beans = new HashSet<>();
+  private final Set<TypeElement> beans = new LinkedHashSet<>();
 
   private final TreeLogger logger = new PrintWriterTreeLogger();
 
@@ -63,7 +65,10 @@ public class GenerationProcessor extends AbstractProcessor {
                   .map(type -> type.getAnnotation(JsonbTypeInfo.class))
                   .map(JsonbTypeInfo::value)
                   .flatMap(Arrays::stream)
-                  .map(this::get));
+                  .map(this::get),
+              roundEnvironment.getElementsAnnotatedWith(JSONMappers.class).stream()
+                  .map(element -> element.getAnnotation(JSONMappers.class))
+                  .flatMap(this::getTypes));
       processJsonMapper(stream);
       new BeanProcessor(context, logger, beans).process();
     }
@@ -81,7 +86,7 @@ public class GenerationProcessor extends AbstractProcessor {
   }
 
   private List<Class<?>> supportedAnnotations() {
-    return Arrays.asList(JSONMapper.class);
+    return Arrays.asList(JSONMapper.class, JSONMappers.class);
   }
 
   private TypeElement get(JsonbSubtype jsonbSubtype) {
@@ -90,6 +95,15 @@ public class GenerationProcessor extends AbstractProcessor {
     } catch (MirroredTypeException e) {
       return MoreTypes.asTypeElement(e.getTypeMirror());
     }
-    return null;
+    throw new IllegalStateException("Expected MirroredTypeException");
+  }
+
+  private Stream<TypeElement> getTypes(JSONMappers annotation) {
+    try {
+      annotation.value();
+    } catch (MirroredTypesException e) {
+      return e.getTypeMirrors().stream().map(MoreTypes::asTypeElement);
+    }
+    return Stream.empty();
   }
 }

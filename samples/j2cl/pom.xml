@@ -6,7 +6,7 @@
   <groupId>org.treblereel.gwt.json.demo.j2cl</groupId>
   <artifactId>demo</artifactId>
   <packaging>war</packaging>
-  <version>0.8</version>
+  <version>0.9</version>
 
   <properties>
     <webappdir>${project.build.directory}/webapp</webappdir>

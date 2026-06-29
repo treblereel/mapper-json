@@ -19,10 +19,15 @@ package org.treblereel.gwt.json.mapper.apt.generator;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.NullLiteralExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.UnknownType;
@@ -31,6 +36,7 @@ import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.apt.definition.BeanDefinition;
 import org.treblereel.gwt.json.mapper.apt.definition.FieldDefinition;
 import org.treblereel.gwt.json.mapper.apt.definition.FieldDefinitionFactory;
+import org.treblereel.gwt.json.mapper.apt.definition.PropertyDefinition;
 import org.treblereel.gwt.json.mapper.apt.logger.TreeLogger;
 import org.treblereel.gwt.json.mapper.internal.serializer.AbstractBeanJsonSerializer;
 
@@ -78,20 +84,36 @@ public class SerializerGenerator extends AbstractGenerator {
               FieldDefinition fieldDefinition =
                   fieldDefinitionFactory.getFieldDefinition(propertyDefinition);
               addSetter(
-                  type,
                   constructor.getBody(),
+                  propertyDefinition,
                   fieldDefinition.getFieldSerializer(propertyDefinition, cu));
             });
   }
 
-  private void addSetter(BeanDefinition type, BlockStmt body, Statement call) {
+  private void addSetter(BlockStmt body, PropertyDefinition propertyDefinition, Statement call) {
     LambdaExpr lambda = new LambdaExpr();
     lambda.setEnclosingParameters(true);
     lambda.getParameters().add(new Parameter().setType(new UnknownType()).setName("bean"));
     lambda.getParameters().add(new Parameter().setType(new UnknownType()).setName("generator"));
     lambda.getParameters().add(new Parameter().setType(new UnknownType()).setName("ctx"));
 
-    lambda.setBody(call);
+    if (propertyDefinition.isNillable() && !propertyDefinition.getType().getKind().isPrimitive()) {
+      BlockStmt block = new BlockStmt();
+      MethodCallExpr getterCall =
+          new MethodCallExpr(
+              new NameExpr("bean"), propertyDefinition.getGetter().getSimpleName().toString());
+      BinaryExpr notNull =
+          new BinaryExpr(getterCall, new NullLiteralExpr(), BinaryExpr.Operator.NOT_EQUALS);
+      Statement writeNull =
+          new ExpressionStmt(
+              new MethodCallExpr(new NameExpr("generator"), "writeNull")
+                  .addArgument(new StringLiteralExpr(propertyDefinition.getName())));
+      IfStmt ifStmt = new IfStmt(notNull, call, writeNull);
+      block.addStatement(ifStmt);
+      lambda.setBody(block);
+    } else {
+      lambda.setBody(call);
+    }
 
     body.addStatement(new MethodCallExpr(new NameExpr("properties"), "add").addArgument(lambda));
   }

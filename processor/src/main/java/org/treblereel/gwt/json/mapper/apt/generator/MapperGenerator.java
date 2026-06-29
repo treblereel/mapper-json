@@ -33,7 +33,9 @@ import org.treblereel.gwt.json.mapper.apt.context.GenerationContext;
 import org.treblereel.gwt.json.mapper.apt.definition.BeanDefinition;
 import org.treblereel.gwt.json.mapper.apt.logger.TreeLogger;
 
-/** @author Dmitrii Tikhomirov Created by treblereel 3/20/20 */
+/**
+ * @author Dmitrii Tikhomirov Created by treblereel 3/20/20
+ */
 public class MapperGenerator extends AbstractGenerator {
 
   private static final String MAPPER_IMPL = "_JsonMapperImpl";
