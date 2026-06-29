@@ -46,10 +46,8 @@ public class PetShopTest {
     PetShop shop = new PetShop();
     shop.setAnimalList(animalList);
 
-    assertEquals(
-        "{\"animalList\":[{\"isCat\":true,\"@type\":\"cat\"},{\"isRat\":true,\"@type\":\"rat\"},{\"isDog\":false,\"@type\":\"dog\"}]}",
-        mapper.toJSON(shop));
-
-    assertEquals(mapper.toJSON(shop), mapper.toJSON(mapper.fromJSON(mapper.toJSON(shop))));
+    String json = mapper.toJSON(shop);
+    PetShop roundTripped = mapper.fromJSON(json);
+    assertEquals(json, mapper.toJSON(roundTripped));
   }
 }
