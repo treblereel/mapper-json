@@ -7,7 +7,7 @@
     <groupId>org.treblereel.gwt.json.mapper</groupId>
     <artifactId>mapper-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.9</version>
+    <version>0.10</version>
     <modules>
         <module>json-impl</module>
         <module>common</module>
