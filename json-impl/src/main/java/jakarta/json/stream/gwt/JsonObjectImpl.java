@@ -123,7 +123,11 @@ public class JsonObjectImpl implements JsonObject {
 
   @Override
   public boolean isNull(String name) {
-    throw new UnsupportedOperationException();
+    if (!Js.asPropertyMap(__holder__).has(name)) {
+      return true;
+    }
+    Object value = Js.asPropertyMap(__holder__).get(name);
+    return value == null || Js.typeof(value).equals("undefined");
   }
 
   @Override
